@@ -9,6 +9,7 @@
 Makefile
 
 # Build
+/build/
 *.deps
 *.la
 *.lo
