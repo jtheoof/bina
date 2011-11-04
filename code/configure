@@ -568,7 +568,6 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
-BUILD_DIR
 RANLIB
 am__fastdepCXX_FALSE
 am__fastdepCXX_TRUE
@@ -3055,9 +3054,6 @@ CXXFLAGS=""
 LDFLAGS="$LDFLAGS"
 
 
-
-
-BUILD_DIR=`pwd`/build
 
 
 ac_config_files="$ac_config_files Makefile src/Makefile"
