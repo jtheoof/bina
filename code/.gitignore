@@ -1,0 +1,21 @@
+# Temp
+*~
+*.log
+
+# Buildsys
+/autom4te.cache/
+/stamp-h1
+/config.status
+Makefile
+
+# Build
+/build/
+*.deps
+*.la
+*.lo
+*.so
+*.o
+
+# Tags
+tags
+*.taghl
