@@ -1,13 +1,41 @@
-AC_INIT([Bina], [0.1], [jeremy.attali@gmail.com], [bina], [])
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
 AC_PREREQ([2.59])
+AC_INIT(bina, [0.1])
+
+dnl Keep things clean
+AC_CONFIG_AUX_DIR(autotools)
+AC_CONFIG_MACRO_DIR([m4])
+
+dnl Get an idea of the host (eg: linux, macos, ...)
+AC_CANONICAL_HOST
+
+BUILD=`date +%Y%m%d`
+
 AM_INIT_AUTOMAKE([1.10 no-define foreign])
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_HEADERS([src/config.h])
+AC_PREFIX_DEFAULT(/opt/bina)
+
+# Checking Linux host
+case $host in
+     *-*-linux* | *-android* )
+        LINUX_HOST=true
+        ;;
+esac
+AM_CONDITIONAL([LINUX_HOST], [test "x$LINUX_HOST" = "xtrue"])
 
 dnl Checks for programs.
 AC_PROG_CXX
-AC_PROG_RANLIB
 
 dnl Checks for libraries.
+
+dnl Enable debug
+DEBUG=no
+AC_ARG_ENABLE([debug],
+  AS_HELP_STRING([--enable-debug],
+    [Turn on debugging]),
+  [DEBUG=$enableval], [])
 
 dnl Extra flags
 CPPFLAGS=""
