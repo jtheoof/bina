@@ -29,6 +29,12 @@ dnl Checks for programs.
 AC_PROG_CXX
 
 dnl Checks for libraries.
+dnl Linux libraries
+if test "x$LINUX_HOST" = "xtrue"; then
+PKG_CHECK_MODULES(GTK, gtk+-2.0,,AC_MSG_ERROR([Cannot find library gtk+-2.0. Install libgtk2.0-dev package.]))
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
+fi
 
 dnl Enable debug
 DEBUG=no
@@ -46,5 +52,7 @@ AC_SUBST(CXXFLAGS)
 AC_SUBST(LDFLAGS)
 
 AC_CONFIG_FILES([Makefile
-				 src/Makefile])
+				 src/Makefile
+				 src/os/Makefile
+				 src/os/linux/Makefile])
 AC_OUTPUT
