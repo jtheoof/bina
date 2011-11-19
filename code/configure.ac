@@ -28,6 +28,9 @@ AM_CONDITIONAL([LINUX_HOST], [test "x$LINUX_HOST" = "xtrue"])
 dnl Checks for programs.
 AC_PROG_CXX
 
+dnl Dummy check
+AC_CHECK_FUNCS(getuid)
+
 dnl Checks for libraries.
 dnl Linux libraries
 if test "x$LINUX_HOST" = "xtrue"; then
