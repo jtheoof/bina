@@ -3,6 +3,7 @@ package com.ratoon.bina;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.webkit.WebSettings;
 
 public class BinaActivity extends Activity
 {
@@ -15,6 +16,7 @@ public class BinaActivity extends Activity
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.main);
         webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         webview.loadUrl("file:///android_asset/index.html");
     }
 }

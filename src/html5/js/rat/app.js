@@ -1,9 +1,9 @@
 define([
   'core/Rat'
 ], function(Rat) {
-  var initialize = function() {
-    console.log('app was initialized');
-    Rat.launch("chapter1", "scene1");
+  var initialize = function(mode) {
+    console.log('app was ininitialized with ' + mode);
+    Rat.launch('chapter1', 'scene1', mode);
   };
 
   return {
