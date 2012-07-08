@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	  <meta name="description" content="">
+	  <meta name="author" content="">
+	  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title></title>
+
+    <!-- Load the script "js/main.js" as our entry point -->
+    <script data-main="js/rat/main" src="js/lib/require/require-jquery.js"></script>
+</head>
+<body>
+
+    <style type="text/css">
+      body {
+        background-color: white;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+      }
+
+      #content-loading {
+        background: url(res/ico/loading.gif);
+        height: 128px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 128px;
+        margin-top: -64px;
+        margin-left: -64px;
+      }
+
+      #canvasold {
+        width: 100%;
+        height: 100%;
+      }
+      #canvas {
+        border: 2px solid red;
+        left: 0;
+        position: absolute;
+        top: 0;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="content-loading"></div>
+      <canvas id="canvas" width="578" height="200"></canvas>
+    </div>
+  </body>
+</html>

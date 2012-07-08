@@ -1,0 +1,25 @@
+{
+  "name": "Scene 1",
+  "manifest_version": "1",
+  "version": "0.1",
+  "chapter": 1,
+  "scene": 1,
+  "description": "The first scene",
+  "widths": [ 320, 768, 1024, 1080 ],
+  "objects": [
+    {
+      "id": "a45bH",
+      "clickable": false
+    },
+    {
+      "id": "x986y",
+      "clickable": true
+    },
+    {
+      "id": "aeF45",
+      "clickable": true
+    }
+  ],
+  "default_locale": "en",
+  "key": "publicKey"
+}
