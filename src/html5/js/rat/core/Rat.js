@@ -177,6 +177,9 @@ define([
     handleClick: function(e) {
       console.log('you clicked in the window');
       console.log(arguments);
+      tmp = document.createElement('p');
+      tmp.innerHTML = 'Click !';
+      document.getElementById('test').appendChild(tmp);
       Rat._character.updatePosition({x: e.x, y: e.y});
     }
       
