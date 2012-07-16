@@ -10,7 +10,9 @@
 
 @interface ViewController : UIViewController <UIWebViewDelegate>
 {
-    IBOutlet UIWebView* webView;
 }
+
+- (IBAction)onTouchWebButton:(id)sender;
+- (IBAction)onTouchNativeButton:(id)sender;
 
 @end

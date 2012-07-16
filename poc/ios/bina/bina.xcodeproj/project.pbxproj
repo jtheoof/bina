@@ -14,9 +14,16 @@
 		0433E6A515A870C500328501 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0433E6A415A870C500328501 /* main.m */; };
 		0433E6A915A870C500328501 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0433E6A815A870C500328501 /* AppDelegate.m */; };
 		0433E6AC15A870C500328501 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0433E6AB15A870C500328501 /* ViewController.m */; };
-		0433E6E715A8738800328501 /* html in Resources */ = {isa = PBXBuildFile; fileRef = 0433E6E615A8738800328501 /* html */; };
-		04DF933B15B4B1FF007DADA6 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DF933C15B4B1FF007DADA6 /* ViewController_iPad.xib */; };
-		04DF933E15B4B207007DADA6 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DF933F15B4B207007DADA6 /* ViewController_iPhone.xib */; };
+		04DF934315B4B2F5007DADA6 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DF934115B4B2F5007DADA6 /* ViewController_iPad.xib */; };
+		04DF934415B4B2F5007DADA6 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DF934215B4B2F5007DADA6 /* ViewController_iPhone.xib */; };
+		04DF934615B4B3B3007DADA6 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 04DF934515B4B3B3007DADA6 /* assets */; };
+		04DF934815B4B571007DADA6 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DF934715B4B571007DADA6 /* WebViewController.xib */; };
+		04DF934B15B4B591007DADA6 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DF934A15B4B591007DADA6 /* WebViewController.m */; };
+		04DF934F15B4B7E5007DADA6 /* NativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DF934D15B4B7E5007DADA6 /* NativeViewController.m */; };
+		04DF935215B4B8B3007DADA6 /* NativeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DF935115B4B8B3007DADA6 /* NativeViewController.xib */; };
+		04DF935415B4BA80007DADA6 /* artwork in Resources */ = {isa = PBXBuildFile; fileRef = 04DF935315B4BA80007DADA6 /* artwork */; };
+		04DF935715B4BB88007DADA6 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 04DF935515B4BB88007DADA6 /* background.png */; };
+		04DF935815B4BB88007DADA6 /* brian.png in Resources */ = {isa = PBXBuildFile; fileRef = 04DF935615B4BB88007DADA6 /* brian.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,9 +39,18 @@
 		0433E6A815A870C500328501 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0433E6AA15A870C500328501 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		0433E6AB15A870C500328501 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		0433E6E615A8738800328501 /* html */ = {isa = PBXFileReference; lastKnownFileType = folder; name = html; path = ../../html; sourceTree = "<group>"; };
-		04DF933C15B4B1FF007DADA6 /* ViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
-		04DF933F15B4B207007DADA6 /* ViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController_iPhone.xib; sourceTree = "<group>"; };
+		04DF934115B4B2F5007DADA6 /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
+		04DF934215B4B2F5007DADA6 /* ViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPhone.xib; sourceTree = "<group>"; };
+		04DF934515B4B3B3007DADA6 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../android/assets; sourceTree = "<group>"; };
+		04DF934715B4B571007DADA6 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		04DF934915B4B591007DADA6 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		04DF934A15B4B591007DADA6 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		04DF934C15B4B7E5007DADA6 /* NativeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeViewController.h; sourceTree = "<group>"; };
+		04DF934D15B4B7E5007DADA6 /* NativeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeViewController.m; sourceTree = "<group>"; };
+		04DF935115B4B8B3007DADA6 /* NativeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeViewController.xib; sourceTree = "<group>"; };
+		04DF935315B4BA80007DADA6 /* artwork */ = {isa = PBXFileReference; lastKnownFileType = folder; name = artwork; path = ../../../artwork; sourceTree = "<group>"; };
+		04DF935515B4BB88007DADA6 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../../../artwork/background.png; sourceTree = "<group>"; };
+		04DF935615B4BB88007DADA6 /* brian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = brian.png; path = ../../../artwork/brian.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +70,10 @@
 		0433E68915A870C500328501 = {
 			isa = PBXGroup;
 			children = (
-				0433E6E615A8738800328501 /* html */,
+				04DF935515B4BB88007DADA6 /* background.png */,
+				04DF935615B4BB88007DADA6 /* brian.png */,
+				04DF935315B4BA80007DADA6 /* artwork */,
+				04DF934515B4B3B3007DADA6 /* assets */,
 				0433E69E15A870C500328501 /* bina */,
 				0433E69715A870C500328501 /* Frameworks */,
 				0433E69515A870C500328501 /* Products */,
@@ -86,8 +105,11 @@
 				0433E6A815A870C500328501 /* AppDelegate.m */,
 				0433E6AA15A870C500328501 /* ViewController.h */,
 				0433E6AB15A870C500328501 /* ViewController.m */,
-				04DF933F15B4B207007DADA6 /* ViewController_iPhone.xib */,
-				04DF933C15B4B1FF007DADA6 /* ViewController_iPad.xib */,
+				04DF934915B4B591007DADA6 /* WebViewController.h */,
+				04DF934A15B4B591007DADA6 /* WebViewController.m */,
+				04DF934C15B4B7E5007DADA6 /* NativeViewController.h */,
+				04DF934D15B4B7E5007DADA6 /* NativeViewController.m */,
+				04DF934015B4B2F5007DADA6 /* XIB */,
 				0433E69F15A870C500328501 /* Supporting Files */,
 			);
 			path = bina;
@@ -102,6 +124,17 @@
 				0433E6A615A870C500328501 /* bina-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04DF934015B4B2F5007DADA6 /* XIB */ = {
+			isa = PBXGroup;
+			children = (
+				04DF935115B4B8B3007DADA6 /* NativeViewController.xib */,
+				04DF934115B4B2F5007DADA6 /* ViewController_iPad.xib */,
+				04DF934215B4B2F5007DADA6 /* ViewController_iPhone.xib */,
+				04DF934715B4B571007DADA6 /* WebViewController.xib */,
+			);
+			path = XIB;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,9 +188,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0433E6A315A870C500328501 /* InfoPlist.strings in Resources */,
-				04DF933E15B4B207007DADA6 /* ViewController_iPhone.xib in Resources */,
-				04DF933B15B4B1FF007DADA6 /* ViewController_iPad.xib in Resources */,
-				0433E6E715A8738800328501 /* html in Resources */,
+				04DF934315B4B2F5007DADA6 /* ViewController_iPad.xib in Resources */,
+				04DF934415B4B2F5007DADA6 /* ViewController_iPhone.xib in Resources */,
+				04DF935715B4BB88007DADA6 /* background.png in Resources */,
+				04DF935815B4BB88007DADA6 /* brian.png in Resources */,
+				04DF934615B4B3B3007DADA6 /* assets in Resources */,
+				04DF934815B4B571007DADA6 /* WebViewController.xib in Resources */,
+				04DF935215B4B8B3007DADA6 /* NativeViewController.xib in Resources */,
+				04DF935415B4BA80007DADA6 /* artwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +209,8 @@
 				0433E6A515A870C500328501 /* main.m in Sources */,
 				0433E6A915A870C500328501 /* AppDelegate.m in Sources */,
 				0433E6AC15A870C500328501 /* ViewController.m in Sources */,
+				04DF934B15B4B591007DADA6 /* WebViewController.m in Sources */,
+				04DF934F15B4B7E5007DADA6 /* NativeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
