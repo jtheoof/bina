@@ -22,6 +22,7 @@ public class BinaActivity extends Activity
         //webview.onTouchEvent(this);
         //webview.setVerticalScrollBarEnable(false);
         webview.loadUrl("file:///android_asset/index.html");
+        webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
     }
 
     @Override

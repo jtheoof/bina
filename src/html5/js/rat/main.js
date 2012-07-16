@@ -14,6 +14,9 @@ require([
   for (var i=0; i < choices.length; ++i) {
     var choice = choices[i];
     choice.onclick = function(e) {
+      /* FIXME e.target.dataset does not exist in Galasy S2 GB
+       * TODO e.target.dataset does not exist in Galasy S2 GB
+       */
       App.initialize(e.target.dataset.instance);
     };
   }

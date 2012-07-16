@@ -1,15 +1,26 @@
 define([], function() {
-  // TODO fix this image stuff, really ugly to mix model and view
-  var Character = function(position, image) {
 
-    var _image = image;
+  /**
+   * Character constructor
+   */
+  var Character = function(position, id) {
+
+    this.id = id;
     this.position = position;
 
-    this.updatePosition = function(newPosition) {
+    this.setPosition = function(newPosition) {
       this.position = newPosition;
+    },
 
-      _image.style.left = this.position.x + 'px';
-      _image.style.top = this.position.y + 'px';
+    /**
+     * Moves the character at the given speed.
+     * @param {Point} speed The speed in x and y coordinates.
+     * @return The updated position.
+     */
+    this.move = function(speed) {
+      this.position.x += speed.x;
+      this.position.y += speed.y;
+      return this.position;
     }
 
   };

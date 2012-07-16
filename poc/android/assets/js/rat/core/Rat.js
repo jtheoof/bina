@@ -10,6 +10,11 @@ define([
       }
       image.style.position = "absolute";
     },
+    applyClass: function(image, c) {
+      if (c) {
+        image.className = c;
+      }
+    },
     /**
      *
      * TODO Fix empty sources problem.
@@ -19,12 +24,6 @@ define([
           baseUrl = 'http://dl.dropbox.com/u/946335/bina/',
           clientWidth = window.innerWidth, width = 0,
           src, i, id, tmp;
-
-      var image = new Image();
-      image.onload = function() {
-      };
-      image.src = "http://dl.dropbox.com/u/946335/bina/533/b5684tR.png";
-      //document.getElementById('test').appendChild(image);
 
       for(id in sources) {
         if (sources.hasOwnProperty(id)) {
@@ -52,6 +51,8 @@ define([
         images[id].onload = function() {
           if (++loadedImages >= numImages) {
             $("#content-loading").remove();
+            // TODO Make a real asset manager bound to the models.
+            Rat._images = images;
             fn(sources, images);
           }
         };
@@ -76,6 +77,7 @@ define([
             "widths": [ 320, 533, 800, 960, 1920 ],
             "objects": {
               "aWET56ET": {
+                "class": "character",
                 "style": {
                   "zIndex": 1000,
                 },
@@ -83,25 +85,26 @@ define([
                 "character": true
               },
               "b5684tR": {
+               "class": "background",
                 "clickable": true
               }
             },
             "default_locale": "en",
             "key": "publicKey"
           };
-     
-      $.ajax({
-        type: "GET",
-        url: baseUrl + chapter + '/' + scene + '.json',
-        dataType: 'json',
-        success: function(json) {
-            fn(tmpManifest);
-        },
-        error: function(request, status, error) {
-          console.log('could not fetch json');
-          fn(tmpManifest);
-        }
-      });
+
+      fn(tmpManifest);
+      //$.ajax({
+        //type: "GET",
+        //url: baseUrl + chapter + '/' + scene + '.json',
+        //dataType: 'json',
+        //success: function(json) {
+            //fn(tmpManifest);
+        //},
+        //error: function(request, status, error) {
+          //console.log('could not fetch json');
+        //}
+      //});
     },
 
     /**
@@ -111,23 +114,20 @@ define([
      * @param {String} mode Instance of the game. Either 'dom' or 'canvas'.
      */
     launch: function(chapter, scene, mode) {
-      var manifest;
       $('#choose').remove();
       $('#viewport').remove();
       $('body').css('background', 'white');
       $('#content-loading').show();
+      //var image = new Image();
+      //image.src = "http://dl.dropbox.com/u/946335/bina/533/aWET56ET.png";
+      //document.getElementById('test').appendChild(image);
       this.loadScene(chapter, scene, function(json) {
+        console.log("scene loaded with json:");
         console.log(json)
         if (mode === 'dom') {
           Rat.loadImages(json.objects, json.widths, Rat.handleLoadDom);
         }
       });
-      var sources = {
-        yoda: 'http://www.html5canvastutorials.com/demos/assets/yoda.jpg',
-        bryan: '/bina/artwork/character3.png',
-        bryan1: '/bina/artwork/character1.png'
-      };
-
     },
 
     launchCanvas: function(objects) {
@@ -153,39 +153,64 @@ define([
       var content = document.getElementById('content'),
           dom = document.createElement('div'),
           image, obj;
-      
-      console.log('on handleLoadDom');
-      console.log(data);
 
       dom.id = 'dom';
       for (var id in images) {
         image = images[id];
         obj = data[id];
         Rat.applyCssStyle(image, obj.style);
+        Rat.applyClass(image, obj['class']);
         if (obj.character) {
-          Rat._character = new Character({x: 0, y: 0}, image);
-          image.style.top = Rat._character.x;
-          image.style.left = Rat._character.y;
+          // TODO Make a real object manager
+          Rat._character = new Character({x: 0, y: 0}, id);
         }
         dom.appendChild(image);
       }
       content.appendChild(dom);
+      window.setInterval(function() {
+        Rat.onRefresh();
+      }, 0.016); // 60 fps
+
       //window.onclick = Rat.handleClick;
-      window.onmousedown = Rat.handleClick;
+      //window.onmousedown = Rat.handleClick;
+      //window.ontouchstart = Rat.handleTouchStart;
+    },
+
+    onRefresh: function() {
+      var character = Rat._character,
+          id = character.id;
+      character.move({ x: 1, y: 0});
+      if (character.position.x >= window.innerWidth - 50) {
+        character.setPosition({ x: 0, y: character.position.y + 100 });
+      }
+      if (character.position.y >= window.innerHeight - 50) {
+        character.setPosition({ x: 0, y: 0 });
+      }
+      Rat._images[id].style.left = character.position.x + "px";
+      Rat._images[id].style.top = character.position.y + "px";
     },
 
     handleClick: function(e) {
-      console.log('you clicked in the window');
-      console.log(arguments);
+      var tmp;
       tmp = document.createElement('p');
       tmp.innerHTML = 'Click !';
       document.getElementById('test').appendChild(tmp);
-      Rat._character.updatePosition({x: e.x, y: e.y});
+      $(".character").animate({
+        top: e.y + "px",
+        left: e.x + "px"
+      }, 1000);
+    },
+
+    handleTouchStart: function(e) {
+      var tmp, t = e.touches[0];
+      $(".character").animate({
+        top: t.clientY + "px",
+        left: t.clientX + "px"
+      }, 1000);
     }
-      
+
   };
 
-  
   Rat.Class = Class;
 
   return Rat;
