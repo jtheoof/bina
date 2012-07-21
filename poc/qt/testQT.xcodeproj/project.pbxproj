@@ -12,6 +12,9 @@
 		04B2516D15AA321800B4C821 /* QtGui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B2516C15AA321800B4C821 /* QtGui.framework */; };
 		04B2516F15AA321F00B4C821 /* QtCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B2516E15AA321F00B4C821 /* QtCore.framework */; };
 		04B2517115AA33F700B4C821 /* QtWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B2517015AA33F700B4C821 /* QtWidgets.framework */; };
+		04DF93AF15BAE15C007DADA6 /* TestWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04DF93AE15BAE15C007DADA6 /* TestWindow.cpp */; };
+		04DF93BF15BB0559007DADA6 /* button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04DF93BB15BB0559007DADA6 /* button.cpp */; };
+		04DF93C015BB0559007DADA6 /* calculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04DF93BD15BB0559007DADA6 /* calculator.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +37,13 @@
 		04B2516C15AA321800B4C821 /* QtGui.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtGui.framework; path = "/usr/local/Qt-5.0.0/lib/QtGui.framework"; sourceTree = "<absolute>"; };
 		04B2516E15AA321F00B4C821 /* QtCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtCore.framework; path = "/usr/local/Qt-5.0.0/lib/QtCore.framework"; sourceTree = "<absolute>"; };
 		04B2517015AA33F700B4C821 /* QtWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtWidgets.framework; path = "/usr/local/Qt-5.0.0/lib/QtWidgets.framework"; sourceTree = "<absolute>"; };
+		04DF93AC15BAE03E007DADA6 /* TestWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestWindow.h; sourceTree = "<group>"; };
+		04DF93AE15BAE15C007DADA6 /* TestWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestWindow.cpp; sourceTree = "<group>"; };
+		04DF93BB15BB0559007DADA6 /* button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = button.cpp; sourceTree = "<group>"; };
+		04DF93BC15BB0559007DADA6 /* button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = button.h; sourceTree = "<group>"; };
+		04DF93BD15BB0559007DADA6 /* calculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = calculator.cpp; sourceTree = "<group>"; };
+		04DF93BE15BB0559007DADA6 /* calculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calculator.h; sourceTree = "<group>"; };
+		04DF93E315BB2642007DADA6 /* moc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = moc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,9 +80,16 @@
 		0433E62B15A23ED100328501 /* testQT */ = {
 			isa = PBXGroup;
 			children = (
+				04DF93E315BB2642007DADA6 /* moc */,
+				04DF93BB15BB0559007DADA6 /* button.cpp */,
+				04DF93BC15BB0559007DADA6 /* button.h */,
+				04DF93BD15BB0559007DADA6 /* calculator.cpp */,
+				04DF93BE15BB0559007DADA6 /* calculator.h */,
 				0433E62C15A23ED100328501 /* main.cpp */,
 				04A8039715A8DA55008BC474 /* TestGraphicsView.h */,
 				04A8039815A8DA66008BC474 /* TestGraphicsView.cpp */,
+				04DF93AC15BAE03E007DADA6 /* TestWindow.h */,
+				04DF93AE15BAE15C007DADA6 /* TestWindow.cpp */,
 			);
 			path = testQT;
 			sourceTree = "<group>";
@@ -94,6 +111,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0433E63215A23ED100328501 /* Build configuration list for PBXNativeTarget "testQT" */;
 			buildPhases = (
+				04DF93E415BB264B007DADA6 /* Qt moc */,
 				0433E62415A23ED100328501 /* Sources */,
 				0433E62515A23ED100328501 /* Frameworks */,
 				0433E62615A23ED100328501 /* CopyFiles */,
@@ -132,6 +150,23 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		04DF93E415BB264B007DADA6 /* Qt moc */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Qt moc";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "files=`find . -name \"*.h\" -exec grep \"^\\s*Q_OBJECT\" {} -l \\;`\nalias moc=\"/usr/local/Qt-5.0.0/bin/moc\"\nfor file in ${files}\ndo\n    name=`echo $file|grep -oP \"[^/]*$\"`\n    echo \"Qt moc'ing' file : $name\"\n    moc $file -f -o \"testQT/moc/moc_$name\"\ndone";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0433E62415A23ED100328501 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -139,6 +174,9 @@
 			files = (
 				0433E62D15A23ED100328501 /* main.cpp in Sources */,
 				04A8039915A8DA66008BC474 /* TestGraphicsView.cpp in Sources */,
+				04DF93AF15BAE15C007DADA6 /* TestWindow.cpp in Sources */,
+				04DF93BF15BB0559007DADA6 /* button.cpp in Sources */,
+				04DF93C015BB0559007DADA6 /* calculator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,8 +246,13 @@
 				LIBRARY_SEARCH_PATHS = /Library/Frameworks;
 				OTHER_CFLAGS = (
 					"-DQT_GUI_LIB",
-					"-DQT_SHARED",
 					"-DQT_CORE_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_SHARED",
+					"-g",
+					"-pipe",
+					"-Wall",
+					"-W",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)";
@@ -233,8 +276,13 @@
 				LIBRARY_SEARCH_PATHS = /Library/Frameworks;
 				OTHER_CFLAGS = (
 					"-DQT_GUI_LIB",
-					"-DQT_SHARED",
 					"-DQT_CORE_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_SHARED",
+					"-g",
+					"-pipe",
+					"-Wall",
+					"-W",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(HEADER_SEARCH_PATHS)";

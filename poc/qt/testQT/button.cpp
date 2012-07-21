@@ -41,6 +41,7 @@
 #include <QtWidgets> 
 
 #include "button.h"
+#include "moc/moc_button.h"
 
 //! [0]
 Button::Button(const QString &text, QWidget *parent)

@@ -46,7 +46,7 @@
 //! [0]
 class Button : public QToolButton
 {
-    Q_OBJECT
+//    Q_OBJECT
 
 public:
     Button(const QString &text, QWidget *parent = 0);

@@ -46,7 +46,7 @@
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 QT_END_NAMESPACE
-class Button;
+//class Button;
 
 //! [0]
 class Calculator : public QWidget
@@ -76,7 +76,7 @@ private slots:
 //! [1]
 private:
 //! [1] //! [2]
-    Button *createButton(const QString &text, const char *member);
+    QToolButton *createButton(const QString &text, const char *member);
     void abortOperation();
     bool calculate(double rightOperand, const QString &pendingOperator);
 //! [2]
@@ -100,7 +100,7 @@ private:
 //! [9] //! [10]
 
     enum { NumDigitButtons = 10 };
-    Button *digitButtons[NumDigitButtons];
+    QToolButton *digitButtons[NumDigitButtons];
 };
 //! [10]
 
