@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>com.qt.moc</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+
+	<key>Ancestors</key>
+	<array>
+	</array>
+	
+	<!-- ****************************************************** -->
+	<!-- **** Targets 											-->
+	<!-- ****************************************************** -->
+	<key>Targets</key>
+	<array>
+		<dict>
+			<key>BuildPhases</key>
+			<array>
+				<dict>
+					<key>Class</key>
+					<string>ShellScript</string>
+					<key>ShellPath</key>
+					<string>/bin/sh</string>
+					<key>ShellScript</key>
+					<string>#Internal moc script
+# This shell script will automatically 'moc' header files that need be.
+# The output will be stored in a moc directory at the base of the project path.						
+
+files=`find . -name "*.h" -exec grep -P "^\s*Q_OBJECT" {} -l \;`
+alias moc="/usr/local/Qt-5.0.0/bin/moc"
+for file in ${files}
+do
+   name=`echo $file|grep -oP "[^/]*$"`
+   echo "Qt moc'ing' file : $name"
+   moc $file -f -o "${PROJECT_NAME}/moc/moc_$name"
+done</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
+

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	
+	<key>Description</key>
+	<string>This template provides a simple application that is linked against Qt 5.</string>
+	<key>Identifier</key>
+	<string>com.qt.standard</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Concrete</key>
+	<true/>
+	
+	<!-- ****************************************************** -->
+	<!-- **** Ancestors											-->
+	<!-- ****************************************************** -->
+	<key>Ancestors</key>
+	<array>
+		<string>com.qt.moc</string>
+		<string>com.qt.bundlebase</string>
+	</array>
+	
+	<!-- ****************************************************** -->
+	<!-- **** Definitions										-->
+	<!-- ****************************************************** -->
+	<key>Definitions</key>
+	<dict>
+		<key>___PROJECTNAMEASIDENTIFIER____Prefix.pch</key>
+		<dict>
+			<key>Group</key>
+			<string>Supporting Files</string>
+			<key>Path</key>
+			<string>___PROJECTNAMEASIDENTIFIER____Prefix.pch</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>main.cpp</key>
+		<dict>
+			<key>Group</key>
+			<string>Classes</string>
+			<key>Path</key>
+			<string>main.cpp</string>
+		</dict>
+		<key>moc/</key>
+		<dict>
+			<key>Path</key>
+			<string>moc/</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>Classes/___PROJECTNAMEASIDENTIFIER___Window.h</key>
+		<dict>
+			<key>Group</key>
+			<string>Classes</string>
+			<key>Path</key>
+			<string>___PROJECTNAMEASIDENTIFIER___Window.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>Classes/___PROJECTNAMEASIDENTIFIER___Window.cpp</key>
+		<dict>
+			<key>Group</key>
+			<string>Classes</string>
+			<key>Path</key>
+			<string>___PROJECTNAMEASIDENTIFIER___Window.cpp</string>
+		</dict>
+	</dict>
+	
+	<!-- ****************************************************** -->
+	<!-- **** Nodes 											-->
+	<!-- ****************************************************** -->
+	<key>Nodes</key>
+	<array>
+		<string>___PROJECTNAMEASIDENTIFIER____Prefix.pch</string>
+		<string>main.cpp</string>
+		<string>moc/</string>
+		<string>Classes/___PROJECTNAMEASIDENTIFIER___Window.h</string>
+		<string>Classes/___PROJECTNAMEASIDENTIFIER___Window.cpp</string>
+	</array>
+	
+	<!-- ****************************************************** -->
+	<!-- **** Options 											-->
+	<!-- ****************************************************** -->
+	<!-- <key>Options</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>deviceFamily</string>
+				<key>Units</key>
+				<dict>
+					<key>iPad</key>
+					<dict>
+						<key>Definitions</key>
+						<dict/>
+					</dict>
+					<key>iPhone</key>
+					<dict>
+						<key>Definitions</key>
+						<dict/>
+					</dict>
+				</dict>
+			</dict>
+		</array> -->
+	
+	<!-- ****************************************************** -->
+	<!-- **** Targets 											-->
+	<!-- ****************************************************** -->
+	<key>Targets</key>
+	<array>
+		<dict>
+			<key>SharedSettings</key>
+			<dict>
+				<key>HEADER_SEARCH_PATHS</key>
+				<array><string>$(PROJECT_DIR)/$(PROJECT_NAME)/moc</string></array>
+			</dict>
+		</dict>
+	</array>
+	
+</dict>
+</plist>
