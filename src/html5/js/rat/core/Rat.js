@@ -114,6 +114,8 @@ define([
      * @param {String} mode Instance of the game. Either 'dom' or 'canvas'.
      */
     launch: function(chapter, scene, mode) {
+      /* TODO Make and empty function like in Sencha */
+      var cb = function() { };
       $('#choose').remove();
       $('#viewport').remove();
       $('body').css('background', 'white');
@@ -125,8 +127,11 @@ define([
         console.log("scene loaded with json:");
         console.log(json)
         if (mode === 'dom') {
-          Rat.loadImages(json.objects, json.widths, Rat.handleLoadDom);
+          cb = Rat.handleLoadDom;
+        } else if (mode === 'canvas') {
+          cb = Rat.handleLoadCanvas;
         }
+        Rat.loadImages(json.objects, json.widths, cb);
       });
     },
 
@@ -174,6 +179,10 @@ define([
       //window.onclick = Rat.handleClick;
       //window.onmousedown = Rat.handleClick;
       //window.ontouchstart = Rat.handleTouchStart;
+    },
+
+    handleLoadCanvas: function(data, images) {
+      document.write('Loading canvas');
     },
 
     onRefresh: function() {
