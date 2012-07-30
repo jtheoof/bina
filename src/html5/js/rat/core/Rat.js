@@ -1,8 +1,9 @@
 define([
   'jquery',
   'core/Class',
+  'model/Director',
   'model/Character'
-], function($, Class, Character) {
+], function($, Class, Director, Character) {
   var Rat = {
     applyCssStyle: function(image, style) {
       for (var p in style) {
@@ -135,25 +136,6 @@ define([
       });
     },
 
-    launchCanvas: function(objects) {
-      var canvas = document.getElementById('canvas');
-      var context = canvas.getContext('2d');
-      context.canvas.width = window.innerWidth;
-      context.canvas.height = window.innerHeight;
-      Rat.loadImages(sources, function(images) {
-        context.drawImage(images.yoda, 350, 55, 93, 104);
-        context.drawImage(images.bryan, 0, 0);
-        context.drawImage(images.bryan1, 0, 100);
-        $('#content-loading').hide();
-        setInterval(function() {
-          position.x++;
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          context.drawImage(images.bryan, position.x, position.y);
-          context.drawImage(images.bryan1, position.x * 2, 100);
-        }, 50);
-      });
-    },
-
     handleLoadDom: function(data, images) {
       var content = document.getElementById('content'),
           dom = document.createElement('div'),
@@ -183,6 +165,7 @@ define([
 
     handleLoadCanvas: function(data, images) {
       document.write('Loading canvas');
+      this.director = new Director(100, 200);
     },
 
     onRefresh: function() {
