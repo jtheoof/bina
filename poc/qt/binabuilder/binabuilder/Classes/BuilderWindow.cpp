@@ -32,6 +32,11 @@ BuilderWindow::BuilderWindow(QWidget *parent) : QMainWindow(parent)
   view->setScene( scene );
   scene->addEllipse( 50, 50, 40, 40, QPen( Qt::red ), QBrush( Qt::blue ) );
   
+  QImage image(tr("/Volumes/Storage/Projects/github/bina/poc/html/img/fordje_0001_background.png"));
+  QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+  item->setPos(0, 0);
+  scene->addItem(item);
+  
   QSplitter* sp = new QSplitter( this );
   sp->addWidget( left );
   sp->addWidget( view );
@@ -41,6 +46,11 @@ BuilderWindow::BuilderWindow(QWidget *parent) : QMainWindow(parent)
   sp->setStretchFactor( 1, 2 );
   
   this->setCentralWidget( sp );
+  
+  
+  
+  
+  
 }
 
 BuilderWindow::~BuilderWindow()
