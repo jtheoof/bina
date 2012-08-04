@@ -11,17 +11,36 @@
 
 BuilderWindow::BuilderWindow(QWidget *parent) : QMainWindow(parent)
 {
-  scene_ = new QGraphicsScene(this);
-  scene_->setItemIndexMethod(QGraphicsScene::NoIndex);
+//  scene_ = new QGraphicsScene(this);
+//  scene_->setItemIndexMethod(QGraphicsScene::NoIndex);
+//  
+//  setWindowTitle(QApplication::applicationName());
+//  statusBar()->showMessage(tr(""), 0);
+//  
+//  createWidgets();
+////  createProxyWidgets();
+//  createLayout();
+//  createMainView();
+////  createConnections();
   
-  setWindowTitle(QApplication::applicationName());
-  statusBar()->showMessage(tr(""), 0);
+  QGraphicsScene* scene = new QGraphicsScene( this );
+  scene->setSceneRect( 0, 0, 500, 500 ); // this is what you need
+  QGraphicsView* view = new QGraphicsView();
+  QListWidget* left = new QListWidget();
+  QListWidget* right = new QListWidget();
+
+  view->setScene( scene );
+  scene->addEllipse( 50, 50, 40, 40, QPen( Qt::red ), QBrush( Qt::blue ) );
   
-  createWidgets();
-//  createProxyWidgets();
-  createLayout();
-  createMainView();
-//  createConnections();
+  QSplitter* sp = new QSplitter( this );
+  sp->addWidget( left );
+  sp->addWidget( view );
+  sp->addWidget( right );
+
+  sp->setStretchFactor( 0, 1 );
+  sp->setStretchFactor( 1, 2 );
+  
+  this->setCentralWidget( sp );
 }
 
 BuilderWindow::~BuilderWindow()
@@ -69,6 +88,7 @@ void BuilderWindow::createProxyWidgets()
 
 void BuilderWindow::createMainView()
 {
+  QSplitter t;
   drawer_ = new QGraphicsRectItem;
   drawer_->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
   drawer_->setPen(QPen(QColor("brown"), 2.5));
@@ -105,6 +125,7 @@ void BuilderWindow::createLayout()
   leftLayout->addItem(proxyWidgets_["hello"]);
   leftLayout->setMinimumWidth(100);
   leftLayout->setMaximumWidth(100);
+  
 
   QGraphicsLinearLayout *rightLayout = new QGraphicsLinearLayout(Qt::Vertical);
   rightLayout->addItem(proxyWidgets_["world"]);
