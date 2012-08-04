@@ -1,8 +1,9 @@
 define([
   'jquery',
   'core/Class',
+  'model/Director',
   'model/Character'
-], function($, Class, Character) {
+], function($, Class, Director, Character) {
   var Rat = {
     applyCssStyle: function(image, style) {
       for (var p in style) {
@@ -79,7 +80,7 @@ define([
               "aWET56ET": {
                 "class": "character",
                 "style": {
-                  "zIndex": 1000,
+                  "zIndex": 1000
                 },
                 "clickable": false,
                 "character": true
@@ -114,6 +115,8 @@ define([
      * @param {String} mode Instance of the game. Either 'dom' or 'canvas'.
      */
     launch: function(chapter, scene, mode) {
+      /* TODO Make and empty function like in Sencha */
+      var cb = function() { };
       $('#choose').remove();
       $('#viewport').remove();
       $('body').css('background', 'white');
@@ -123,29 +126,13 @@ define([
       //document.getElementById('test').appendChild(image);
       this.loadScene(chapter, scene, function(json) {
         console.log("scene loaded with json:");
-        console.log(json)
+        console.log(json);
         if (mode === 'dom') {
-          Rat.loadImages(json.objects, json.widths, Rat.handleLoadDom);
+          cb = Rat.handleLoadDom;
+        } else if (mode === 'canvas') {
+          cb = Rat.handleLoadCanvas;
         }
-      });
-    },
-
-    launchCanvas: function(objects) {
-      var canvas = document.getElementById('canvas');
-      var context = canvas.getContext('2d');
-      context.canvas.width = window.innerWidth;
-      context.canvas.height = window.innerHeight;
-      Rat.loadImages(sources, function(images) {
-        context.drawImage(images.yoda, 350, 55, 93, 104);
-        context.drawImage(images.bryan, 0, 0);
-        context.drawImage(images.bryan1, 0, 100);
-        $('#content-loading').hide();
-        setInterval(function() {
-          position.x++;
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          context.drawImage(images.bryan, position.x, position.y);
-          context.drawImage(images.bryan1, position.x * 2, 100);
-        }, 50);
+        Rat.loadImages(json.objects, json.widths, cb);
       });
     },
 
@@ -174,6 +161,10 @@ define([
       //window.onclick = Rat.handleClick;
       //window.onmousedown = Rat.handleClick;
       //window.ontouchstart = Rat.handleTouchStart;
+    },
+
+    handleLoadCanvas: function(data, images) {
+      this.director = new Director(100, 200);
     },
 
     onRefresh: function() {

@@ -21,7 +21,7 @@ define([], function() {
       this.position.x += speed.x;
       this.position.y += speed.y;
       return this.position;
-    }
+    };
 
   };
 

@@ -5,7 +5,8 @@
 // Inspired by base2 and Prototype
 define([], function() { 
   var initializing = false,
-      fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+      //fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+      fnTest = /\b_super\b/;
   // The base Class implementation (does nothing)
   var Class = function() {};
   
@@ -24,8 +25,8 @@ define([], function() {
     // Copy the properties over onto the new prototype
     for (var name in prop) {
       // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" && 
-        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+      prototype[name] = typeof prop[name] === "function" && 
+        typeof _super[name] === "function" && fnTest.test(prop[name]) ?
         (function(name, fn){
           return function() {
             var tmp = this._super;
@@ -48,8 +49,9 @@ define([], function() {
     // The dummy class constructor
     function Class() {
       // All construction is actually done in the init method
-      if ( !initializing && this.init )
+      if ( !initializing && this.init ) {
         this.init.apply(this, arguments);
+      }
     }
     
     // Populate our constructed prototype object
