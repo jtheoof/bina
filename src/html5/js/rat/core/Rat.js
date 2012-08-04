@@ -80,7 +80,7 @@ define([
               "aWET56ET": {
                 "class": "character",
                 "style": {
-                  "zIndex": 1000,
+                  "zIndex": 1000
                 },
                 "clickable": false,
                 "character": true
@@ -126,7 +126,7 @@ define([
       //document.getElementById('test').appendChild(image);
       this.loadScene(chapter, scene, function(json) {
         console.log("scene loaded with json:");
-        console.log(json)
+        console.log(json);
         if (mode === 'dom') {
           cb = Rat.handleLoadDom;
         } else if (mode === 'canvas') {
@@ -164,7 +164,6 @@ define([
     },
 
     handleLoadCanvas: function(data, images) {
-      document.write('Loading canvas');
       this.director = new Director(100, 200);
     },
 
