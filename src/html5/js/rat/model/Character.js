@@ -1,14 +1,14 @@
-define([], function() {
+define([], function () {
 
   /**
    * Character constructor
    */
-  var Character = function(position, id) {
+  var Character = function (position, id) {
 
     this.id = id;
     this.position = position;
 
-    this.setPosition = function(newPosition) {
+    this.setPosition = function (newPosition) {
       this.position = newPosition;
     },
 
@@ -17,7 +17,7 @@ define([], function() {
      * @param {Point} speed The speed in x and y coordinates.
      * @return The updated position.
      */
-    this.move = function(speed) {
+    this.move = function (speed) {
       this.position.x += speed.x;
       this.position.y += speed.y;
       return this.position;

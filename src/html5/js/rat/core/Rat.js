@@ -3,15 +3,15 @@ define([
   'core/Class',
   'model/Director',
   'model/Character'
-], function($, Class, Director, Character) {
+], function ($, Class, Director, Character) {
   var Rat = {
-    applyCssStyle: function(image, style) {
+    applyCssStyle: function (image, style) {
       for (var p in style) {
         image.style[p] = style[p];
       }
       image.style.position = "absolute";
     },
-    applyClass: function(image, c) {
+    applyClass: function (image, c) {
       if (c) {
         image.className = c;
       }
@@ -20,13 +20,13 @@ define([
      *
      * TODO Fix empty sources problem.
      */
-    loadImages: function(sources, widths, fn) {
+    loadImages: function (sources, widths, fn) {
       var images = {}, loadedImages = 0, numImages = 0,
           baseUrl = 'http://dl.dropbox.com/u/946335/bina/',
           clientWidth = window.innerWidth, width = 0,
           src, i, id, tmp;
 
-      for(id in sources) {
+      for (id in sources) {
         if (sources.hasOwnProperty(id)) {
           numImages++;
         }
@@ -46,10 +46,10 @@ define([
       tmp.innerHTML = 'Width: ' + width;
       document.getElementById('test').appendChild(tmp);
 
-      for(id in sources) {
+      for (id in sources) {
         src = sources[id];
         images[id] = new Image();
-        images[id].onload = function() {
+        images[id].onload = function () {
           if (++loadedImages >= numImages) {
             $("#content-loading").remove();
             // TODO Make a real asset manager bound to the models.
@@ -66,43 +66,43 @@ define([
       }
     },
 
-    loadScene: function(chapter, scene, fn) {
+    loadScene: function (chapter, scene, fn) {
       var baseUrl = 'http://dl.dropbox.com/u/946335/bina/man/',
           tmpManifest = {
-            "name": "Scene 1",
-            "manifest_version": "1",
-            "version": "0.1",
-            "chapter": 1,
-            "scene": 1,
-            "description": "The first scene",
-            "widths": [ 320, 533, 800, 960, 1920 ],
-            "objects": {
-              "aWET56ET": {
-                "class": "character",
-                "style": {
-                  "zIndex": 1000
-                },
-                "clickable": false,
-                "character": true
-              },
-              "b5684tR": {
-               "class": "background",
-                "clickable": true
-              }
+        "name": "Scene 1",
+        "manifest_version": "1",
+        "version": "0.1",
+        "chapter": 1,
+        "scene": 1,
+        "description": "The first scene",
+        "widths": [ 320, 533, 800, 960, 1920 ],
+        "objects": {
+          "aWET56ET": {
+            "class": "character",
+            "style": {
+              "zIndex": 1000
             },
-            "default_locale": "en",
-            "key": "publicKey"
-          };
+            "clickable": false,
+            "character": true
+          },
+          "b5684tR": {
+            "class": "background",
+            "clickable": true
+          }
+        },
+        "default_locale": "en",
+        "key": "publicKey"
+      };
 
       fn(tmpManifest);
       //$.ajax({
         //type: "GET",
         //url: baseUrl + chapter + '/' + scene + '.json',
         //dataType: 'json',
-        //success: function(json) {
+        //success: function (json) {
             //fn(tmpManifest);
         //},
-        //error: function(request, status, error) {
+        //error: function (request, status, error) {
           //console.log('could not fetch json');
         //}
       //});
@@ -114,9 +114,9 @@ define([
      * @param {String} scene The scene to load.
      * @param {String} mode Instance of the game. Either 'dom' or 'canvas'.
      */
-    launch: function(chapter, scene, mode) {
+    launch: function (chapter, scene, mode) {
       /* TODO Make and empty function like in Sencha */
-      var cb = function() { };
+      var cb = function () { };
       $('#choose').remove();
       $('#viewport').remove();
       $('body').css('background', 'white');
@@ -124,7 +124,7 @@ define([
       //var image = new Image();
       //image.src = "http://dl.dropbox.com/u/946335/bina/533/aWET56ET.png";
       //document.getElementById('test').appendChild(image);
-      this.loadScene(chapter, scene, function(json) {
+      this.loadScene(chapter, scene, function (json) {
         console.log("scene loaded with json:");
         console.log(json);
         if (mode === 'dom') {
@@ -136,25 +136,25 @@ define([
       });
     },
 
-    handleLoadDom: function(data, images) {
+    handleLoadDom: function (data, images) {
       var content = document.getElementById('content'),
           dom = document.createElement('div'),
-          image, obj;
+          image, obj, i;
 
       dom.id = 'dom';
-      for (var id in images) {
-        image = images[id];
-        obj = data[id];
+      for (i in images) {
+        image = images[i];
+        obj = data[i];
         Rat.applyCssStyle(image, obj.style);
         Rat.applyClass(image, obj['class']);
         if (obj.character) {
           // TODO Make a real object manager
-          Rat._character = new Character({x: 0, y: 0}, id);
+          Rat._character = new Character({x: 0, y: 0}, i);
         }
         dom.appendChild(image);
       }
       content.appendChild(dom);
-      window.setInterval(function() {
+      window.setInterval(function () {
         Rat.onRefresh();
       }, 0.016); // 60 fps
 
@@ -163,11 +163,11 @@ define([
       //window.ontouchstart = Rat.handleTouchStart;
     },
 
-    handleLoadCanvas: function(data, images) {
+    handleLoadCanvas: function (data, images) {
       this.director = new Director(100, 200);
     },
 
-    onRefresh: function() {
+    onRefresh: function () {
       var character = Rat._character,
           id = character.id;
       character.move({ x: 1, y: 0});
@@ -181,7 +181,7 @@ define([
       Rat._images[id].style.top = character.position.y + "px";
     },
 
-    handleClick: function(e) {
+    handleClick: function (e) {
       var tmp;
       tmp = document.createElement('p');
       tmp.innerHTML = 'Click !';
@@ -192,7 +192,7 @@ define([
       }, 1000);
     },
 
-    handleTouchStart: function(e) {
+    handleTouchStart: function (e) {
       var tmp, t = e.touches[0];
       $(".character").animate({
         top: t.clientY + "px",
