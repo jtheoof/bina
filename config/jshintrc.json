@@ -60,6 +60,7 @@
   "wsh"          : false, // if the Windows Scripting Host environment globals should be predefined
 
   "indent"       : 2,     // indent level is 2 spaces
+  "maxlen"       : 80,    // 80 characters max per line
 
   "predef"     : [
     "define"

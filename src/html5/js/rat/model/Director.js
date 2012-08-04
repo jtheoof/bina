@@ -189,15 +189,19 @@ define([], function () {
     throw 'getNumScenes not implemented';
   };
 
-  Director.prototype.easeInOut = function (inSceneIndex, typein, anchorin, outSceneIndex, typeout, anchorout, time, alpha, interpolatorIn, interpolatorOut) {
+  Director.prototype.easeInOut = function (inSceneIndex, typein, anchorin,
+      outSceneIndex, typeout, anchorout, time, alpha, interpolatorIn,
+      interpolatorOut) {
     throw 'easeInOut not implemented';
   };
 
-  Director.prototype.easeInOutRandom = function (inIndex, outIndex, time, alpha) {
+  Director.prototype.easeInOutRandom = function (inIndex, outIndex, time,
+      alpha) {
     throw 'easeInOutRandom not implemented';
   };
 
-  Director.prototype.easeIn = function (inSceneIndex, type, time, alpha, anchor, interpolator) {
+  Director.prototype.easeIn = function (inSceneIndex, type, time, alpha,
+      anchor, interpolator) {
     throw 'easeIn not implemented';
   };
 
@@ -205,7 +209,8 @@ define([], function () {
     throw 'setScene not implemented';
   };
 
-  Director.prototype.switchToScene = function (iNewSceneIndex, time, alpha, transition) {
+  Director.prototype.switchToScene = function (iNewSceneIndex, time,
+      alpha, transition) {
     throw 'switchToScene not implemented';
   };
 
