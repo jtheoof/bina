@@ -1,4 +1,6 @@
 # TODO Remove this soon
 # bina should be compiled elsewhere
 
-/bina
+# Autoconf
+config.h
+stamp-h1

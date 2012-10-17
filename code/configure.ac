@@ -33,11 +33,11 @@ AC_CHECK_FUNCS(getuid)
 
 dnl Checks for libraries.
 dnl Linux libraries
-if test "x$LINUX_HOST" = "xtrue"; then
-PKG_CHECK_MODULES(GTK, gtk+-2.0,,AC_MSG_ERROR([Cannot find library gtk+-2.0. Install libgtk2.0-dev package.]))
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
-fi
+dnl if test "x$LINUX_HOST" = "xtrue"; then
+dnl PKG_CHECK_MODULES(GTK, gtk+-2.0,,AC_MSG_ERROR([Cannot find library gtk+-2.0. Install libgtk2.0-dev package.]))
+dnl AC_SUBST(GTK_CFLAGS)
+dnl AC_SUBST(GTK_LIBS)
+dnl fi
 
 dnl Enable debug
 DEBUG=no

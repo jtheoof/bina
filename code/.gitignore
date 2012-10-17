@@ -1,5 +1,7 @@
 # Temp
 *~
+
+# Log
 *.log
 
 # Buildsys
@@ -10,6 +12,7 @@ Makefile
 
 # Build
 /build/
+Makefile.am
 *.deps
 *.la
 *.lo
