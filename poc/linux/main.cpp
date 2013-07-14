@@ -1,10 +1,5 @@
-#include <GL/glut.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <png.h>
-#include <iostream>
-#include "bina/Bina.h"
- 
+#include "stdafx.h"
+
 float rotateX = 0;
 float rotateY = 0;
 

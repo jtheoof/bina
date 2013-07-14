@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "stdafx.h"
 
 Game::Game()
 {

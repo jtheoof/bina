@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-
-#include "Bina.h"
+#include "stdafx.h"
 
 #define GAME_WIDTH 940
 #define GAME_HEIGHT 546

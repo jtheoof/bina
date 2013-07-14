@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdlib.h>
+#include "stdafx.h"
 
 static bool
 loadPngImage(char *name, int &outWidth, int &outHeight, bool &outHasAlpha,
