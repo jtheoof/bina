@@ -1,4 +1,32 @@
+# Code
+node_modules/
+
+# Linux
+*.o
+src/tags
+
+# Mac
+src/xxd/xxd.dSYM
 *.DS_Store
 *xcuserstate
-tags
-node_modules/
+
+# Windows
+*.exe
+*.idb
+*.manifest
+*.exp
+*.obj
+*.pdb
+*.ilk
+*.sln
+*.suo
+*.res
+*.RES
+
+# All
+*.rej
+*.orig
+*.mo
+*.swp
+*~
+*.pyc
