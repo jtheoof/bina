@@ -3,6 +3,21 @@
 game_background background;
 
 void
+print_gl_string(const char *name, GLenum s)
+{
+    const char *v = (const char *) glGetString(s);
+    LOGI("GL %s = %s\n", name, v);
+}
+
+void
+check_gl_error(const char* op)
+{
+    for (GLint error = glGetError(); error; error = glGetError()) {
+        LOGI("after %s() glError (0x%x)\n", op, error);
+    }
+}
+
+void
 bina_init(int width, int height)
 {
     int error;
@@ -22,6 +37,8 @@ bina_init(int width, int height)
         printf("unable to load image: %s\n", background.file);
         return;
     }
+
+    setupGraphics(width, height);
 
     /*SetOrthoProjection(width, height);*/
 }
