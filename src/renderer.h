@@ -4,7 +4,7 @@
 
 #pragma once
 
-int setupGraphics(int w, int h);
-void renderFrame();
+int renderer_init(int w, int h);
+void renderer_render();
 
 /* vi:set ts=8 sts=4 sw=4 et: */

@@ -1,8 +1,10 @@
 #include "bina.h"
 
+int gWindowId;
+
 void
 AppDisplayCb(void) {
-    renderFrame();
+    renderer_render();
     glutSwapBuffers();
 }
  
@@ -31,7 +33,9 @@ AppSpecialKeysCb(int key, int x, int y) {
         case GLUT_KEY_PAGE_DOWN:
             break;
     }
-    glutPostRedisplay();
+
+    glutDestroyWindow(gWindowId);
+    /* glutPostRedisplay(); */
 }
 
 void
@@ -72,7 +76,7 @@ main(int argc, char** argv)
 	
 	glutInitWindowPosition(posX, posY);
 	glutInitWindowSize(GAME_WIDTH, GAME_HEIGHT);
-    glutCreateWindow(APP_TITLE);
+    gWindowId = glutCreateWindow(APP_TITLE);
     
 #ifdef HAVE_GLEW_H
     GLenum err = glewInit();
@@ -93,8 +97,6 @@ main(int argc, char** argv)
     glutIdleFunc(AppIdleCb);
 
     bina_init(GAME_WIDTH, GAME_HEIGHT);
-
-    /*bina.Init(screenWidth, screenHeight);*/
 
     glutMainLoop();
 

@@ -23,12 +23,12 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-#define  LOG_TAG    "bina"
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#define LOG_TAG   "gl2jni"
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 #else
-#define LOGI printf
-#define LOGE printf
+#define LOGI(...) fprintf(stdout, __VA_ARGS__)
+#define LOGE(...) fprintf(stderr, __VA_ARGS__)
 #endif
 
 #ifdef HAVE_STDLIB_H
@@ -39,6 +39,10 @@
 #include "GL/glew.h"
 #endif
 
+#ifdef HAVE_GLU_H
+#include "GL/glu.h"
+#endif
+
 #ifdef HAVE_GLUT_H
 #include "GL/glut.h"
 #endif
@@ -46,7 +50,14 @@
 void print_gl_string(const char *name, GLenum s);
 void check_gl_error(const char* op);
 
+void bina_set_viewport(int x, int y, int width, int height);
+void bina_set_matrix_mode(int mode);
+void bina_load_identity();
+void bina_set_orthographic_2d(float left, float right,
+                              float bottom, float top);
+
 #include "texture.h"
+#include "shader.h"
 #include "renderer.h"
 
 typedef struct game_background
