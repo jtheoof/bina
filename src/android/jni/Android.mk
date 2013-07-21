@@ -32,7 +32,7 @@ LOCAL_SRC_FILES        :=\
 	../../texture.c \
 	../../shader.c \
 	../../camera.c \
-	../../renderer_gles.c \
+	../../renderer.c \
 	../../bina.c \
 	../../main_android.c
 
