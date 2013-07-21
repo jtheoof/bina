@@ -1,11 +1,9 @@
 #include "bina.h"
 
-game_background background;
-
 struct token_string
 {
    GLuint token;
-   const char *string;
+   const char* string;
 };
 
 static const struct token_string glErrors[] = {
@@ -72,18 +70,17 @@ gl_error_string(GLenum errorCode)
 }
 
 void
-print_gl_string(const char *name, GLenum s)
+print_gl_string(const char* name, GLenum s)
 {
     const char *v = (const char *) glGetString(s);
     LOGI("GL %s = %s\n", name, v);
 }
 
 void
-check_gl_error(const char* op)
+check_gl_error(void)
 {
-    for (GLint error = glGetError(); error; error = glGetError()) {
-        LOGE("error on: %s() [glError: %s (0x%x)]\n",
-             op, gl_error_string(error), error);
+    for (GLint e = glGetError(); e; e = glGetError()) {
+        LOGE("Error on: (glError: %s (0x%x))\n", gl_error_string(e), e);
     }
 }
 
@@ -93,12 +90,20 @@ bina_init(int width, int height)
     int error;
 
     background.file = "../artwork/background.png";
-
     error = texture_load_png(background.file,
-                             background.width, background.height,
-                             background.alpha, &(background.image));
+                             &background.width, &background.height,
+                             &background.alpha, &(background.pixels));
     if (error) {
-        printf("unable to load image: %s\n", background.file);
+        LOGE("Unable to load image: %s\n", background.file);
+        return;
+    }
+
+    tga.file = "../artwork/hello1.tga";
+    tga.alpha = 0;
+    error = texture_load_tga(tga.file,
+                             &tga.width, &tga.height, &(tga.pixels));
+    if (error) {
+        LOGE("Unable to load image: %s\n", tga.file);
         return;
     }
 

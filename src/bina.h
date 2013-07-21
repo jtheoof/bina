@@ -24,11 +24,22 @@
 #include <GLES2/gl2ext.h>
 
 #define LOG_TAG   "gl2jni"
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 #else
-#define LOGI(...) fprintf(stdout, __VA_ARGS__)
-#define LOGE(...) fprintf(stderr, __VA_ARGS__)
+#define LOGD(...)                                                             \
+    fprintf(stdout, "D/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
+    fprintf(stdout, __VA_ARGS__);                                             \
+    fprintf(stdout, "\n");
+#define LOGI(...)                                                             \
+    fprintf(stdout, "I/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
+    fprintf(stdout, __VA_ARGS__);                                             \
+    fprintf(stdout, "\n");
+#define LOGE(...)                                                             \
+    fprintf(stderr, "E/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
+    fprintf(stderr, __VA_ARGS__);                                             \
+    fprintf(stderr, "\n");
 #endif
 
 #ifdef HAVE_STDLIB_H
@@ -48,7 +59,7 @@
 #endif
 
 void print_gl_string(const char *name, GLenum s);
-void check_gl_error(const char* op);
+void check_gl_error();
 
 void bina_set_viewport(int x, int y, int width, int height);
 void bina_set_matrix_mode(int mode);
@@ -60,15 +71,18 @@ void bina_set_orthographic_2d(float left, float right,
 #include "shader.h"
 #include "renderer.h"
 
-typedef struct game_background
+typedef struct bina_image
 {
     char* file;
     int width;
     int height;
     int alpha;
-    GLubyte* image;
-} game_background;
+    void* pixels;
+} bina_image;
 
 void bina_init(int, int);
+
+bina_image background;
+bina_image tga;
 
 /* vi:set ts=8 sts=4 sw=4 et: */

@@ -8,7 +8,10 @@
 #include <png.h>
 #endif
 
-int texture_load_png(char *name, int outWidth, int outHeight,
-                     int outHasAlpha, GLubyte **outData);
+int texture_load_png(const char *filename,
+                     int* width, int* height, int* alpha,
+                     void** pixels);
+int texture_load_tga(const char *filename,
+                     int* width, int* height, void** pixels);
 
 /* vi:set ts=8 sts=4 sw=4 et: */
