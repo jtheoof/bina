@@ -1,11 +1,17 @@
+/**
+ * @file shader.c
+ * @author Jeremy Attali, Johan Attali
+ * @date July 23, 2013
+ */
+
 #include "bina.h"
 
-GLuint
-shader_init(GLenum shaderType, const char* pSource)
+unsigned int
+shader_create_shader(GLenum type, const char* source)
 {
-    GLuint shader = glCreateShader(shaderType);
+    GLuint shader = glCreateShader(type);
     if (shader) {
-        glShaderSource(shader, 1, &pSource, NULL);
+        glShaderSource(shader, 1, &source, NULL);
         glCompileShader(shader);
         GLint compiled = 0;
         glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
@@ -17,7 +23,7 @@ shader_init(GLenum shaderType, const char* pSource)
                 if (buf) {
                     glGetShaderInfoLog(shader, infoLen, NULL, buf);
                     LOGE("Could not compile shader type %d (%s)\n%s\n",
-                            shaderType, buf, pSource);
+                            type, buf, source);
                     free(buf);
                 }
                 glDeleteShader(shader);
@@ -28,43 +34,54 @@ shader_init(GLenum shaderType, const char* pSource)
     return shader;
 }
 
-GLuint
-shader_create_program(const char* pVertexSource, const char* pFragmentSource)
+unsigned int
+shader_create_program(const char* vertex, const char* fragment)
 {
-    GLuint vertexShader = shader_init(GL_VERTEX_SHADER, pVertexSource);
-    if (!vertexShader) {
-        return 0;
-    }
-
-    GLuint pixelShader = shader_init(GL_FRAGMENT_SHADER, pFragmentSource);
-    if (!pixelShader) {
-        return 0;
-    }
-
+    GLuint vertex_shader, fragment_shader;
     GLuint program = glCreateProgram();
+
+    vertex_shader = shader_create_shader(GL_VERTEX_SHADER, vertex);
+    if (!vertex_shader) {
+        goto error;
+    }
+
+    fragment_shader = shader_create_shader(GL_FRAGMENT_SHADER, fragment);
+    if (!fragment_shader) {
+        goto error;
+    }
+
     if (program) {
-        glAttachShader(program, vertexShader);
-        check_gl_error("glAttachShader");
-        glAttachShader(program, pixelShader);
-        check_gl_error("glAttachShader");
+        glAttachShader(program, vertex_shader);
+        glAttachShader(program, fragment_shader);
         glLinkProgram(program);
-        GLint linkStatus = GL_FALSE;
-        glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
-        if (linkStatus != GL_TRUE) {
-            GLint bufLength = 0;
-            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufLength);
-            if (bufLength) {
-                char* buf = (char*) malloc(bufLength);
+        GLint link_status = GL_FALSE;
+        glGetProgramiv(program, GL_LINK_STATUS, &link_status);
+        if (link_status != GL_TRUE) {
+            GLint length = 0;
+            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+            if (length) {
+                char* buf = (char*) malloc(length);
                 if (buf) {
-                    glGetProgramInfoLog(program, bufLength, NULL, buf);
-                    LOGE("Could not link program:\n%s\n", buf);
+                    glGetProgramInfoLog(program, length, NULL, buf);
+                    LOGE("Could not link program: %s\n", buf);
                     free(buf);
                 }
             }
-            glDeleteProgram(program);
-            program = 0;
+            goto error;
         }
+    } else {
+        goto error;
     }
+
+    LOGI("Created program: %d", program);
     return program;
+
+error:
+    if (program) {
+        glDeleteProgram(program);
+    }
+
+    LOGE("Could not create program");
+    return 0;
 }
 

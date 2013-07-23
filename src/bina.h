@@ -1,5 +1,15 @@
-/*
- * Bina, by Johan & Jeremy Attali
+/**
+ * Precompiled header that must be included in every c file.
+ *
+ * Bina a project that came true after a few too many beers.
+ * A project that will change the world and ruin Pendulo Studios.
+ * By Guillaume Boudeville, Jeremy Attali and Johan Attali.
+ */
+
+/**
+ * @file bina.h
+ * @author Jeremy Attali, Johan Attali
+ * @date July 23, 2013
  */
 
 #pragma once
@@ -9,8 +19,14 @@
 
 #define APP_TITLE "This is Binaaaaaaaaaaaaaaa"
 
+/* types.h */
+
+#define MAX_CHAR 64
+#define MAX_PATH 256
+
 #ifndef UNIX
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 #include <math.h>
 #endif
@@ -58,19 +74,16 @@
 #include "GL/glut.h"
 #endif
 
-void print_gl_string(const char *name, GLenum s);
-void check_gl_error();
-
-void bina_set_viewport(int x, int y, int width, int height);
-void bina_set_matrix_mode(int mode);
-void bina_load_identity();
-void bina_set_orthographic_2d(float left, float right,
-                              float bottom, float top);
-
+#include "error.h"
+#include "utils.h"
 #include "texture.h"
+#include "sprite.h"
 #include "shader.h"
+#include "camera.h"
 #include "renderer.h"
 
+/* TODO REMOVE THIS
+ * ************************ */
 typedef struct bina_image
 {
     char* file;
@@ -80,9 +93,55 @@ typedef struct bina_image
     void* pixels;
 } bina_image;
 
-void bina_init(int, int);
-
-bina_image background;
+bina_image background_old;
 bina_image tga;
 
-/* vi:set ts=8 sts=4 sw=4 et: */
+sprite_t* background;
+/* ************************ */
+
+/* TODO Get rid of this and integrate it in the build system.
+ */
+#define DEBUG
+
+#ifdef DEBUG
+/**
+ * Checks the status of a gl function call and an error if necessary.
+ *
+ * This behaviour is only needed when debugging and is especially useful for
+ * devices because debugging can be hard.
+ * This macro allows us to call a gl function and get the error status.
+ * @example GL_CHECK
+ * @code
+ *  GL_CHECK(glClearColor, 1.0f, 0.0f, 0.0f, 1.0f);
+ * @endcode
+ */
+#define GL_CHECK(gl, ...) \
+    gl(__VA_ARGS__);                                         \
+    {                                                        \
+        const char* error;                                   \
+        for (GLint e = glGetError(); e; e = glGetError()) {  \
+            for (int i = 0; gl_errors[i].string; i++) {      \
+                if (gl_errors[i].token == e) {               \
+                    error = gl_errors[i].string;             \
+                    break;                                   \
+                }                                            \
+            }                                                \
+            LOGE("Error in %s: %s (0x%x)\n", #gl, error, e); \
+        }                                                    \
+    }
+#else
+/**
+ * When we are not in debug mode, we just run the function.
+ */
+#define GL_CHECK(gl, ...) \
+    gl(__VA_ARGS__);
+#endif
+
+/**
+ * Initalization of program.
+ *
+ * Loads assets from disk or memory and prepares the rendering engine.
+ * @param width The width of the viewport.
+ * @param height The height of the viewport.
+ */
+void bina_init(int width, int height);

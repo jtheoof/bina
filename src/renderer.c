@@ -1,3 +1,9 @@
+/**
+ * @file renderer.c
+ * @author Jeremy Attali, Johan Attali
+ * @date July 23, 2013
+ */
+
 #include "bina.h"
 
 static const char gVertexShader[] = 
@@ -92,16 +98,16 @@ load_background()
 
     glTexImage2D(GL_TEXTURE_2D, 0,
                  GL_RGBA, 
-                 background.width, background.height, 0,
-                 background.alpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE,
+                 background_old.width, background_old.height, 0,
+                 background_old.alpha ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE,
                  /* GL_BGR, GL_UNSIGNED_BYTE, */
-                 background.pixels);
+                 background_old.pixels);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 /* TODO implement real error code */
-int
+void
 renderer_init(int width, int height)
 {
     /* print_gl_string("Version", GL_VERSION); */
@@ -109,39 +115,35 @@ renderer_init(int width, int height)
     /* print_gl_string("Renderer", GL_RENDERER); */
     /* print_gl_string("Extensions", GL_EXTENSIONS); */
 
-    LOGI("Scene: width: %d height: %d", width, height);
+    /* LOGI("Scene: width: %d height: %d", width, height); */
 
-    gProgram = shader_create_program(gVertexShader, gFragmentShader);
-    if (!gProgram) {
-        LOGE("Could not create program.");
-        return 1;
-    }
+    /* gProgram = shader_create_program(gVertexShader, gFragmentShader); */
+    /* if (!gProgram) { */
+    /*     LOGE("Could not create program."); */
+    /*     return 1; */
+    /* } */
 
-    gvPositionAttrib = glGetAttribLocation(gProgram, "vPosition");
-    gvColorAttrib = glGetAttribLocation(gProgram, "aColor");
-    gvTextureAttrib = glGetAttribLocation(gProgram, "aTexture");
+    /* gvPositionAttrib = glGetAttribLocation(gProgram, "vPosition"); */
+    /* gvColorAttrib = glGetAttribLocation(gProgram, "aColor"); */
+    /* gvTextureAttrib = glGetAttribLocation(gProgram, "aTexture"); */
 
-    gTextureUniform = glGetUniformLocation(gProgram, "uTexture");
+    /* gTextureUniform = glGetUniformLocation(gProgram, "uTexture"); */
 
-    glGenBuffers(1, &gSquareIndicesBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gSquareIndicesBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 3,
-                 gSquareIndices, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    /* glGenBuffers(1, &gSquareIndicesBuffer); */
+    /* glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gSquareIndicesBuffer); */
+    /* glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 3, */
+    /*              gSquareIndices, GL_STATIC_DRAW); */
+    /* glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); */
 
     /* The following two lines enable semi transparent. */
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    GL_CHECK(glEnable, GL_BLEND);
+    GL_CHECK(glBlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
  
-	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
+	GL_CHECK(glDisable, GL_DEPTH_TEST);
+	GL_CHECK(glDepthMask, GL_FALSE);
 
     /* Set up viewport */
-    glViewport(0, 0, width, height);
-
-    load_background();
-
-    return 0;
+    camera_set_viewport(0, 0, width, height);
 }
 
 static void
@@ -193,10 +195,25 @@ render_square()
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
+static void
+render_bina()
+{
+    renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f);
+    sprite_render(background);
+}
+
+void
+renderer_pre_render(float r, float g, float b, float a)
+{
+    GL_CHECK(glClearColor, r, g, b, a);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+}
+
 void
 renderer_render()
 {
     /* render_triangle(); */
-    render_square();
+    /* render_square(); */
+    render_bina();
 }
 

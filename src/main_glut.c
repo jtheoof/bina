@@ -1,3 +1,21 @@
+/**
+ * Main GLUT file used for oses that support GLUT.
+ *
+ * It should be possible to write a very simple wrapper around GLUT for
+ * devices that do not support it.
+ *
+ * @see http://freeglut.sourceforge.net/docs/android.php
+ * @see http://en.wikibooks.org/wiki/OpenGL_Programming/Android_GLUT_Wrapper
+ *
+ * (GLUT does not seem to have been ported to iOS).
+ */
+
+/**
+ * @file main_glut.c
+ * @author Jeremy Attali, Johan Attali
+ * @date July 23, 2013
+ */
+
 #include "bina.h"
 
 int gWindowId;
@@ -10,7 +28,6 @@ AppDisplayCb(void) {
  
 void
 AppReshapeCb(int width, int height) {
-    /*bina.SetViewport(0, 0, width, height);*/
 }
  
 void
@@ -56,6 +73,12 @@ AppIdleCb(void)
 {
 }
 
+void
+main_glut_exit(void)
+{
+    sprite_delete(&background);
+}
+
 int
 main(int argc, char** argv)
 {
@@ -97,6 +120,8 @@ main(int argc, char** argv)
     glutIdleFunc(AppIdleCb);
 
     bina_init(GAME_WIDTH, GAME_HEIGHT);
+
+    atexit(main_glut_exit);
 
     glutMainLoop();
 

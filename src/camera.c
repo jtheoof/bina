@@ -1,9 +1,15 @@
+/**
+ * @file camera.c
+ * @author Jeremy Attali, Johan Attali
+ * @date July 23, 2013
+ */
+
 #include "bina.h"
 
 void
 camera_set_viewport(int x, int y, int width, int height)
 {
-    glViewport(x, y, width, height);
+    GL_CHECK(glViewport, x, y, width, height);
 }
 
 void
