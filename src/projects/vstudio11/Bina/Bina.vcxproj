@@ -91,24 +91,24 @@
     <ClInclude Include="..\..\..\bina.h" />
     <ClInclude Include="..\..\..\camera.h" />
     <ClInclude Include="..\..\..\error.h" />
-    <ClInclude Include="..\..\..\math.h" />
     <ClInclude Include="..\..\..\renderer.h" />
     <ClInclude Include="..\..\..\shader.h" />
     <ClInclude Include="..\..\..\sprite.h" />
     <ClInclude Include="..\..\..\texture.h" />
     <ClInclude Include="..\..\..\utils.h" />
+    <ClInclude Include="..\..\..\vector.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\bina.c" />
     <ClCompile Include="..\..\..\camera.c" />
     <ClCompile Include="..\..\..\main_glut.c" />
-    <ClCompile Include="..\..\..\math.c" />
     <ClCompile Include="..\..\..\renderer.c" />
     <ClCompile Include="..\..\..\shader.c" />
     <ClCompile Include="..\..\..\sprite.c" />
     <ClCompile Include="..\..\..\texture.c" />
     <ClCompile Include="..\..\..\utils.c" />
+    <ClCompile Include="..\..\..\vector.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

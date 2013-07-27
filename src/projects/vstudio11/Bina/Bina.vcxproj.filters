@@ -30,9 +30,6 @@
     <ClInclude Include="..\..\..\error.h">
       <Filter>bina</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\math.h">
-      <Filter>bina</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\renderer.h">
       <Filter>bina</Filter>
     </ClInclude>
@@ -48,6 +45,9 @@
     <ClInclude Include="..\..\..\utils.h">
       <Filter>bina</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\vector.h">
+      <Filter>bina</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\bina.c">
@@ -57,9 +57,6 @@
       <Filter>bina</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\main_glut.c">
-      <Filter>bina</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\math.c">
       <Filter>bina</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\renderer.c">
@@ -75,6 +72,9 @@
       <Filter>bina</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\utils.c">
+      <Filter>bina</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\vector.c">
       <Filter>bina</Filter>
     </ClCompile>
   </ItemGroup>
