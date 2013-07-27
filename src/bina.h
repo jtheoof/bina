@@ -169,11 +169,9 @@ void bina_end();
  * This is just a testing function. The goal is to make it work on every
  * device.
  * @param to The destination where brian should go.
- * @param steps How many steps are needed for the move.
- * @param elapsed Time elapsed since last frame (optimum performance will be
- * assumed a framerate at 60 FPS (16ms)).
+ * @param speed The speed we want to set brian to.
  */
-void bina_animate_brian_to(vec2_t to, unsigned int steps);
+void bina_animate_brian_to(vec2_t to, float speed);
 /**
  * Prints useful info about about OpenGL.
  *

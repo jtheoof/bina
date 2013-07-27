@@ -149,7 +149,7 @@ void sprite_render(sprite_t* sprite);
  * #sprite_animator_delete to clean up the memory used by the structure.
  */
 sprite_animator_t* sprite_animator_create(sprite_t* sprite, vec2_t to,
-                                          unsigned int steps);
+                                          float speed);
 
 /**
  * Frees memory allocated by #sprite_animator_create.
@@ -161,15 +161,16 @@ void sprite_animator_delete(sprite_animator_t** animator);
  * Animates the sprite given an animator.
  *
  * This function will increase the current step of animator object.
- * Right now it's missing the time elapsed since last frame. This needs to be
- * added in order to avoid different speed time with different graphics
- * performance.
+ * The time elapsed is present in order to avoid different speed time with
+ * different graphics performance.
  *
  * @param sprite The sprite to animate.
  * @param animator The animator previously created.
+ * @param elapsed The time elapsed in ms since last frame.
  * @return The number of steps left. When this function returns 0, it is
  * mandatory to clean up the memory and free animator object through
  * #sprite_animator_delete.
  */
 unsigned int sprite_animator_animate(sprite_t* sprite,
-                                     sprite_animator_t* animator);
+                                     sprite_animator_t* animator,
+                                     float elapsed);

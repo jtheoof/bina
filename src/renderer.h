@@ -33,3 +33,13 @@ void renderer_pre_render(float r, float g, float b, float a);
  * This where the common rendering parts comes into place.
  */
 void renderer_render();
+
+/**
+ * Returns the time elapsed in ms since last render.
+ *
+ * The implementation of this function can vary depending on the the device.
+ * For example GLUT has a very easy way to set it up.
+ *
+ * @return The elapsed time in ms.
+ */
+float renderer_get_time_elapsed();

@@ -66,11 +66,11 @@ bina_end()
 }
 
 void
-bina_animate_brian_to(vec2_t to, unsigned int steps)
+bina_animate_brian_to(vec2_t to, float speed)
 {
     if (brian_animator) {
         sprite_animator_delete(&brian_animator);
     }
 
-    brian_animator = sprite_animator_create(brian, to, steps);
+    brian_animator = sprite_animator_create(brian, to, speed);
 }
