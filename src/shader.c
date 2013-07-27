@@ -10,16 +10,20 @@ unsigned int
 shader_create_shader(GLenum type, const char* source)
 {
     GLuint shader = glCreateShader(type);
+	GLint compiled;
+	GLint infoLen;
+	char* buf;
+
     if (shader) {
         glShaderSource(shader, 1, &source, NULL);
         glCompileShader(shader);
-        GLint compiled = 0;
+        compiled = 0;
         glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
         if (!compiled) {
-            GLint infoLen = 0;
+            infoLen = 0;
             glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
             if (infoLen) {
-                char* buf = (char*) malloc(infoLen);
+                buf = (char*) malloc(infoLen);
                 if (buf) {
                     glGetShaderInfoLog(shader, infoLen, NULL, buf);
                     LOGE("Could not compile shader type %d (%s)\n%s\n",
@@ -39,6 +43,8 @@ shader_create_program(const char* vertex, const char* fragment)
 {
     GLuint vertex_shader, fragment_shader;
     GLuint program = glCreateProgram();
+    GLint link_status;
+    GLint length = 0;
 
     vertex_shader = shader_create_shader(GL_VERTEX_SHADER, vertex);
     if (!vertex_shader) {
@@ -54,10 +60,10 @@ shader_create_program(const char* vertex, const char* fragment)
         glAttachShader(program, vertex_shader);
         glAttachShader(program, fragment_shader);
         glLinkProgram(program);
-        GLint link_status = GL_FALSE;
+        link_status = GL_FALSE;
         glGetProgramiv(program, GL_LINK_STATUS, &link_status);
         if (link_status != GL_TRUE) {
-            GLint length = 0;
+            length = 0;
             glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
             if (length) {
                 char* buf = (char*) malloc(length);

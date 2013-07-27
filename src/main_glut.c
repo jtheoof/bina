@@ -71,7 +71,6 @@ main_glut_special_keys_cb(int key, int x, int y) {
 void
 main_glut_mouse_cb(int button, int state, int x, int y)
 {
-    float viewportx, viewporty; /* screen to viewport coordinates */
     vec2_t coord;
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
@@ -103,6 +102,7 @@ main(int argc, char** argv)
 {
     int screenWidth, screenHeight;
     int posX, posY;
+	GLenum err;
 
     /* Init GLUT */
     glutInit(&argc, argv);
@@ -121,7 +121,7 @@ main(int argc, char** argv)
     window_id_g = glutCreateWindow(APP_TITLE);
     
 #ifdef HAVE_GLEW_H
-    GLenum err = glewInit();
+    err = glewInit();
     if (GLEW_OK != err)
     {
       /* Problem: glewInit failed, something is seriously wrong. */

@@ -131,7 +131,6 @@ sprite_t*
 sprite_create(const char* texture_name, vec2_t position,
               float width, float height)
 {
-    int err;
     sprite_t* sprite;
     unsigned int program;
 
@@ -237,6 +236,7 @@ sprite_animator_create(sprite_t* sprite, vec2_t to, unsigned int steps)
      sprite_animator_t* animator;
      vec2_t* positions;
      float stepx, stepy;
+     unsigned int i;
 
      animator = (sprite_animator_t*) malloc(sizeof(sprite_animator_t));
 
@@ -257,7 +257,7 @@ sprite_animator_create(sprite_t* sprite, vec2_t to, unsigned int steps)
      stepx = (to.x - sprite->position.x) / steps;
      stepy = (to.y - sprite->position.y) / steps;
 
-     for (int i = 1; i <= steps; i++) {
+     for (i = 1; i <= steps; i++) {
          positions[i - 1].x = sprite->position.x + (i * stepx);
          positions[i - 1].y = sprite->position.y + (i * stepy);
      }

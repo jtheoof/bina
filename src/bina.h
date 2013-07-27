@@ -14,6 +14,11 @@
 
 #pragma once
 
+#ifdef WIN32
+#include "targetver.h"
+#pragma warning(disable : 4996)
+#endif
+
 #define GAME_WIDTH 940
 #define GAME_HEIGHT 546
 
@@ -66,12 +71,21 @@
 #include "GL/glew.h"
 #endif
 
+#ifdef HAVE_GLUT_H
+#include "GL/glut.h"
+#endif
+
+#ifdef HAVE_GL_H
+#include "GL/gl.h"
+#endif
+
 #ifdef HAVE_GLU_H
 #include "GL/glu.h"
 #endif
 
-#ifdef HAVE_GLUT_H
-#include "GL/glut.h"
+#ifdef USE_GLEXT_PROTOTYPES
+#define GL_GLEXT_PROTOTYPES
+#include "GL/glext.h"
 #endif
 
 #include "error.h"
@@ -97,6 +111,7 @@ sprite_animator_t* brian_animator;
 #define DEBUG
 
 #ifdef DEBUG
+
 /**
  * Checks the status of a gl function call and an error if necessary.
  *
@@ -112,8 +127,9 @@ sprite_animator_t* brian_animator;
     gl(__VA_ARGS__);                                         \
     {                                                        \
         const char* error;                                   \
-        for (GLint e = glGetError(); e; e = glGetError()) {  \
-            for (int i = 0; gl_errors[i].string; i++) {      \
+        int e, i;                                            \
+        for (e = glGetError(); e; e = glGetError()) {        \
+            for (i = 0; gl_errors[i].string; i++) {          \
                 if (gl_errors[i].token == e) {               \
                     error = gl_errors[i].string;             \
                     break;                                   \

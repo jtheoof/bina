@@ -28,7 +28,8 @@ print_gl_string(const char* name, GLenum s)
 static void
 check_gl_error(void)
 {
-    for (GLint e = glGetError(); e; e = glGetError()) {
+    GLint e;
+    for (e = glGetError(); e; e = glGetError()) {
         LOGE("glError: %s (0x%x)\n", gl_error_string(e), e);
     }
 }
@@ -36,10 +37,9 @@ check_gl_error(void)
 void
 bina_init(int width, int height)
 {
-    vec2_t pos = {
-        .x = 0.0f,
-        .y = 0.0f
-    };
+    vec2_t pos;
+    pos.x = 0.0f;
+    pos.y = 0.0f;
 
     viewport.x = 0;
     viewport.y = 0;
