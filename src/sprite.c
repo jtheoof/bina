@@ -49,15 +49,17 @@
  * The varying texture is set to the texture attribute. It will then be passed
  * to the fragment shader.
  */
-static const char sprite_vertex_shader_g[] = 
+static const char sprite_vertex_shader_g[] =
     "#ifdef GL_ES\n"
     "precision mediump float;\n"
     "#endif\n"
+    "uniform vec4 position_u;\n"
     "attribute vec4 position_a;\n"
     "attribute vec2 texture_a;\n"
     "varying   vec2 texture_v;\n"
     "void main() {\n"
-    "    gl_Position = position_a;\n"
+    "    vec4 offset = vec4(position_u.x, position_u.y, 0, 0);\n"
+    "    gl_Position = position_a + offset;\n"
     "    texture_v = texture_a;\n"
     "}\n";
 
@@ -91,7 +93,7 @@ static const char sprite_vertex_shader_g[] =
  * This is the main function of the vertex shader. texture2D is used to apply
  * a texture data to the right texture coordinates (texices).
  */
-static const char sprite_fragment_shader_g[] = 
+static const char sprite_fragment_shader_g[] =
     "#ifdef GL_ES\n"
     "precision mediump float;\n"
     "#endif\n"
@@ -101,6 +103,11 @@ static const char sprite_fragment_shader_g[] =
     "    gl_FragColor = texture2D(texture_u, texture_v);\n"
     "}\n";
 
+/**
+ * Constant holding default values for vertices.
+ *
+ * Not sure it will be used at all.
+ */
 static const float sprite_vertices_g[] = {
     -1.0f,  1.0f,
     -1.0f, -1.0f,
@@ -108,6 +115,11 @@ static const float sprite_vertices_g[] = {
      1.0f, -1.0f
 };
 
+/**
+ * Constant holding default values for texices.
+ *
+ * This will probably always be the same, so keeping it should make sense.
+ */
 static const float sprite_texices_g[] = {
      0.0f,  1.0f,
      0.0f,  0.0f,
@@ -115,27 +127,14 @@ static const float sprite_texices_g[] = {
      1.0f,  0.0f
 };
 
-/**
- * Vertex shader used for simple sprites.
- *
- * This is a basic vertex shader used for position and texturing.
- *
- * The first three lines are used to deal with precision on devices. Since
- * it's not GLSL spec varies from OpenGL to OpenGL ES we need a specific
- * define when rendering for GL_ES.
- *
- * <code>
- *  attribute vec4 position_a;
- * </code>
- * This declares our attribute to set the vertices positions.
- */
 sprite_t*
-sprite_create(const char* texture_name)
+sprite_create(const char* texture_name, vec2_t position,
+              float width, float height)
 {
     int err;
     sprite_t* sprite;
     unsigned int program;
-    
+
     sprite = (sprite_t*) malloc(sizeof(sprite_t));
 
     if (!sprite) {
@@ -149,10 +148,38 @@ sprite_create(const char* texture_name)
 
     program = sprite->program;
     if (program) {
+        sprite->position_uniform = glGetUniformLocation(program, "position_u");
         sprite->position_attrib = glGetAttribLocation(program, "position_a");
         sprite->texture_attrib = glGetAttribLocation(program, "texture_a");
         sprite->texture_uniform = glGetUniformLocation(program, "texture_u");
+
+        LOGD("Sprite has position_u: %d", sprite->position_uniform);
+        LOGD("Sprite has position_a: %d", sprite->position_attrib);
+        LOGD("Sprite has texture_a: %d", sprite->texture_attrib);
+        LOGD("Sprite has texture_u: %d", sprite->texture_uniform);
     }
+
+    /* sprite->vertices[0][0] = -1.0f; */
+    /* sprite->vertices[0][1] =  1.0f; */
+    /* sprite->vertices[1][0] = -1.0f; */
+    /* sprite->vertices[1][1] = -1.0f; */
+    /* sprite->vertices[2][0] =  1.0f; */
+    /* sprite->vertices[2][1] =  1.0f; */
+    /* sprite->vertices[3][0] =  1.0f; */
+    /* sprite->vertices[3][1] = -1.0f; */
+
+    sprite->vertices[0][0] = -1.0f;
+    sprite->vertices[0][1] = -1.0f + height;
+    sprite->vertices[1][0] = -1.0f;
+    sprite->vertices[1][1] = -1.0f;
+    sprite->vertices[2][0] = -1.0f + width;
+    sprite->vertices[2][1] = -1.0f + height;
+    sprite->vertices[3][0] = -1.0f + width;
+    sprite->vertices[3][1] = -1.0f;
+
+    sprite->position = position;
+    sprite->width = width;
+    sprite->height = height;
 
     return sprite;
 }
@@ -172,22 +199,109 @@ sprite_delete(sprite_t** sprite)
 void
 sprite_render(sprite_t* sprite)
 {
+    vec2_t pos = sprite->position;
+    texture_t* texture = sprite->texture;
+
     glUseProgram(sprite->program);
 
     glEnableVertexAttribArray(sprite->position_attrib);
     glVertexAttribPointer(sprite->position_attrib, 2, GL_FLOAT, GL_FALSE, 0,
-                          sprite_vertices_g);
+                          sprite->vertices);
 
     glEnableVertexAttribArray(sprite->texture_attrib);
     glVertexAttribPointer(sprite->texture_attrib, 2, GL_FLOAT, GL_FALSE, 0,
                           sprite_texices_g);
 
-    if (sprite->texture) {
-        texture_t* texture = sprite->texture;
-        glActiveTexture(texture->unit);
+    GL_CHECK(glUniform4f, sprite->position_uniform, pos.x, pos.y, 0.0f, 1.0f);
+
+    if (texture) {
+        glActiveTexture(GL_TEXTURE0 + texture->unit);
 	    glBindTexture(texture->target, texture->id);
-        glUniform1i(sprite->texture_uniform, 0);
+        glUniform1i(sprite->texture_uniform, texture->unit);
     }
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    glDisableVertexAttribArray(sprite->texture_attrib);
+    glDisableVertexAttribArray(sprite->position_attrib);
+	glUseProgram(0);
+
+    if (texture) {
+	    glBindTexture(texture->target, 0);
+    }
+}
+
+sprite_animator_t*
+sprite_animator_create(sprite_t* sprite, vec2_t to, unsigned int steps)
+{
+     sprite_animator_t* animator;
+     vec2_t* positions;
+     float stepx, stepy;
+
+     animator = (sprite_animator_t*) malloc(sizeof(sprite_animator_t));
+
+     if (!animator) {
+         LOGE(ERROR_NOT_ENOUGH_MEMORY);
+         goto error;
+     }
+
+     animator->steps = steps;
+     animator->step = 0;
+
+     positions = (vec2_t*) malloc(sizeof(vec2_t) * steps);
+     if (!positions) {
+         LOGE(ERROR_NOT_ENOUGH_MEMORY);
+         goto error;
+     }
+
+     stepx = (to.x - sprite->position.x) / steps;
+     stepy = (to.y - sprite->position.y) / steps;
+
+     for (int i = 1; i <= steps; i++) {
+         positions[i - 1].x = sprite->position.x + (i * stepx);
+         positions[i - 1].y = sprite->position.y + (i * stepy);
+     }
+
+     animator->positions = positions;
+
+     return animator;
+
+error:
+     if (positions) {
+         free(positions);
+     }
+
+     if (animator) {
+         free(animator);
+     }
+
+     return NULL;
+}
+
+void
+sprite_animator_delete(sprite_animator_t** animator)
+{
+    sprite_animator_t* head = *animator;
+
+    if (head) {
+        if (head->positions) {
+            free(head->positions);
+        }
+        free(head);
+        *animator = NULL;
+    }
+}
+
+unsigned int
+sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator)
+{
+    unsigned int steps = animator->steps;
+    unsigned int cur   = animator->step;
+
+    if (cur < steps) {
+        sprite->position.x = animator->positions[cur].x;
+        sprite->position.y = animator->positions[cur].y;
+        animator->step++;
+    }
+    return steps - cur;
 }

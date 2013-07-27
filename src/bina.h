@@ -76,27 +76,20 @@
 
 #include "error.h"
 #include "utils.h"
+#include "math.h"
 #include "texture.h"
 #include "sprite.h"
 #include "shader.h"
 #include "camera.h"
 #include "renderer.h"
 
-/* TODO REMOVE THIS
- * ************************ */
-typedef struct bina_image
-{
-    char* file;
-    int width;
-    int height;
-    int alpha;
-    void* pixels;
-} bina_image;
-
-bina_image background_old;
-bina_image tga;
+camera_viewport_t viewport;
 
 sprite_t* background;
+sprite_t* brian;
+
+sprite_animator_t* brian_animator;
+
 /* ************************ */
 
 /* TODO Get rid of this and integrate it in the build system.
@@ -145,3 +138,32 @@ sprite_t* background;
  * @param height The height of the viewport.
  */
 void bina_init(int width, int height);
+
+/**
+ * Frees objects.
+ *
+ * Should be called when program exits.
+ * Perhaps code or callback can vary depending on devices.
+ */
+void bina_end();
+
+/**
+ * Animate brian on the screen when clicking or tapping.
+ *
+ * This is just a testing function. The goal is to make it work on every
+ * device.
+ * @param to The destination where brian should go.
+ * @param steps How many steps are needed for the move.
+ * @param elapsed Time elapsed since last frame (optimum performance will be
+ * assumed a framerate at 60 FPS (16ms)).
+ */
+void bina_animate_brian_to(vec2_t to, unsigned int steps);
+/**
+ * Prints useful info about about OpenGL.
+ *
+ * This function converts #s into a proper string.
+ *
+ * @param name A custom string to put before showing the value of #s.
+ * @param s An OpenGL enum we want to print. For example GL_EXTENSIONS.
+ */
+void print_gl_string(const char* name, GLenum s);

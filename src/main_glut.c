@@ -18,24 +18,38 @@
 
 #include "bina.h"
 
-int gWindowId;
+static int window_id_g;
 
 void
-AppDisplayCb(void) {
+main_glut_display_cb(void)
+{
     renderer_render();
+    glutPostRedisplay();
     glutSwapBuffers();
 }
  
 void
-AppReshapeCb(int width, int height) {
+main_glut_reshape_cb(int width, int height)
+{
+    viewport.width = width;
+    viewport.height = height;
+
+    /* Reset the viewport */
+    camera_set_viewport(&viewport);
 }
  
 void
-AppNormalKeysCb(unsigned char key, int x, int y) {
+main_glut_normal_keys_cb(unsigned char key, int x, int y)
+{
+    switch (key) {
+        case 27: /* Escape key */
+            glutDestroyWindow(window_id_g);
+            break;
+    }
 }
  
 void
-AppSpecialKeysCb(int key, int x, int y) {
+main_glut_special_keys_cb(int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_UP:
             break;
@@ -51,32 +65,37 @@ AppSpecialKeysCb(int key, int x, int y) {
             break;
     }
 
-    glutDestroyWindow(gWindowId);
-    /* glutPostRedisplay(); */
+    glutDestroyWindow(window_id_g);
 }
 
 void
-AppMouseCb(int button, int state, int x, int y) {
-    /*int width = bina.GetWindowWidth(),
-        height = bina.GetWindowHeight();*/
+main_glut_mouse_cb(int button, int state, int x, int y)
+{
+    float viewportx, viewporty; /* screen to viewport coordinates */
+    vec2_t coord;
 
-    /*std::cout << "Coordinates: (" << x << ", " << y << ")" << std::endl;*/
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        coord.x = 2.0f * x / viewport.width;
+        coord.y = 2.0f - (2.0f * y / viewport.height);
 
-    /* Converting into bottom to top coordinates */
-    /*bina.MoveCharacter(x, height - y);*/
+        LOGD("Screen: %d,%d", x, y);
+        LOGD("Viewport: %f,%f", coord.x, coord.y);
+
+        bina_animate_brian_to(coord, 100);
+    }
     
     glutPostRedisplay();
 }
 
 void
-AppIdleCb(void)
+main_glut_idle_cb(void)
 {
 }
 
 void
 main_glut_exit(void)
 {
-    sprite_delete(&background);
+    bina_end();
 }
 
 int
@@ -99,7 +118,7 @@ main(int argc, char** argv)
 	
 	glutInitWindowPosition(posX, posY);
 	glutInitWindowSize(GAME_WIDTH, GAME_HEIGHT);
-    gWindowId = glutCreateWindow(APP_TITLE);
+    window_id_g = glutCreateWindow(APP_TITLE);
     
 #ifdef HAVE_GLEW_H
     GLenum err = glewInit();
@@ -112,12 +131,12 @@ main(int argc, char** argv)
 #endif
 
     /* Setting up callbacks */
-    glutKeyboardFunc(AppNormalKeysCb);
-    glutSpecialFunc(AppSpecialKeysCb);
-    glutMouseFunc(AppMouseCb);
-    glutReshapeFunc(AppReshapeCb);
-    glutDisplayFunc(AppDisplayCb);
-    glutIdleFunc(AppIdleCb);
+    glutKeyboardFunc(main_glut_normal_keys_cb);
+    glutSpecialFunc(main_glut_special_keys_cb);
+    glutMouseFunc(main_glut_mouse_cb);
+    glutReshapeFunc(main_glut_reshape_cb);
+    glutDisplayFunc(main_glut_display_cb);
+    glutIdleFunc(main_glut_idle_cb);
 
     bina_init(GAME_WIDTH, GAME_HEIGHT);
 

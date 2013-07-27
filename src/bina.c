@@ -18,7 +18,7 @@ gl_error_string(GLenum errorCode)
     return (const GLubyte *) 0;
 }
 
-static void
+void
 print_gl_string(const char* name, GLenum s)
 {
     const char *v = (const char *) glGetString(s);
@@ -36,26 +36,41 @@ check_gl_error(void)
 void
 bina_init(int width, int height)
 {
-    /* background_old.file = "../artwork/background.png"; */
-    /* error = texture_load_png_old(background_old.file, */
-    /*                          &background_old.width, &background_old.height, */
-    /*                          &background_old.alpha, &(background_old.pixels)); */
-    /* if (error) { */
-    /*     LOGE("Unable to load image: %s\n", background_old.file); */
-    /*     return; */
-    /* } */
+    vec2_t pos = {
+        .x = 0.0f,
+        .y = 0.0f
+    };
 
-    /* tga.file = "../artwork/hello1.tga"; */
-    /* tga.alpha = 0; */
-    /* error = texture_load_tga(tga.file, */
-    /*                          &tga.width, &tga.height, &(tga.pixels)); */
-    /* if (error) { */
-    /*     LOGE("Unable to load image: %s\n", tga.file); */
-    /*     return; */
-    /* } */
+    viewport.x = 0;
+    viewport.y = 0;
+    viewport.width = width;
+    viewport.height = height;
 
-    background = sprite_create("../artwork/background.png");
-    /* background = sprite_create("../poc/linux/brian.png"); */
+    background = sprite_create("../artwork/background.png", pos, 2.0f, 2.0f);
+    brian = sprite_create("../artwork/brian.png", pos, 0.19f, 0.66f);
 
-    renderer_init(width, height);
+    /* No animator for now, only when gamer clicks or taps. */
+    brian_animator = NULL;
+
+    renderer_init(&viewport);
+}
+
+void
+bina_end()
+{
+
+    sprite_delete(&background);
+    sprite_delete(&brian);
+
+    sprite_animator_delete(&brian_animator);
+}
+
+void
+bina_animate_brian_to(vec2_t to, unsigned int steps)
+{
+    if (brian_animator) {
+        sprite_animator_delete(&brian_animator);
+    }
+
+    brian_animator = sprite_animator_create(brian, to, steps);
 }

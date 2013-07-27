@@ -14,6 +14,9 @@
 
 #pragma once
 
+#define ERROR_NOT_ENOUGH_MEMORY "Not enough memory"
+#define ERROR_NOT_IMPLEMENTED   "Not implemented"
+
 typedef struct token_string_t
 {
    unsigned int token;

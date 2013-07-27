@@ -7,19 +7,19 @@
 #include "bina.h"
 
 void
-camera_set_viewport(int x, int y, int width, int height)
+camera_set_viewport(camera_viewport_t* viewport)
 {
-    GL_CHECK(glViewport, x, y, width, height);
+    GL_CHECK(glViewport, viewport->x, viewport->y,
+                         viewport->width, viewport->height);
 }
 
+/* TODO IMPLEMENT THIS */
 void
 camera_set_ortho(int width, int height)
 {
 #if defined(USE_OPENGL_ES) || \
     defined(__ANDROID_API__)
 #else
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, width, 0, height, -1, 1);
 #endif
+    LOGE(ERROR_NOT_IMPLEMENTED);
 }

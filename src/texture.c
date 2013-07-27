@@ -22,38 +22,44 @@ texture_load(texture_t* texture)
 {
 
     char ext[3];
+    int err;
     get_file_extension(texture->name, ext);
-    
+
     LOGD("Loading: %s", texture->name);
 
     if (!strcmp(ext, "png")) {
-        texture_load_png(texture);
+        err = texture_load_png(texture);
     } else if (!strcmp(ext, "tga")) {
         LOGE("Extension tga need some work with texture");
     } else {
         LOGE("Extension: %s not implemented for texturing", ext);
     }
 
-    return 0;
+    return err;
 }
+
+/* TODO This should return the texture itself, not an int. */
 
 int
 texture_load_png(texture_t* texture)
 {
     png_structp png_ptr;
     png_infop info_ptr;
-    unsigned int sig_read = 0;
+    unsigned int sig_read = 0, row_bytes = 0;
     int color_type, interlace_type;
-    FILE *fp;
+    FILE *fd;
     char filename[MAX_CHAR];
+    png_uint_32 width, height;
+    int bit_depth;
+    png_bytepp row_pointers = NULL;
 
     strncpy(filename, texture->name, MAX_CHAR);
- 
-    if ((fp = fopen(filename, "rb")) == NULL) {
+
+    if ((fd = fopen(filename, "rb")) == NULL) {
         LOGE("Unable to open: %s for reading", filename);
-        return 1;
+        goto error;
     }
- 
+
     /* Create and initialize the png_struct with the desired error handler
      * functions.  If you want to use the default stderr and longjump method,
      * you can supply NULL for the last three parameters.  We also supply the
@@ -62,44 +68,62 @@ texture_load_png(texture_t* texture)
      */
     png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
                                      NULL, NULL, NULL);
- 
+
     if (png_ptr == NULL) {
         LOGE("Cannot create PNG pointer for: %s", filename);
-        fclose(fp);
-        return 1;
+        goto error;
     }
- 
+
     /* Allocate/initialize the memory for image information. REQUIRED. */
     info_ptr = png_create_info_struct(png_ptr);
     if (info_ptr == NULL) {
         LOGE("Cannot create PNG information pointer for: %s", filename);
-        fclose(fp);
-        png_destroy_read_struct(&png_ptr, NULL, NULL);
-        return 1;
+        goto error;
     }
- 
+
     /* Set error handling if you are using the setjmp/longjmp method (this is
      * the normal method of doing things with libpng). REQUIRED unless you
      * set up your own error handlers in the png_create_read_struct() earlier.
      */
     if (setjmp(png_jmpbuf(png_ptr))) {
         LOGE("Cannot set PNG error handling for: %s", filename);
-        /* Free all of the memory associated
-         * with the png_ptr and info_ptr */
-        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-        fclose(fp);
-        /* If we get here, we had a
-         * problem reading the file */
-        return 1;
+        goto error;
     }
- 
+
     /* Set up the output control if you are using standard C streams */
-    png_init_io(png_ptr, fp);
- 
+    png_init_io(png_ptr, fd);
+
     /* If we have already
      * read some of the signature */
     png_set_sig_bytes(png_ptr, sig_read);
- 
+
+    /* Read all PNG info up to the image data */
+    png_read_info(png_ptr, info_ptr);
+
+    /* Get PNG bit_depth */
+	bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+
+    /* Get PNG color type */
+	color_type = png_get_color_type(png_ptr, info_ptr);
+
+    /* Now that we know more about the PNG we can set a few attributes. */
+	if (color_type == PNG_COLOR_TYPE_PALETTE
+    ||  png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)
+    ||  (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8))
+    {
+        png_set_expand(png_ptr);
+    }
+
+	if (bit_depth == 16) {
+        png_set_strip_16(png_ptr);
+    }
+
+	if (color_type == PNG_COLOR_TYPE_GRAY
+    ||  color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
+    {
+        png_set_gray_to_rgb(png_ptr);
+    }
+
     /*
      * If you have enough memory to read in the entire image at once, and you
      * need to specify only transforms that can be controlled with one of the
@@ -112,72 +136,112 @@ texture_load_png(texture_t* texture)
      * PNG_TRANSFORM_EXPAND forces to
      *  expand a palette into RGB
      */
-    png_read_png(png_ptr, info_ptr,
-                 PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING |
-                 PNG_TRANSFORM_EXPAND, NULL);
- 
-    png_uint_32 w, h;
-    int bit_depth;
-    png_get_IHDR(png_ptr, info_ptr, &w, &h, &bit_depth, &color_type,
+    /* png_read_png(png_ptr, info_ptr, */
+    /*              PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | */
+    /*              PNG_TRANSFORM_EXPAND, NULL); */
+
+    /* Update that info to the struct and info pointers. */
+	png_read_update_info(png_ptr, info_ptr);
+
+    /* Get header info (width, height, bit depth, color type and interlace) */
+    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
                  &interlace_type, NULL, NULL);
 
-    texture->width  = w;
-    texture->height = h;
+    /* Get bytes per row */
+    row_bytes = png_get_rowbytes(png_ptr, info_ptr);
+
+    texture->width  = width;
+    texture->height = height;
 
     switch (color_type) {
       case PNG_COLOR_TYPE_GRAY:
         texture->byte    = 1;
-        texture->iformat = 
+        texture->iformat = GL_LUMINANCE;
         texture->format  = GL_LUMINANCE;
-        texture->alpha   = 0;          
+        texture->alpha   = 0;
         break;
 
       case PNG_COLOR_TYPE_GRAY_ALPHA:
         texture->byte    = 2;
-        texture->iformat = 
+        texture->iformat = GL_LUMINANCE_ALPHA;
         texture->format	 = GL_LUMINANCE_ALPHA;
-        texture->alpha   = 0;          
+        texture->alpha   = 1;
         break;
 
       case PNG_COLOR_TYPE_RGB:
         texture->byte	 = 3;
-        texture->iformat = 
+        texture->iformat = GL_RGB;
         texture->format	 = GL_RGB;
-        texture->alpha   = 0;          
+        texture->alpha   = 0;
         break;
 
       case PNG_COLOR_TYPE_RGB_ALPHA:
         texture->byte    = 4;
-        texture->iformat = 
+        texture->iformat = GL_RGBA;
         texture->format	 = GL_RGBA;
-        texture->alpha   = 0;          
+        texture->alpha   = 1;
         break;
     }
 
     texture->type = GL_UNSIGNED_BYTE;
- 
-    unsigned int row_bytes = png_get_rowbytes(png_ptr, info_ptr);
-    texture->pixels = malloc(row_bytes * h);
- 
-    png_bytepp row_pointers = png_get_rows(png_ptr, info_ptr);
- 
-    for (int i = 0; i < h; i++) {
-        /* Note that png is ordered top to bottom, but OpenGL expect it bottom
-         * to top so the order or swapped */
-        memcpy(texture->pixels+(row_bytes * (h-1-i)),
-               row_pointers[i], row_bytes);
+
+    texture->pixels = malloc(row_bytes * height);
+    if (!texture->pixels) {
+        LOGE("Not enough memory to create pixels for texture");
+        goto error;
     }
+
+    row_pointers = (png_bytepp) malloc(sizeof(png_bytepp) * height);
+    if (!row_pointers) {
+        LOGE("Not enought memory to create row_pointers");
+        goto error;
+    }
+
+    for (int i = 0; i < height; i++) {
+        row_pointers[height - i - 1] = (png_bytep) (texture->pixels +
+                                       i * row_bytes);
+    }
+
+    png_read_image(png_ptr, row_pointers);
 
     /* Clean up after the read, and free any memory allocated */
     png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
- 
+
+    /* Free memory we don't need anymore */
+    free(row_pointers);
+
     /* Close the file */
-    fclose(fp);
+    fclose(fd);
 
     texture_print_info(texture);
 
     /* That's it */
     return 0;
+
+error:
+    if (png_ptr) {
+        if (info_ptr) {
+            png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        } else {
+            png_destroy_read_struct(&png_ptr, NULL, NULL);
+        }
+    }
+
+    if (fd) {
+        fclose(fd);
+    }
+
+    if (texture->pixels) {
+        free(texture->pixels);
+        texture->pixels = NULL;
+    }
+
+    if (row_pointers) {
+        free(row_pointers);
+        row_pointers = NULL;
+    }
+
+    return 1;
 }
 
 int
@@ -190,12 +254,12 @@ texture_load_png_old(const char* filename,
     unsigned int sig_read = 0;
     int color_type, interlace_type;
     FILE *fp;
- 
+
     if ((fp = fopen(filename, "rb")) == NULL) {
         LOGE("Unable to open: %s for reading", filename);
         return 1;
     }
- 
+
     /* Create and initialize the png_struct with the desired error handler
      * functions.  If you want to use the default stderr and longjump method,
      * you can supply NULL for the last three parameters.  We also supply the
@@ -204,13 +268,13 @@ texture_load_png_old(const char* filename,
      */
     png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
                                      NULL, NULL, NULL);
- 
+
     if (png_ptr == NULL) {
         LOGE("Cannot create PNG pointer for: %s", filename);
         fclose(fp);
         return 1;
     }
- 
+
     /* Allocate/initialize the memory for image information. REQUIRED. */
     info_ptr = png_create_info_struct(png_ptr);
     if (info_ptr == NULL) {
@@ -219,7 +283,7 @@ texture_load_png_old(const char* filename,
         png_destroy_read_struct(&png_ptr, NULL, NULL);
         return 1;
     }
- 
+
     /* Set error handling if you are using the setjmp/longjmp method (this is
      * the normal method of doing things with libpng). REQUIRED unless you
      * set up your own error handlers in the png_create_read_struct() earlier.
@@ -234,14 +298,14 @@ texture_load_png_old(const char* filename,
          * problem reading the file */
         return 1;
     }
- 
+
     /* Set up the output control if you are using standard C streams */
     png_init_io(png_ptr, fp);
- 
+
     /* If we have already
      * read some of the signature */
     png_set_sig_bytes(png_ptr, sig_read);
- 
+
     /*
      * If you have enough memory to read in the entire image at once, and you
      * need to specify only transforms that can be controlled with one of the
@@ -257,7 +321,7 @@ texture_load_png_old(const char* filename,
     png_read_png(png_ptr, info_ptr,
                  PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING |
                  PNG_TRANSFORM_EXPAND, NULL);
- 
+
     png_uint_32 w, h;
     int bit_depth;
     png_get_IHDR(png_ptr, info_ptr, &w, &h, &bit_depth, &color_type,
@@ -266,12 +330,12 @@ texture_load_png_old(const char* filename,
     *width = w;
     *height = h;
     *alpha = color_type == PNG_COLOR_TYPE_RGB_ALPHA;
- 
+
     unsigned int row_bytes = png_get_rowbytes(png_ptr, info_ptr);
     *pixels = malloc(row_bytes * h);
- 
+
     png_bytepp row_pointers = png_get_rows(png_ptr, info_ptr);
- 
+
     for (int i = 0; i < h; i++) {
         /* Note that png is ordered top to bottom, but OpenGL expect it bottom
          * to top so the order or swapped */
@@ -281,13 +345,13 @@ texture_load_png_old(const char* filename,
 
     /* Clean up after the read, and free any memory allocated */
     png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
- 
+
     /* Close the file */
     fclose(fp);
 
     LOGI("Loaded: %s width: %d height: %d alpha: %d",
          filename, *width, *height, *alpha);
- 
+
     /* That's it */
     return 0;
 }
@@ -376,7 +440,7 @@ texture_load_tga(const char *filename,
     }
 
     LOGD("Loaded: %s width: %d height: %d", filename, *width, *height);
- 
+
     return 0;
 }
 
@@ -390,34 +454,47 @@ texture_create(const char* name)
     texture = (texture_t*) malloc(sizeof(texture_t));
 
     if (!texture) {
-        LOGE("Not enought memory to create texture: %s", name);
+        LOGE("Not enough memory to create texture: %s", name);
         goto error;
     }
 
     strncpy(texture->name, name, MAX_CHAR);
-    texture_load(texture);
+    if (texture_load(texture)) {
+        LOGE("An error occured while loading the texture");
+        goto error;
+    }
 
     /* TODO Make this more flexible */
+    texture->id      = 0;
     texture->target  = GL_TEXTURE_2D;
     texture->iformat = texture->alpha ? GL_RGBA : GL_RGB;
     texture->format  = texture->iformat;
-    texture->unit    = GL_TEXTURE0;
+    texture->unit    = 0;
 
     texture_gl_create(texture);
 
     return texture;
 
 error:
+    texture_delete(&texture);
     return NULL;
 }
 
 void
 texture_delete(texture_t** texture)
 {
-    if (*texture) {
-        texture_gl_delete(*texture);
-        free(*texture);
-        *texture = NULL;
+    texture_t* tex = *texture;
+
+    if (tex) {
+        texture_gl_delete(tex);
+        if (tex->pixels) {
+            free(tex->pixels);
+            tex->pixels = NULL;
+        }
+        free(tex);
+        tex = NULL;
+
+        *texture = tex;
     }
 }
 
@@ -434,7 +511,22 @@ texture_gl_create(texture_t* texture)
     }
 
     GL_CHECK(glGenTextures, 1, &texture->id);
+    LOGD("Texture has id: %d", texture->id);
+
     GL_CHECK(glBindTexture, texture->target, texture->id);
+
+	switch (texture->byte) {
+		case 1:
+            glPixelStorei(GL_PACK_ALIGNMENT, 1);
+            break;
+		case 2:
+            glPixelStorei(GL_PACK_ALIGNMENT, 2);
+            break;
+		case 3:
+		case 4:
+            glPixelStorei(GL_PACK_ALIGNMENT, 4);
+            break;
+    }
 
     GL_CHECK(glTexParameteri, texture->target,
              GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -446,10 +538,9 @@ texture_gl_create(texture_t* texture)
              GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     GL_CHECK(glTexImage2D, texture->target, 0,
-             texture->iformat, 
+             texture->iformat,
              texture->width, texture->height, 0,
              texture->format, texture->type,
-             /* GL_BGR, GL_UNSIGNED_BYTE, */
              texture->pixels);
 
     GL_CHECK(glBindTexture, texture->target, 0);

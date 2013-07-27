@@ -14,16 +14,36 @@
 
 #pragma once
 
+typedef struct camera_viewport_t
+{
+    /**
+     * The x coordinate of the viewport.
+     */
+    int x;
+
+    /**
+     * The y coordinate of the viewport.
+     */
+    int y;
+
+    /**
+     * The width of the viewport.
+     */
+    int width;
+
+    /**
+     * The height of the viewport;
+     */
+    int height;
+} camera_viewport_t;
+
 /**
  * Sets camera viewport for use with OpenGL.
  *
- * @param x,y Specify the lower left corner of the viewport rectangle, in
- * pixels. The initial value is (0,0).
- * @param width, height Specify the width and height of the viewport. When
- * a GL context is first attached to a window, width and height are set to the
- * dimensions of that window.
+ * @param viewport The viewport to set by OpenGL.
+ * Should be called when window that draws OpenGL changes size.
  */
-void camera_set_viewport(int x, int y, int width, int height);
+void camera_set_viewport(camera_viewport_t* viewport);
 
 /**
  * Supposed to set the orthographic camera.

@@ -121,6 +121,9 @@ typedef struct texture_t
      * This is what #format member describes.
      * It is used by OpenGL to properly read the array of data.
      * For example in TGA format it will be pure raw RGB data.
+     * TODO Perphaps it's possible to free the memory after the data has
+     * been put to GPU through GlTexImage2d. This needs to be checked, it
+     * would free some memory.
      */
     void* pixels;
 

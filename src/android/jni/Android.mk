@@ -30,6 +30,7 @@ LOCAL_C_INCLUDES       := \
 	$(LOCAL_PATH)/lib/libpng
 LOCAL_SRC_FILES        :=\
 	../../utils.c \
+	../../math.c \
 	../../texture.c \
 	../../sprite.c \
 	../../shader.c \
