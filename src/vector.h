@@ -5,7 +5,7 @@
  */
 
 /**
- * @file math.h
+ * @file vector.h
  * @author Jeremy Attali, Johan Attali
  * @date July 24, 2013
  */

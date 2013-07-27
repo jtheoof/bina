@@ -90,7 +90,7 @@
 
 #include "error.h"
 #include "utils.h"
-#include "math.h"
+#include "vector.h"
 #include "texture.h"
 #include "sprite.h"
 #include "shader.h"
