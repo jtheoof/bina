@@ -234,7 +234,6 @@ sprite_animator_t*
 sprite_animator_create(sprite_t* sprite, vec2_t to, float speed)
 {
      sprite_animator_t* animator;
-     vec2_t* positions;
      unsigned int i;
      unsigned int steps = 1;         /* Number of steps */
      vec2_t from = sprite->position; /* Initial sprite position */
@@ -248,35 +247,17 @@ sprite_animator_create(sprite_t* sprite, vec2_t to, float speed)
          goto error;
      }
 
-     norm = sqrtf(powf(to.x - from.x, 2.0f) + powf(to.y - from.y, 2.0f));
+     norm  = sqrtf(powf(to.x - from.x, 2.0f) + powf(to.y - from.y, 2.0f));
      steps = (int) (norm * speed * 60.0f);
 
-     animator->steps = steps;
-     animator->step = 0;
-
-     positions = (vec2_t*) malloc(sizeof(vec2_t) * steps);
-     if (!positions) {
-         LOGE(ERROR_NOT_ENOUGH_MEMORY);
-         goto error;
-     }
-
-     step.x = (to.x - from.x) / steps;
-     step.y = (to.y - from.y) / steps;
-
-     for (i = 1; i <= steps; i++) {
-         positions[i - 1].x = from.x + (i * step.x);
-         positions[i - 1].y = from.y + (i * step.y);
-     }
-
-     animator->positions = positions;
+     animator->steps    = steps;
+     animator->step     = 0;
+     animator->offset.x = (to.x - from.x) / steps;
+     animator->offset.y = (to.y - from.y) / steps;
 
      return animator;
 
 error:
-     if (positions) {
-         free(positions);
-     }
-
      if (animator) {
          free(animator);
      }
@@ -290,9 +271,6 @@ sprite_animator_delete(sprite_animator_t** animator)
     sprite_animator_t* head = *animator;
 
     if (head) {
-        if (head->positions) {
-            free(head->positions);
-        }
         free(head);
         *animator = NULL;
     }
@@ -305,9 +283,13 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
     unsigned int steps = animator->steps;
     unsigned int cur   = animator->step;
 
+    float  fix = elapsed / 0.016f;    /* Fix offset by elapsed time */
+    vec2_t pos = sprite->position;
+    vec2_t off = animator->offset;
+
     if (cur < steps) {
-        sprite->position.x = animator->positions[cur].x * elapsed / 0.016f;
-        sprite->position.y = animator->positions[cur].y * elapsed / 0.016f;
+        sprite->position.x = (pos.x + off.x);
+        sprite->position.y = (pos.y + off.y);
         animator->step++;
     }
     return steps - cur;

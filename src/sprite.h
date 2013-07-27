@@ -35,9 +35,9 @@ typedef struct sprite_animator_t
     unsigned int step;
 
     /**
-     * All the positions that the sprite will take during animation (linear).
+     * The offset we need to add to current position on each update.
      */
-    vec2_t* positions;
+    vec2_t offset;
 } sprite_animator_t;
 
 typedef struct sprite_t
@@ -162,7 +162,8 @@ void sprite_animator_delete(sprite_animator_t** animator);
  *
  * This function will increase the current step of animator object.
  * The time elapsed is present in order to avoid different speed time with
- * different graphics performance.
+ * different graphics performance. We base the initial speed of the sprite on
+ * a 60 FPS rendering throughput (0.016s between each frame).
  *
  * @param sprite The sprite to animate.
  * @param animator The animator previously created.
