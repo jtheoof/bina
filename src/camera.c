@@ -21,5 +21,5 @@ camera_set_ortho(int width, int height)
     defined(__ANDROID_API__)
 #else
 #endif
-    LOGE(ERROR_NOT_IMPLEMENTED);
+    LOGE(BINA_NOT_IMPLEMENTED);
 }

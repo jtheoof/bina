@@ -233,17 +233,15 @@ sprite_render(sprite_t* sprite)
 sprite_animator_t*
 sprite_animator_create(sprite_t* sprite, vec2_t to, float speed, float elapsed)
 {
-     sprite_animator_t* animator;
-     unsigned int i;
+     sprite_animator_t* animator;    /* Animator object returned */
      unsigned int steps = 1;         /* Number of steps */
      vec2_t from = sprite->position; /* Initial sprite position */
-     vec2_t step;                    /* step x and y */
      float  norm = 0.0f;             /* || to - from || */
 
      animator = (sprite_animator_t*) malloc(sizeof(sprite_animator_t));
 
      if (!animator) {
-         LOGE(ERROR_NOT_ENOUGH_MEMORY);
+         LOGE(BINA_NOT_ENOUGH_MEMORY);
          goto error;
      }
 

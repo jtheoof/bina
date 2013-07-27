@@ -18,14 +18,23 @@
 
 #include "bina.h"
 
-static int window_id_g;
+int window_id_g;
+int prev_time_g = 0;
+int curr_time_g = 0;
 
 void
 main_glut_display_cb(void)
 {
-    renderer_render();
+    curr_time_g = glutGet(GLUT_ELAPSED_TIME);
+
     glutPostRedisplay();
-    glutSwapBuffers();
+   
+    if (curr_time_g - prev_time_g >= 16) {
+        prev_time_g = curr_time_g;
+        renderer_render();
+        glutSwapBuffers();
+         
+    }
 }
  
 void

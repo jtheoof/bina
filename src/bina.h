@@ -26,8 +26,12 @@
 
 /* types.h */
 
+#ifndef MAX_CHAR
 #define MAX_CHAR 64
-#define MAX_PATH 256
+#endif
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
 
 #ifndef UNIX
 #include <stdio.h>
@@ -126,7 +130,7 @@ sprite_animator_t* brian_animator;
 #define GL_CHECK(gl, ...) \
     gl(__VA_ARGS__);                                         \
     {                                                        \
-        const char* error;                                   \
+        const char* error = NULL;                            \
         int e, i;                                            \
         for (e = glGetError(); e; e = glGetError()) {        \
             for (i = 0; gl_errors[i].string; i++) {          \
@@ -134,6 +138,9 @@ sprite_animator_t* brian_animator;
                     error = gl_errors[i].string;             \
                     break;                                   \
                 }                                            \
+            }                                                \
+            if (error) {                                     \
+                break;                                       \
             }                                                \
             LOGE("Error in %s: %s (0x%x)\n", #gl, error, e); \
         }                                                    \

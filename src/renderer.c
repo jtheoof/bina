@@ -12,7 +12,6 @@
 int elapsed_g = 0;
 int current_g = 0;
 int previous_g = 0;
-int tmp = 0;
 
 void
 renderer_init(camera_viewport_t* viewport)
@@ -60,13 +59,6 @@ renderer_pre_render(float r, float g, float b, float a)
 float
 renderer_get_time_elapsed()
 {
-    if (tmp++ >= 60) {
-        /* LOGD("time elapsed: %f", current_g / 1000.0f); */
-        LOGD("Previous: %d", previous_g);
-        LOGD("Current: %d", current_g);
-        LOGD("Elapsed: %f", elapsed_g / 1000.0f);
-        tmp = 0;
-    }
     return elapsed_g / 1000.0f;
 }
 
