@@ -140,16 +140,17 @@ void sprite_render(sprite_t* sprite);
  * @param sprite The original sprite we want to animate. It contains the
  * original position.
  * @param to The end position. Where the sprite should end up.
- * @param steps The number of steps from current position to final position.
- * Not sure if we should keep this. It should actually be set by some sort of
- * velocity. Right now it will make as much time for the sprite to go from one
- * edge of the screen to the other than making a very small distance. Only the
- * jumps will shorter.
+ * @param speed The speed at which the sprite should be moving.
+ * The speed is taken into account when computing the steps.
+ * @elapsed The time elapsed since last frame. It used to get an idea of how
+ * far the renderer is going. Right now the implementation if too basic, for
+ * example if last frame was very slow for some reason then the number of
+ * steps will be very short even if GPU rendering comes back up right after.
  * @return The animator with proper memory allocated. You need to call
  * #sprite_animator_delete to clean up the memory used by the structure.
  */
 sprite_animator_t* sprite_animator_create(sprite_t* sprite, vec2_t to,
-                                          float speed);
+                                          float speed, float elapsed);
 
 /**
  * Frees memory allocated by #sprite_animator_create.

@@ -231,7 +231,7 @@ sprite_render(sprite_t* sprite)
 }
 
 sprite_animator_t*
-sprite_animator_create(sprite_t* sprite, vec2_t to, float speed)
+sprite_animator_create(sprite_t* sprite, vec2_t to, float speed, float elapsed)
 {
      sprite_animator_t* animator;
      unsigned int i;
@@ -248,7 +248,7 @@ sprite_animator_create(sprite_t* sprite, vec2_t to, float speed)
      }
 
      norm  = sqrtf(powf(to.x - from.x, 2.0f) + powf(to.y - from.y, 2.0f));
-     steps = (int) (norm * speed * 60.0f);
+     steps = (int) (norm * speed * 1.0f / elapsed);
 
      animator->steps    = steps;
      animator->step     = 0;
