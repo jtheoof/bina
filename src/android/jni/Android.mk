@@ -22,7 +22,7 @@ LOCAL_PATH := $(TOP_PATH)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE           := libgl2jni
-LOCAL_CFLAGS           := -std=c99 -Werror -DHAVE_STDLIB_H -DHAVE_PNG_H
+LOCAL_CFLAGS           := -std=c99 -Werror -DHAVE_STDLIB_H -DHAVE_PNG_H -DANDROID
 LOCAL_LDLIBS           := -llog -lGLESv2 -lz
 LOCAL_STATIC_LIBRARIES := libpng
 LOCAL_C_INCLUDES       := \
@@ -31,6 +31,7 @@ LOCAL_C_INCLUDES       := \
 LOCAL_SRC_FILES        :=\
 	../../utils.c \
 	../../vector.c \
+	../../memory.c \
 	../../texture.c \
 	../../sprite.c \
 	../../shader.c \

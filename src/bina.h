@@ -95,6 +95,7 @@
 #include "error.h"
 #include "utils.h"
 #include "vector.h"
+#include "memory.h"
 #include "texture.h"
 #include "sprite.h"
 #include "shader.h"

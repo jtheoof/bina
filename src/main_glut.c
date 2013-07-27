@@ -28,15 +28,15 @@ main_glut_display_cb(void)
     curr_time_g = glutGet(GLUT_ELAPSED_TIME);
 
     glutPostRedisplay();
-   
+
     if (curr_time_g - prev_time_g >= 16) {
         prev_time_g = curr_time_g;
         renderer_render();
         glutSwapBuffers();
-         
+
     }
 }
- 
+
 void
 main_glut_reshape_cb(int width, int height)
 {
@@ -46,7 +46,7 @@ main_glut_reshape_cb(int width, int height)
     /* Reset the viewport */
     camera_set_viewport(&viewport);
 }
- 
+
 void
 main_glut_normal_keys_cb(unsigned char key, int x, int y)
 {
@@ -56,7 +56,7 @@ main_glut_normal_keys_cb(unsigned char key, int x, int y)
             break;
     }
 }
- 
+
 void
 main_glut_special_keys_cb(int key, int x, int y) {
     switch (key) {
@@ -91,7 +91,7 @@ main_glut_mouse_cb(int button, int state, int x, int y)
 
         bina_animate_brian_to(coord, 1.0f);
     }
-    
+
     glutPostRedisplay();
 }
 
@@ -119,16 +119,16 @@ main(int argc, char** argv)
 	/* RGBA with double buffer */
 	glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE | GLUT_DEPTH);
 
-	/* Create centered window */ 
+	/* Create centered window */
 	screenWidth = glutGet(GLUT_SCREEN_WIDTH);
 	screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
 	posX = (screenWidth >> 1) - (GAME_WIDTH >> 1);
 	posY = (screenHeight >> 1) - (GAME_HEIGHT >> 1);
-	
+
 	glutInitWindowPosition(posX, posY);
 	glutInitWindowSize(GAME_WIDTH, GAME_HEIGHT);
     window_id_g = glutCreateWindow(APP_TITLE);
-    
+
 #ifdef HAVE_GLEW_H
     err = glewInit();
     if (GLEW_OK != err)

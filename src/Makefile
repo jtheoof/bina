@@ -18,7 +18,7 @@ LDFLAGS += $(foreach library,$(program_LIBRARIES),-l$(library))
 all: simple
 
 simple:
-	gcc main_glut.c vector.c bina.c shader.c utils.c texture.c sprite.c camera.c renderer.c -g -o main ${CFLAGS} ${LDFLAGS}
+	gcc main_glut.c vector.c bina.c shader.c utils.c memory.c texture.c sprite.c camera.c renderer.c -g -o main ${CFLAGS} ${LDFLAGS}
 
 clean:
 	rf -f ${program_NAME}
