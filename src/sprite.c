@@ -288,8 +288,8 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
     vec2_t off = animator->offset;
 
     if (cur < steps) {
-        sprite->position.x = (pos.x + off.x);
-        sprite->position.y = (pos.y + off.y);
+        sprite->position.x = pos.x + off.x * fix;
+        sprite->position.y = pos.y + off.y * fix;
         animator->step++;
     }
     return steps - cur;
