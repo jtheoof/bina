@@ -84,9 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -99,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br/>
 <code>#include &lt;string.h&gt;</code><br/>
 <code>#include &lt;ctype.h&gt;</code><br/>
-<code>#include &lt;math.h&gt;</code><br/>
+<code>#include &lt;<a class="el" href="math_8h_source.html">math.h</a>&gt;</code><br/>
 <code>#include &quot;<a class="el" href="error_8h_source.html">error.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="utils_8h_source.html">utils.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="texture_8h_source.html">texture.h</a>&quot;</code><br/>
@@ -110,10 +108,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <p><a href="bina_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbina__image.html">bina_image</a></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a693f306b88f7336281e4d1f07754579c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a693f306b88f7336281e4d1f07754579c"></a>
@@ -133,24 +127,27 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG</b></td></tr>
 <tr class="memitem:ac66c3fb8df34585161d31021608523c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>GL_CHECK</b>(gl,...)</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a54e8b6ef4c38b1d07fe2a57b05ce0d1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54e8b6ef4c38b1d07fe2a57b05ce0d1c"></a>
-typedef struct <a class="el" href="structbina__image.html">bina_image</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bina_image</b></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab3bb525386ef09f6119a58cd1caec000"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8h.html#ab3bb525386ef09f6119a58cd1caec000">bina_init</a> (int width, int height)</td></tr>
 <tr class="memdesc:ab3bb525386ef09f6119a58cd1caec000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initalization of program.  <a href="#ab3bb525386ef09f6119a58cd1caec000"></a><br/></td></tr>
+<tr class="memitem:abf54977e6aa69c172df1735cb50da195"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8h.html#abf54977e6aa69c172df1735cb50da195">bina_end</a> ()</td></tr>
+<tr class="memdesc:abf54977e6aa69c172df1735cb50da195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees objects.  <a href="#abf54977e6aa69c172df1735cb50da195"></a><br/></td></tr>
+<tr class="memitem:ad61c14f9a52dc66b719c6a1a4a23b30a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8h.html#ad61c14f9a52dc66b719c6a1a4a23b30a">bina_animate_brian_to</a> (<a class="el" href="structvec2__t.html">vec2_t</a> to, unsigned int steps)</td></tr>
+<tr class="memdesc:ad61c14f9a52dc66b719c6a1a4a23b30a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animate brian on the screen when clicking or tapping.  <a href="#ad61c14f9a52dc66b719c6a1a4a23b30a"></a><br/></td></tr>
+<tr class="memitem:a954f5da91ceb0bf22a83c4bb61c17fbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8h.html#a954f5da91ceb0bf22a83c4bb61c17fbb">print_gl_string</a> (const char *name, GLenum s)</td></tr>
+<tr class="memdesc:a954f5da91ceb0bf22a83c4bb61c17fbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints useful info about about OpenGL.  <a href="#a954f5da91ceb0bf22a83c4bb61c17fbb"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:aa19171580885bd23f9f0ad481bd1d91b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa19171580885bd23f9f0ad481bd1d91b"></a>
-<a class="el" href="structbina__image.html">bina_image</a>&#160;</td><td class="memItemRight" valign="bottom"><b>background_old</b></td></tr>
-<tr class="memitem:a6fd206286278d0d0b6cb2d86f55529b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6fd206286278d0d0b6cb2d86f55529b9"></a>
-<a class="el" href="structbina__image.html">bina_image</a>&#160;</td><td class="memItemRight" valign="bottom"><b>tga</b></td></tr>
+<tr class="memitem:ab3eef12d2db7799a81fda1de24ba53a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3eef12d2db7799a81fda1de24ba53a8"></a>
+<a class="el" href="structcamera__viewport__t.html">camera_viewport_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>viewport</b></td></tr>
 <tr class="memitem:aa330f3658b49b962a6bc89ff7fb606d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa330f3658b49b962a6bc89ff7fb606d4"></a>
 <a class="el" href="structsprite__t.html">sprite_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>background</b></td></tr>
+<tr class="memitem:a2f41178f70b561127157c77b9d528cde"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f41178f70b561127157c77b9d528cde"></a>
+<a class="el" href="structsprite__t.html">sprite_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>brian</b></td></tr>
+<tr class="memitem:acc3b3d5cf5a31f06954b9182164a0346"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc3b3d5cf5a31f06954b9182164a0346"></a>
+<a class="el" href="structsprite__animator__t.html">sprite_animator_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>brian_animator</b></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Precompiled header that must be included in every c file. </p>
@@ -197,7 +194,7 @@ Variables</h2></td></tr>
 <div class="line">        }                                                    \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="bina_8h_source.html#l00118">118</a> of file <a class="el" href="bina_8h_source.html">bina.h</a>.</p>
+<p>Definition at line <a class="el" href="bina_8h_source.html#l00111">111</a> of file <a class="el" href="bina_8h_source.html">bina.h</a>.</p>
 
 </div>
 </div>
@@ -265,6 +262,65 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2>Function Documentation</h2>
+<a class="anchor" id="ad61c14f9a52dc66b719c6a1a4a23b30a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void bina_animate_brian_to </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structvec2__t.html">vec2_t</a>&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>steps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Animate brian on the screen when clicking or tapping. </p>
+<p>This is just a testing function. The goal is to make it work on every device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">to</td><td>The destination where brian should go. </td></tr>
+    <tr><td class="paramname">steps</td><td>How many steps are needed for the move. </td></tr>
+    <tr><td class="paramname">elapsed</td><td>Time elapsed since last frame (optimum performance will be assumed a framerate at 60 FPS (16ms)). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="bina_8c_source.html#l00069">69</a> of file <a class="el" href="bina_8c_source.html">bina.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abf54977e6aa69c172df1735cb50da195"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void bina_end </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Frees objects. </p>
+<p>Should be called when program exits. Perhaps code or callback can vary depending on devices. </p>
+
+<p>Definition at line <a class="el" href="bina_8c_source.html#l00059">59</a> of file <a class="el" href="bina_8c_source.html">bina.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ab3bb525386ef09f6119a58cd1caec000"></a>
 <div class="memitem">
 <div class="memproto">
@@ -303,10 +359,48 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a954f5da91ceb0bf22a83c4bb61c17fbb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_gl_string </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLenum&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints useful info about about OpenGL. </p>
+<p>This function converts #s into a proper string.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>A custom string to put before showing the value of #s. </td></tr>
+    <tr><td class="paramname">s</td><td>An OpenGL enum we want to print. For example GL_EXTENSIONS. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="bina_8c_source.html#l00022">22</a> of file <a class="el" href="bina_8c_source.html">bina.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 24 2013 00:47:55 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 27 2013 16:13:12 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

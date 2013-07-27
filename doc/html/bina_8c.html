@@ -95,8 +95,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a954f5da91ceb0bf22a83c4bb61c17fbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8c.html#a954f5da91ceb0bf22a83c4bb61c17fbb">print_gl_string</a> (const char *name, GLenum s)</td></tr>
+<tr class="memdesc:a954f5da91ceb0bf22a83c4bb61c17fbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints useful info about about OpenGL.  <a href="#a954f5da91ceb0bf22a83c4bb61c17fbb"></a><br/></td></tr>
 <tr class="memitem:ab3bb525386ef09f6119a58cd1caec000"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8c.html#ab3bb525386ef09f6119a58cd1caec000">bina_init</a> (int width, int height)</td></tr>
 <tr class="memdesc:ab3bb525386ef09f6119a58cd1caec000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initalization of program.  <a href="#ab3bb525386ef09f6119a58cd1caec000"></a><br/></td></tr>
+<tr class="memitem:abf54977e6aa69c172df1735cb50da195"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8c.html#abf54977e6aa69c172df1735cb50da195">bina_end</a> ()</td></tr>
+<tr class="memdesc:abf54977e6aa69c172df1735cb50da195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees objects.  <a href="#abf54977e6aa69c172df1735cb50da195"></a><br/></td></tr>
+<tr class="memitem:ad61c14f9a52dc66b719c6a1a4a23b30a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bina_8c.html#ad61c14f9a52dc66b719c6a1a4a23b30a">bina_animate_brian_to</a> (<a class="el" href="structvec2__t.html">vec2_t</a> to, unsigned int steps)</td></tr>
+<tr class="memdesc:ad61c14f9a52dc66b719c6a1a4a23b30a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animate brian on the screen when clicking or tapping.  <a href="#ad61c14f9a52dc66b719c6a1a4a23b30a"></a><br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Jeremy Attali, Johan Attali </dd></dl>
@@ -104,6 +110,65 @@ Functions</h2></td></tr>
 
 <p>Definition in file <a class="el" href="bina_8c_source.html">bina.c</a>.</p>
 </div><h2>Function Documentation</h2>
+<a class="anchor" id="ad61c14f9a52dc66b719c6a1a4a23b30a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void bina_animate_brian_to </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structvec2__t.html">vec2_t</a>&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>steps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Animate brian on the screen when clicking or tapping. </p>
+<p>This is just a testing function. The goal is to make it work on every device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">to</td><td>The destination where brian should go. </td></tr>
+    <tr><td class="paramname">steps</td><td>How many steps are needed for the move. </td></tr>
+    <tr><td class="paramname">elapsed</td><td>Time elapsed since last frame (optimum performance will be assumed a framerate at 60 FPS (16ms)). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="bina_8c_source.html#l00069">69</a> of file <a class="el" href="bina_8c_source.html">bina.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abf54977e6aa69c172df1735cb50da195"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void bina_end </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Frees objects. </p>
+<p>Should be called when program exits. Perhaps code or callback can vary depending on devices. </p>
+
+<p>Definition at line <a class="el" href="bina_8c_source.html#l00059">59</a> of file <a class="el" href="bina_8c_source.html">bina.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ab3bb525386ef09f6119a58cd1caec000"></a>
 <div class="memitem">
 <div class="memproto">
@@ -142,10 +207,48 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a954f5da91ceb0bf22a83c4bb61c17fbb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_gl_string </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLenum&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints useful info about about OpenGL. </p>
+<p>This function converts #s into a proper string.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>A custom string to put before showing the value of #s. </td></tr>
+    <tr><td class="paramname">s</td><td>An OpenGL enum we want to print. For example GL_EXTENSIONS. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="bina_8c_source.html#l00022">22</a> of file <a class="el" href="bina_8c_source.html">bina.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 24 2013 00:47:55 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 27 2013 16:13:12 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

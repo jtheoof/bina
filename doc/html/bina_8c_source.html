@@ -102,8 +102,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">return</span> (<span class="keyword">const</span> GLubyte *) 0;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;print_gl_string(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, GLenum s)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="code" href="bina_8h.html#a954f5da91ceb0bf22a83c4bb61c17fbb">   22</a></span>&#160;<a class="code" href="bina_8c.html#a954f5da91ceb0bf22a83c4bb61c17fbb" title="Prints useful info about about OpenGL.">print_gl_string</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, GLenum s)</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *v = (<span class="keyword">const</span> <span class="keywordtype">char</span> *) glGetString(s);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    LOGI(<span class="stringliteral">&quot;GL %s = %s\n&quot;</span>, name, v);</div>
@@ -120,33 +120,48 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="bina_8h.html#ab3bb525386ef09f6119a58cd1caec000">   37</a></span>&#160;<a class="code" href="bina_8c.html#ab3bb525386ef09f6119a58cd1caec000" title="Initalization of program.">bina_init</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">/* background_old.file = &quot;../artwork/background.png&quot;; */</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">/* error = texture_load_png_old(background_old.file, */</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">/*                          &amp;background_old.width, &amp;background_old.height, */</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">/*                          &amp;background_old.alpha, &amp;(background_old.pixels)); */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">/* if (error) { */</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">/*     LOGE(&quot;Unable to load image: %s\n&quot;, background_old.file); */</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">/*     return; */</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">/* } */</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">/* tga.file = &quot;../artwork/hello1.tga&quot;; */</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">/* tga.alpha = 0; */</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">/* error = texture_load_tga(tga.file, */</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">/*                          &amp;tga.width, &amp;tga.height, &amp;(tga.pixels)); */</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">/* if (error) { */</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">/*     LOGE(&quot;Unable to load image: %s\n&quot;, tga.file); */</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">/*     return; */</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">/* } */</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    background = <a class="code" href="sprite_8c.html#a9a0bbf5dced3e4f703bc15301600e109" title="Vertex shader used for simple sprites.">sprite_create</a>(<span class="stringliteral">&quot;../artwork/background.png&quot;</span>);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">/* background = sprite_create(&quot;../poc/linux/brian.png&quot;); */</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="renderer_8c.html#a928ebfd7b5081cfc627512d2598a5278" title="Initializes the render with viewport dimensions specified.">renderer_init</a>(width, height);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="structvec2__t.html">vec2_t</a> pos = {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        .x = 0.0f,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        .y = 0.0f</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    viewport.<a class="code" href="structcamera__viewport__t.html#afb9f0264af10947916aec432416b459a" title="The x coordinate of the viewport.">x</a> = 0;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    viewport.<a class="code" href="structcamera__viewport__t.html#a4c1b50685230aa3b83d2c9958f4c0147" title="The y coordinate of the viewport.">y</a> = 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    viewport.<a class="code" href="structcamera__viewport__t.html#a5278af0edb00880a1d91f0bcc4b3af63" title="The width of the viewport.">width</a> = width;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    viewport.<a class="code" href="structcamera__viewport__t.html#ab056c47790b1a34e4657034e93bf2f94" title="The height of the viewport;.">height</a> = height;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    background = <a class="code" href="sprite_8c.html#a47d2d888d58263b216412040062c5201" title="Creates a new sprite and allocates the necessary memory.">sprite_create</a>(<span class="stringliteral">&quot;../artwork/background.png&quot;</span>, pos, 2.0f, 2.0f);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    brian = <a class="code" href="sprite_8c.html#a47d2d888d58263b216412040062c5201" title="Creates a new sprite and allocates the necessary memory.">sprite_create</a>(<span class="stringliteral">&quot;../artwork/brian.png&quot;</span>, pos, 0.19f, 0.66f);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">/* No animator for now, only when gamer clicks or taps. */</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    brian_animator = NULL;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="renderer_8c.html#a50378c90e3929eea026a9abd05832f8b" title="Initializes the render with viewport dimensions specified.">renderer_init</a>(&amp;viewport);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="bina_8h.html#abf54977e6aa69c172df1735cb50da195">   59</a></span>&#160;<a class="code" href="bina_8c.html#abf54977e6aa69c172df1735cb50da195" title="Frees objects.">bina_end</a>()</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="sprite_8c.html#afa3ee9b78f68bcb17e2c01ddd29fb1f2" title="Frees the memory of a sprite.">sprite_delete</a>(&amp;background);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="sprite_8c.html#afa3ee9b78f68bcb17e2c01ddd29fb1f2" title="Frees the memory of a sprite.">sprite_delete</a>(&amp;brian);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="sprite_8c.html#a0253d74888a8ebc733dee9c590c9372c" title="Frees memory allocated by sprite_animator_create.">sprite_animator_delete</a>(&amp;brian_animator);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="code" href="bina_8h.html#ad61c14f9a52dc66b719c6a1a4a23b30a">   69</a></span>&#160;<a class="code" href="bina_8c.html#ad61c14f9a52dc66b719c6a1a4a23b30a" title="Animate brian on the screen when clicking or tapping.">bina_animate_brian_to</a>(<a class="code" href="structvec2__t.html">vec2_t</a> to, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> steps)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">if</span> (brian_animator) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="sprite_8c.html#a0253d74888a8ebc733dee9c590c9372c" title="Frees memory allocated by sprite_animator_create.">sprite_animator_delete</a>(&amp;brian_animator);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    brian_animator = <a class="code" href="sprite_8c.html#a237088c99d25dc14825f57bdeced61a4" title="Creates a new animator object.">sprite_animator_create</a>(brian, to, steps);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 24 2013 00:47:55 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 27 2013 16:13:12 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

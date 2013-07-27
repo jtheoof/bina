@@ -84,6 +84,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">camera.h File Reference</div>  </div>
@@ -95,10 +97,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p><a href="camera_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcamera__viewport__t.html">camera_viewport_t</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a0ae489ae377311cad6f29771eb0716b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ae489ae377311cad6f29771eb0716b5"></a>
+typedef struct <a class="el" href="structcamera__viewport__t.html">camera_viewport_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>camera_viewport_t</b></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:abcaabd3a171b36f6d68fdeb94c097c2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="camera_8h.html#abcaabd3a171b36f6d68fdeb94c097c2d">camera_set_viewport</a> (int x, int y, int width, int height)</td></tr>
-<tr class="memdesc:abcaabd3a171b36f6d68fdeb94c097c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets camera viewport for use with OpenGL.  <a href="#abcaabd3a171b36f6d68fdeb94c097c2d"></a><br/></td></tr>
+<tr class="memitem:a766ba1f1ba5c9571cb8a7e360b279b46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="camera_8h.html#a766ba1f1ba5c9571cb8a7e360b279b46">camera_set_viewport</a> (<a class="el" href="structcamera__viewport__t.html">camera_viewport_t</a> *viewport)</td></tr>
+<tr class="memdesc:a766ba1f1ba5c9571cb8a7e360b279b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets camera viewport for use with OpenGL.  <a href="#a766ba1f1ba5c9571cb8a7e360b279b46"></a><br/></td></tr>
 <tr class="memitem:acc7c8fa057c1b1fae29a1f57719b7b15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="camera_8h.html#acc7c8fa057c1b1fae29a1f57719b7b15">camera_set_ortho</a> (int width, int height)</td></tr>
 <tr class="memdesc:acc7c8fa057c1b1fae29a1f57719b7b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supposed to set the orthographic camera.  <a href="#acc7c8fa057c1b1fae29a1f57719b7b15"></a><br/></td></tr>
 </table>
@@ -137,42 +148,20 @@ Functions</h2></td></tr>
 <p>Supposed to set the orthographic camera. </p>
 <p><b>NOT YET IMPLEMENTED ON DEVICES.</b> </p>
 
-<p>Definition at line <a class="el" href="camera_8c_source.html#l00016">16</a> of file <a class="el" href="camera_8c_source.html">camera.c</a>.</p>
+<p>Definition at line <a class="el" href="camera_8c_source.html#l00018">18</a> of file <a class="el" href="camera_8c_source.html">camera.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="abcaabd3a171b36f6d68fdeb94c097c2d"></a>
+<a class="anchor" id="a766ba1f1ba5c9571cb8a7e360b279b46"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void camera_set_viewport </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="structcamera__viewport__t.html">camera_viewport_t</a> *&#160;</td>
+          <td class="paramname"><em>viewport</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>height</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -180,8 +169,7 @@ Functions</h2></td></tr>
 <p>Sets camera viewport for use with OpenGL. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x,y</td><td>Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0). </td></tr>
-    <tr><td class="paramname">width,height</td><td>Specify the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window. </td></tr>
+    <tr><td class="paramname">viewport</td><td>The viewport to set by OpenGL. Should be called when window that draws OpenGL changes size. </td></tr>
   </table>
   </dd>
 </dl>
@@ -193,7 +181,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 24 2013 00:47:55 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 27 2013 16:13:12 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

@@ -99,24 +99,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsprite__gl.html">sprite_gl</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsprite__animator__t.html">sprite_animator_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple animator for sprites.  <a href="structsprite__animator__t.html#details">More...</a><br/></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsprite__t.html">sprite_t</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a430b8866373400622b66538330c29843"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a430b8866373400622b66538330c29843"></a>
-typedef struct <a class="el" href="structsprite__gl.html">sprite_gl</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sprite_gl</b></td></tr>
+<tr class="memitem:af963e1e06de3574a42291a597d2d04a3"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structsprite__animator__t.html">sprite_animator_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#af963e1e06de3574a42291a597d2d04a3">sprite_animator_t</a></td></tr>
+<tr class="memdesc:af963e1e06de3574a42291a597d2d04a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple animator for sprites.  <a href="#af963e1e06de3574a42291a597d2d04a3"></a><br/></td></tr>
 <tr class="memitem:abf15e3a532093f8b4c4be375c8c23505"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf15e3a532093f8b4c4be375c8c23505"></a>
 typedef struct <a class="el" href="structsprite__t.html">sprite_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sprite_t</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9a0bbf5dced3e4f703bc15301600e109"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsprite__t.html">sprite_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#a9a0bbf5dced3e4f703bc15301600e109">sprite_create</a> (const char *texture_name)</td></tr>
-<tr class="memdesc:a9a0bbf5dced3e4f703bc15301600e109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite and allocates the necessary memory.  <a href="#a9a0bbf5dced3e4f703bc15301600e109"></a><br/></td></tr>
+<tr class="memitem:a47d2d888d58263b216412040062c5201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsprite__t.html">sprite_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#a47d2d888d58263b216412040062c5201">sprite_create</a> (const char *texture_name, <a class="el" href="structvec2__t.html">vec2_t</a> position, float width, float height)</td></tr>
+<tr class="memdesc:a47d2d888d58263b216412040062c5201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite and allocates the necessary memory.  <a href="#a47d2d888d58263b216412040062c5201"></a><br/></td></tr>
 <tr class="memitem:afa3ee9b78f68bcb17e2c01ddd29fb1f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#afa3ee9b78f68bcb17e2c01ddd29fb1f2">sprite_delete</a> (<a class="el" href="structsprite__t.html">sprite_t</a> **sprite)</td></tr>
 <tr class="memdesc:afa3ee9b78f68bcb17e2c01ddd29fb1f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory of a sprite.  <a href="#afa3ee9b78f68bcb17e2c01ddd29fb1f2"></a><br/></td></tr>
-<tr class="memitem:abc7df05e7b7bf17896f0f91e34edc75e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc7df05e7b7bf17896f0f91e34edc75e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sprite_render</b> (<a class="el" href="structsprite__t.html">sprite_t</a> *sprite)</td></tr>
+<tr class="memitem:abc7df05e7b7bf17896f0f91e34edc75e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#abc7df05e7b7bf17896f0f91e34edc75e">sprite_render</a> (<a class="el" href="structsprite__t.html">sprite_t</a> *sprite)</td></tr>
+<tr class="memdesc:abc7df05e7b7bf17896f0f91e34edc75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a sprite to the screen.  <a href="#abc7df05e7b7bf17896f0f91e34edc75e"></a><br/></td></tr>
+<tr class="memitem:a237088c99d25dc14825f57bdeced61a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structsprite__animator__t.html">sprite_animator_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#a237088c99d25dc14825f57bdeced61a4">sprite_animator_create</a> (<a class="el" href="structsprite__t.html">sprite_t</a> *sprite, <a class="el" href="structvec2__t.html">vec2_t</a> to, unsigned int steps)</td></tr>
+<tr class="memdesc:a237088c99d25dc14825f57bdeced61a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new animator object.  <a href="#a237088c99d25dc14825f57bdeced61a4"></a><br/></td></tr>
+<tr class="memitem:a0253d74888a8ebc733dee9c590c9372c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#a0253d74888a8ebc733dee9c590c9372c">sprite_animator_delete</a> (<a class="el" href="structsprite__animator__t.html">sprite_animator_t</a> **animator)</td></tr>
+<tr class="memdesc:a0253d74888a8ebc733dee9c590c9372c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees memory allocated by <a class="el" href="sprite_8h.html#a237088c99d25dc14825f57bdeced61a4" title="Creates a new animator object.">sprite_animator_create</a>.  <a href="#a0253d74888a8ebc733dee9c590c9372c"></a><br/></td></tr>
+<tr class="memitem:a8538150bbbb0cc8da9099657691a4707"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sprite_8h.html#a8538150bbbb0cc8da9099657691a4707">sprite_animator_animate</a> (<a class="el" href="structsprite__t.html">sprite_t</a> *sprite, <a class="el" href="structsprite__animator__t.html">sprite_animator_t</a> *animator)</td></tr>
+<tr class="memdesc:a8538150bbbb0cc8da9099657691a4707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animates the sprite given an animator.  <a href="#a8538150bbbb0cc8da9099657691a4707"></a><br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Contains the necessary structs and functions to work with sprites. </p>
@@ -126,8 +133,135 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sprite_render</b> (<a
 <dl class="section date"><dt>Date</dt><dd>July 23, 2013 </dd></dl>
 
 <p>Definition in file <a class="el" href="sprite_8h_source.html">sprite.h</a>.</p>
-</div><h2>Function Documentation</h2>
-<a class="anchor" id="a9a0bbf5dced3e4f703bc15301600e109"></a>
+</div><h2>Typedef Documentation</h2>
+<a class="anchor" id="af963e1e06de3574a42291a597d2d04a3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structsprite__animator__t.html">sprite_animator_t</a>  <a class="el" href="structsprite__animator__t.html">sprite_animator_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A simple animator for sprites. </p>
+<p>Right now it only allows to update positions based on linear updates. This could be improved a lot by adding rotations, scaling, ... </p>
+
+</div>
+</div>
+<h2>Function Documentation</h2>
+<a class="anchor" id="a8538150bbbb0cc8da9099657691a4707"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int sprite_animator_animate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structsprite__t.html">sprite_t</a> *&#160;</td>
+          <td class="paramname"><em>sprite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structsprite__animator__t.html">sprite_animator_t</a> *&#160;</td>
+          <td class="paramname"><em>animator</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Animates the sprite given an animator. </p>
+<p>This function will increase the current step of animator object. Right now it's missing the time elapsed since last frame. This needs to be added in order to avoid different speed time with different graphics performance.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sprite</td><td>The sprite to animate. </td></tr>
+    <tr><td class="paramname">animator</td><td>The animator previously created. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of steps left. When this function returns 0, it is mandatory to clean up the memory and free animator object through <a class="el" href="sprite_8h.html#a0253d74888a8ebc733dee9c590c9372c" title="Frees memory allocated by sprite_animator_create.">sprite_animator_delete</a>. </dd></dl>
+
+<p>Definition at line <a class="el" href="sprite_8c_source.html#l00296">296</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a237088c99d25dc14825f57bdeced61a4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structsprite__animator__t.html">sprite_animator_t</a>* sprite_animator_create </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structsprite__t.html">sprite_t</a> *&#160;</td>
+          <td class="paramname"><em>sprite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structvec2__t.html">vec2_t</a>&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>steps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new animator object. </p>
+<p>An animator object only contains linear positions from current position to end position (with number of steps and current step). This is very simple for now, we'll make it more complex later.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sprite</td><td>The original sprite we want to animate. It contains the original position. </td></tr>
+    <tr><td class="paramname">to</td><td>The end position. Where the sprite should end up. </td></tr>
+    <tr><td class="paramname">steps</td><td>The number of steps from current position to final position. Not sure if we should keep this. It should actually be set by some sort of velocity. Right now it will make as much time for the sprite to go from one edge of the screen to the other than making a very small distance. Only the jumps will shorter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The animator with proper memory allocated. You need to call <a class="el" href="sprite_8h.html#a0253d74888a8ebc733dee9c590c9372c" title="Frees memory allocated by sprite_animator_create.">sprite_animator_delete</a> to clean up the memory used by the structure. </dd></dl>
+
+<p>Definition at line <a class="el" href="sprite_8c_source.html#l00235">235</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0253d74888a8ebc733dee9c590c9372c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sprite_animator_delete </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structsprite__animator__t.html">sprite_animator_t</a> **&#160;</td>
+          <td class="paramname"><em>animator</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Frees memory allocated by <a class="el" href="sprite_8h.html#a237088c99d25dc14825f57bdeced61a4" title="Creates a new animator object.">sprite_animator_create</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">animator</td><td>The animator to free. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="sprite_8c_source.html#l00282">282</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a47d2d888d58263b216412040062c5201"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -135,8 +269,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sprite_render</b> (<a
           <td class="memname"><a class="el" href="structsprite__t.html">sprite_t</a>* sprite_create </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>texture_name</em></td><td>)</td>
+          <td class="paramname"><em>texture_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="structvec2__t.html">vec2_t</a>&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -148,13 +304,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sprite_render</b> (<a
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A new sprite object with the memory already allocated.</dd></dl>
-<p>Creates a new sprite and allocates the necessary memory.</p>
-<p>This is a basic vertex shader used for position and texturing.</p>
-<p>The first three lines are used to deal with precision on devices. Since it's not GLSL spec varies from OpenGL to OpenGL ES we need a specific define when rendering for GL_ES.</p>
-<p><code> attribute vec4 position_a; </code> This declares our attribute to set the vertices positions. </p>
+<dl class="section return"><dt>Returns</dt><dd>A new sprite object with the memory already allocated. </dd></dl>
 
-<p>Definition at line <a class="el" href="sprite_8c_source.html#l00133">133</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
+<p>Definition at line <a class="el" href="sprite_8c_source.html#l00131">131</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
 
 </div>
 </div>
@@ -180,14 +332,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sprite_render</b> (<a
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="sprite_8c_source.html#l00161">161</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
+<p>Definition at line <a class="el" href="sprite_8c_source.html#l00188">188</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abc7df05e7b7bf17896f0f91e34edc75e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sprite_render </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structsprite__t.html">sprite_t</a> *&#160;</td>
+          <td class="paramname"><em>sprite</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Renders a sprite to the screen. </p>
+<p>Proper calls to <a class="el" href="sprite_8h.html#a47d2d888d58263b216412040062c5201" title="Creates a new sprite and allocates the necessary memory.">sprite_create</a> should have been made. OpenGL needs to be set up properly (optinally with texturing). </p>
+
+<p>Definition at line <a class="el" href="sprite_8c_source.html#l00200">200</a> of file <a class="el" href="sprite_8c_source.html">sprite.c</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 24 2013 00:47:55 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 27 2013 16:13:12 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

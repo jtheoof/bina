@@ -91,26 +91,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="bina_8h.html" title="Precompiled header that must be included in every c file.">bina.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="code" href="camera_8h.html#abcaabd3a171b36f6d68fdeb94c097c2d">   10</a></span>&#160;<a class="code" href="camera_8c.html#abcaabd3a171b36f6d68fdeb94c097c2d" title="Sets camera viewport for use with OpenGL.">camera_set_viewport</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height)</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="code" href="camera_8h.html#a766ba1f1ba5c9571cb8a7e360b279b46">   10</a></span>&#160;<a class="code" href="camera_8c.html#a766ba1f1ba5c9571cb8a7e360b279b46" title="Sets camera viewport for use with OpenGL.">camera_set_viewport</a>(<a class="code" href="structcamera__viewport__t.html">camera_viewport_t</a>* viewport)</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    GL_CHECK(glViewport, x, y, width, height);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="camera_8h.html#acc7c8fa057c1b1fae29a1f57719b7b15">   16</a></span>&#160;<a class="code" href="camera_8c.html#acc7c8fa057c1b1fae29a1f57719b7b15" title="Supposed to set the orthographic camera.">camera_set_ortho</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#if defined(USE_OPENGL_ES) || \</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">    defined(__ANDROID_API__)</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span>    glMatrixMode(GL_PROJECTION);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    glLoadIdentity();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    glOrtho(0, width, 0, height, -1, 1);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    GL_CHECK(glViewport, viewport-&gt;<a class="code" href="structcamera__viewport__t.html#afb9f0264af10947916aec432416b459a" title="The x coordinate of the viewport.">x</a>, viewport-&gt;<a class="code" href="structcamera__viewport__t.html#a4c1b50685230aa3b83d2c9958f4c0147" title="The y coordinate of the viewport.">y</a>,</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;                         viewport-&gt;<a class="code" href="structcamera__viewport__t.html#a5278af0edb00880a1d91f0bcc4b3af63" title="The width of the viewport.">width</a>, viewport-&gt;<a class="code" href="structcamera__viewport__t.html#ab056c47790b1a34e4657034e93bf2f94" title="The height of the viewport;.">height</a>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">/* TODO IMPLEMENT THIS */</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="camera_8h.html#acc7c8fa057c1b1fae29a1f57719b7b15">   18</a></span>&#160;<a class="code" href="camera_8c.html#acc7c8fa057c1b1fae29a1f57719b7b15" title="Supposed to set the orthographic camera.">camera_set_ortho</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#if defined(USE_OPENGL_ES) || \</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">    defined(__ANDROID_API__)</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span>    LOGE(ERROR_NOT_IMPLEMENTED);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 24 2013 00:47:55 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 27 2013 16:13:12 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

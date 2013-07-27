@@ -90,39 +90,62 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="sprite_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="structsprite__gl.html">   19</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structsprite__gl.html">sprite_gl</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;} <a class="code" href="structsprite__gl.html">sprite_gl</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="code" href="structsprite__t.html">   24</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structsprite__t.html">sprite_t</a></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="code" href="structsprite__t.html#abd038e0a6724be3b3c2a7a18d39d365b">   32</a></span>&#160;    <a class="code" href="structtexture__t.html" title="The texture structure used to control a texture behaviors and properties.">texture_t</a>* <a class="code" href="structsprite__t.html#abd038e0a6724be3b3c2a7a18d39d365b" title="The texture associated with the sprite.">texture</a>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">/* OpenGL specifics */</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> program;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="code" href="structsprite__animator__t.html">   25</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structsprite__animator__t.html" title="A simple animator for sprites.">sprite_animator_t</a></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="structsprite__animator__t.html#ae77adb1765bca1ea94083f89ef7d5d4f">   30</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structsprite__animator__t.html#ae77adb1765bca1ea94083f89ef7d5d4f" title="How many steps are required in the animation.">steps</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="structsprite__animator__t.html#ae4a59eb4c6e9e4824c28a3ac49caf56f">   35</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structsprite__animator__t.html#ae4a59eb4c6e9e4824c28a3ac49caf56f" title="The current step we are in while animating the sprite.">step</a>;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">/* Position attribute. */</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> position_attrib;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">/* TODO Move these into the texture structure or a specific program</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">     * structure.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> texture_attrib;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> texture_uniform;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;} <a class="code" href="structsprite__t.html">sprite_t</a>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<a class="code" href="structsprite__t.html">sprite_t</a>* <a class="code" href="sprite_8c.html#a9a0bbf5dced3e4f703bc15301600e109" title="Vertex shader used for simple sprites.">sprite_create</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* texture_name);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sprite_8c.html#afa3ee9b78f68bcb17e2c01ddd29fb1f2" title="Frees the memory of a sprite.">sprite_delete</a>(<a class="code" href="structsprite__t.html">sprite_t</a>** sprite);</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="structsprite__animator__t.html#ad91b3ca45fe7170cbab6bd94ac762c58">   40</a></span>&#160;    <a class="code" href="structvec2__t.html">vec2_t</a>* <a class="code" href="structsprite__animator__t.html#ad91b3ca45fe7170cbab6bd94ac762c58" title="All the positions that the sprite will take during animation (linear).">positions</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;} <a class="code" href="sprite_8h.html#af963e1e06de3574a42291a597d2d04a3" title="A simple animator for sprites.">sprite_animator_t</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="structsprite__t.html">   43</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structsprite__t.html">sprite_t</a></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="structsprite__t.html#abd038e0a6724be3b3c2a7a18d39d365b">   51</a></span>&#160;    <a class="code" href="structtexture__t.html" title="The texture structure used to control a texture behaviors and properties.">texture_t</a>* <a class="code" href="structsprite__t.html#abd038e0a6724be3b3c2a7a18d39d365b" title="The texture associated with the sprite.">texture</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">/* OpenGL specifics */</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> program;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">/* Position attribute. */</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> position_attrib;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">/* TODO Move these into the texture structure or a specific program</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">     * structure.</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> texture_attrib;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> texture_uniform;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordtype">void</span> sprite_render(<a class="code" href="structsprite__t.html">sprite_t</a>* sprite);</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="code" href="structsprite__t.html#a2c8be6fff50fb933d5c393cbac615e83">   73</a></span>&#160;    <a class="code" href="structvec2__t.html">vec2_t</a> <a class="code" href="structsprite__t.html#a2c8be6fff50fb933d5c393cbac615e83" title="The position of the left-bottom coordinate of the sprite.">position</a>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="structsprite__t.html#a3153e8f30e7710f42d29cf66a596188e">   82</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structsprite__t.html#a3153e8f30e7710f42d29cf66a596188e" title="The OpenGL uniform of the position, used by the vertex shader.">position_uniform</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">float</span> vertices[4][2];</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="code" href="structsprite__t.html#ac1163277d23629957ea8121072552f19">   94</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="structsprite__t.html#ac1163277d23629957ea8121072552f19" title="The width of the sprite.">width</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="code" href="structsprite__t.html#ab7c4e4122d51769fc7410ba26156de8c">  102</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="structsprite__t.html#ab7c4e4122d51769fc7410ba26156de8c" title="The height of the sprite.">height</a>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <a class="code" href="structsprite__t.html">sprite_t</a>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<a class="code" href="structsprite__t.html">sprite_t</a>* <a class="code" href="sprite_8c.html#a47d2d888d58263b216412040062c5201" title="Creates a new sprite and allocates the necessary memory.">sprite_create</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* texture_name, <a class="code" href="structvec2__t.html">vec2_t</a> position,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                        <span class="keywordtype">float</span> width, <span class="keywordtype">float</span> height);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sprite_8c.html#afa3ee9b78f68bcb17e2c01ddd29fb1f2" title="Frees the memory of a sprite.">sprite_delete</a>(<a class="code" href="structsprite__t.html">sprite_t</a>** sprite);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sprite_8c.html#abc7df05e7b7bf17896f0f91e34edc75e" title="Renders a sprite to the screen.">sprite_render</a>(<a class="code" href="structsprite__t.html">sprite_t</a>* sprite);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<a class="code" href="structsprite__animator__t.html" title="A simple animator for sprites.">sprite_animator_t</a>* <a class="code" href="sprite_8c.html#a237088c99d25dc14825f57bdeced61a4" title="Creates a new animator object.">sprite_animator_create</a>(<a class="code" href="structsprite__t.html">sprite_t</a>* sprite, <a class="code" href="structvec2__t.html">vec2_t</a> to,</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                                          <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> steps);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="keywordtype">void</span> <a class="code" href="sprite_8c.html#a0253d74888a8ebc733dee9c590c9372c" title="Frees memory allocated by sprite_animator_create.">sprite_animator_delete</a>(<a class="code" href="structsprite__animator__t.html" title="A simple animator for sprites.">sprite_animator_t</a>** animator);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="sprite_8c.html#a8538150bbbb0cc8da9099657691a4707" title="Animates the sprite given an animator.">sprite_animator_animate</a>(<a class="code" href="structsprite__t.html">sprite_t</a>* sprite,</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                                     <a class="code" href="structsprite__animator__t.html" title="A simple animator for sprites.">sprite_animator_t</a>* animator);</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 24 2013 00:47:55 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 27 2013 16:13:12 for Bina by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
