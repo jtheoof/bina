@@ -27,24 +27,25 @@ memory_create(const char* filepath)
         goto error;
     }
 
+    /* Getting buffer size */
+    fseek(fd, 0, SEEK_END);
+    memory->size = ftell(fd);
+    fseek(fd, 0, SEEK_SET);
+
+    /* Allocating enough memory for buffer */
     memory->buffer = (unsigned char *) calloc(1, memory->size + 1);
-    if (!memory) {
+    if (!memory->buffer) {
         LOGE(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 
     /* Copying filepath */
-    strcpy(memory->filepath, filepath);
-    
-    /* Getting buffer size */
-    fseek(fd, 0, SEEK_END);
-    memory->size = ftell(fd);
-    fseek(fd, 0, SEEK_SET);
-    
+    strncpy(memory->filepath, filepath, MAX_PATH);
+
     /* Reading buffer */
     fread(memory->buffer, memory->size, 1, fd);
     memory->buffer[memory->size] = 0;
-    
+
     fclose(fd);
     return memory;
 #endif
@@ -76,7 +77,7 @@ memory_read(memory_t* memory, void* dest, unsigned int size)
     }
 
 	memcpy(dest, &memory->buffer[memory->position], size);
-	
+
 	memory->position += size;
 
 	return size;

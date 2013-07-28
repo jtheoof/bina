@@ -28,6 +28,11 @@ typedef struct texture_t
     char name[MAX_CHAR];
 
     /**
+     * Image (PNG, ...) stored in memory.
+     */
+    memory_t* image;
+
+    /**
      * The OpenGL (ES) texture id.
      */
     unsigned int id;
@@ -105,7 +110,7 @@ typedef struct texture_t
     /**
      * The type of texel to use for this texture.
      *
-     * Can be: 
+     * Can be:
      *   - GL_UNSIGNED_BYTE
      *   - GL_UNSIGNED_SHORT_5_6_5
      *   - GL_UNSIGNED_SHORT_4_4_4_4
@@ -173,11 +178,18 @@ int texture_load(texture_t* texture);
 int texture_load_png(texture_t* texture);
 
 /**
- * Loads a PNG file (based on libpng).
+ * Reads a PNG file from memory.
+ *
+ * This is the callback from png_set_read_fn and used to read the PNG image.
+ *
+ * @param pngp The read structure.
+ * @param bytep The row pointers that will be the destination of the data
+ * read.
+ * @param size The number of bytes to read.
  */
-int texture_load_png_old(const char *filename,
-                     int* width, int* height, int* alpha,
-                     void** pixels);
+void texture_read_png_memory(png_structp pngp, png_bytep bytep,
+                             png_size_t size);
+
 /**
  * Loads a TGA raw file (no need for any library).
  */

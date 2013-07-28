@@ -158,15 +158,6 @@ sprite_create(const char* texture_name, vec2_t position,
         LOGD("Sprite has texture_u: %d", sprite->texture_uniform);
     }
 
-    /* sprite->vertices[0][0] = -1.0f; */
-    /* sprite->vertices[0][1] =  1.0f; */
-    /* sprite->vertices[1][0] = -1.0f; */
-    /* sprite->vertices[1][1] = -1.0f; */
-    /* sprite->vertices[2][0] =  1.0f; */
-    /* sprite->vertices[2][1] =  1.0f; */
-    /* sprite->vertices[3][0] =  1.0f; */
-    /* sprite->vertices[3][1] = -1.0f; */
-
     sprite->vertices[0][0] = -1.0f;
     sprite->vertices[0][1] = -1.0f + height;
     sprite->vertices[1][0] = -1.0f;

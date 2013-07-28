@@ -19,6 +19,143 @@ le_short(unsigned char *bytes)
 
 /* TODO This should return the texture itself, not an int. */
 
+/* static void */
+/* texture_read_png(png_structp png, png_bytep data, png_size_t size) */
+/* { */
+/* #ifdef __ANDROID_API__ */
+/*     texture_read_png_android(png, data, size); */
+/* #else */
+/* #endif */
+/* } */
+
+/* void png_asset_read(png_structp png, png_bytep data, png_size_t size) { */
+/*     //AAsset_seek(pngAsset_, 0, 0); */
+/*     AAsset_read(pngAsset_, data, size); */
+/*     int numBytesRemaining = AAsset_getRemainingLength(pngAsset_); */
+/*     LOGI("Read size: %d, remaining: %d", size, numBytesRemaining); */
+/* } */
+
+/* Image* loadPngFile(AAssetManager* assetManager) { */
+/*     pngAassetManager_ = assetManager; */
+
+/*     LOGI("Trying to load image..."); */
+/*     int HEADER_SIZE = 8; */
+/*     string filename = "skybox.png"; */
+/*     pngAsset_ = AAssetManager_open(pngAassetManager_, filename.c_str(), */
+/*             AASSET_MODE_UNKNOWN); */
+/*     if (pngAsset_ == 0) { */
+/*         LOGW("Asset \"%s\" not found.", filename.c_str()); */
+/*         return 0; */
+/*     } */
+
+/*     off_t bufferSize = AAsset_getLength(pngAsset_); */
+/*     png_byte* buffer = new png_byte[HEADER_SIZE]; */
+
+/*     int numBytesRead = AAsset_read(pngAsset_, buffer, HEADER_SIZE); */
+/*     int numBytesRemaining = AAsset_getRemainingLength(pngAsset_); */
+
+/*     int is_png = !png_sig_cmp(buffer, 0, 8); */
+/*     if (!is_png) { */
+/*         LOGE("File %s format is not PNG.", filename.c_str()); */
+/*         return 0; */
+/*     } */
+/*     LOGI("Size of the file: %d, bytes read: %d, bytes remain: %d", */
+/*             bufferSize, numBytesRead, numBytesRemaining); */
+
+/*     png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, */
+/*             NULL, NULL); */
+/*     if (!png_ptr) { */
+/*         LOGE("Unable to create PNG structure: %s", filename.c_str()); */
+/*         return 0; */
+/*     } */
+
+/*     png_infop info_ptr = png_create_info_struct(png_ptr); */
+/*     if (!info_ptr) { */
+/*         png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL); */
+/*         LOGE("Unable to create png info : %s", filename.c_str()); */
+/*         return 0; */
+/*     } */
+
+/*     png_infop end_info = png_create_info_struct(png_ptr); */
+/*     if (!end_info) { */
+/*         png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL); */
+/*         LOGE("Unable to create png end info : %s", filename.c_str()); */
+/*         return 0; */
+/*     } */
+
+/*     if (setjmp(png_jmpbuf(png_ptr))) { */
+/*         LOGE("Error during setjmp : %s", filename.c_str()); */
+/*         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info); */
+/*         return 0; */
+/*     } */
+/*     png_set_read_fn(png_ptr, NULL, png_asset_read); */
+/*     png_set_sig_bytes(png_ptr, 8); */
+/*     png_read_info(png_ptr, info_ptr); */
+
+/*     int bit_depth, color_type; */
+/*     png_uint_32 twidth, theight; */
+/*     png_get_IHDR(png_ptr, info_ptr, &twidth, &theight, &bit_depth, &color_type, */
+/*             NULL, NULL, NULL); */
+/*     LOGI("Width: %d, height: %d.", twidth, theight); */
+
+/*     // Update the png info struct. */
+/*     png_read_update_info(png_ptr, info_ptr); */
+
+/*     // Row size in bytes. */
+/*     int rowbytes = png_get_rowbytes(png_ptr, info_ptr); */
+/*     LOGI("Row size: %d bytes.", rowbytes); */
+
+/*     // Allocate the image_data as a big block, to be given to opengl */
+/*     png_byte *image_data = new png_byte[rowbytes * theight]; */
+/*     if (!image_data) { */
+/*         //clean up memory and close stuff */
+/*         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info); */
+/*         LOGE( */
+/*                 "Unable to allocate image_data while loading %s ", filename.c_str()); */
+/*     } */
+
+/*     //row_pointers is for pointing to image_data for reading the png with libpng */
+/*     png_bytep *row_pointers = new png_bytep[theight]; */
+/*     if (!row_pointers) { */
+/*         //clean up memory and close stuff */
+/*         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info); */
+/*         delete[] image_data; */
+/*         LOGE( */
+/*                 "Unable to allocate row_pointer while loading %s ", filename.c_str()); */
+/*     } */
+/*     // set the individual row_pointers to point at the correct offsets of image_data */
+/*     for (int i = 0; i < theight; ++i) */
+/*         row_pointers[theight - 1 - i] = image_data + i * rowbytes; */
+
+/*     //read the png into image_data through row_pointers */
+/*     png_read_image(png_ptr, row_pointers); */
+
+/*     for (int i = 0; i < 10; i ++) { */
+/*         LOGI("Pixel %d: %f %f %f %f",i, image_data[i * 4], image_data[i * 4 + 1], */
+/*                 image_data[i * 4 + 2], image_data[i * 4 + 3]); */
+/*     } */
+
+/*     //Now generate the OpenGL texture object */
+/*     Image* image = new Image((unsigned char*) image_data, twidth, theight, */
+/*             twidth * theight * 4, 0); */
+
+/*     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info); */
+/*     delete[] row_pointers; */
+
+/*     AAsset_close(pngAsset_); */
+
+/*     return image; */
+/* } */
+
+void
+texture_read_png_memory(png_structp pngp, png_bytep bytep, png_size_t size)
+{
+
+    memory_t* m = (memory_t*) png_get_io_ptr(pngp);
+
+    memory_read(m, bytep, size);
+}
+
 int
 texture_load_png(texture_t* texture)
 {
@@ -26,7 +163,6 @@ texture_load_png(texture_t* texture)
     png_infop info_ptr = NULL;
     unsigned int sig_read = 0, row_bytes = 0;
     int color_type, interlace_type;
-    FILE *fd;
     char filename[MAX_CHAR];
     png_uint_32 width, height;
     int bit_depth;
@@ -34,11 +170,6 @@ texture_load_png(texture_t* texture)
     unsigned int i;
 
     strncpy(filename, texture->name, MAX_CHAR);
-
-    if ((fd = fopen(filename, "rb")) == NULL) {
-        LOGE("Unable to open: %s for reading", filename);
-        goto error;
-    }
 
     /* Create and initialize the png_struct with the desired error handler
      * functions.  If you want to use the default stderr and longjump method,
@@ -70,8 +201,8 @@ texture_load_png(texture_t* texture)
         goto error;
     }
 
-    /* Set up the output control if you are using standard C streams */
-    png_init_io(png_ptr, fd);
+    /* Set up our custom reading function useful for multi device loading. */
+    png_set_read_fn(png_ptr, (void*) texture->image, texture_read_png_memory);
 
     /* If we have already
      * read some of the signature */
@@ -103,22 +234,6 @@ texture_load_png(texture_t* texture)
     {
         png_set_gray_to_rgb(png_ptr);
     }
-
-    /*
-     * If you have enough memory to read in the entire image at once, and you
-     * need to specify only transforms that can be controlled with one of the
-     * PNG_TRANSFORM_* bits (this presently excludes dithering, filling,
-     * setting background, and doing gamma adjustment), then you can read the
-     * entire image (including pixels) into the info structure with this call.
-     *
-     * PNG_TRANSFORM_STRIP_16 |
-     * PNG_TRANSFORM_PACKING  forces 8 bit
-     * PNG_TRANSFORM_EXPAND forces to
-     *  expand a palette into RGB
-     */
-    /* png_read_png(png_ptr, info_ptr, */
-    /*              PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | */
-    /*              PNG_TRANSFORM_EXPAND, NULL); */
 
     /* Update that info to the struct and info pointers. */
 	png_read_update_info(png_ptr, info_ptr);
@@ -190,9 +305,6 @@ texture_load_png(texture_t* texture)
     /* Free memory we don't need anymore */
     free(row_pointers);
 
-    /* Close the file */
-    fclose(fd);
-
     texture_print_info(texture);
 
     /* That's it */
@@ -207,10 +319,6 @@ error:
         }
     }
 
-    if (fd) {
-        fclose(fd);
-    }
-
     if (texture->pixels) {
         free(texture->pixels);
         texture->pixels = NULL;
@@ -223,6 +331,8 @@ error:
 
     return 1;
 }
+
+#endif /* HAVE_PNG_H */
 
 /* TODO OpenGL external format must be: GL_BGR
  *      OpenGL internal format must be: GL_RGB8
@@ -311,8 +421,6 @@ texture_load_tga(const char *filename,
     return 0;
 }
 
-#endif /* HAVE_PNG_H */
-
 texture_t*
 texture_create(const char* name)
 {
@@ -325,10 +433,12 @@ texture_create(const char* name)
         goto error;
     }
 
+    strncpy(texture->name, name, MAX_CHAR);
+
     texture->id     = 0;
     texture->pixels = NULL;
+    texture->image  = memory_create(name); /* Load texture into memory */
 
-    strncpy(texture->name, name, MAX_CHAR);
     if (texture_load(texture)) {
         LOGE("An error occured while loading the texture");
         goto error;
@@ -356,10 +466,15 @@ texture_delete(texture_t** texture)
 
     if (tex) {
         texture_gl_delete(tex);
+
         if (tex->pixels) {
             free(tex->pixels);
-            tex->pixels = NULL;
         }
+
+        if (tex->image) {
+            memory_delete(&tex->image);
+        }
+
         free(tex);
         tex = NULL;
 
@@ -370,9 +485,9 @@ texture_delete(texture_t** texture)
 int
 texture_load(texture_t* texture)
 {
-
     char ext[MAX_CHAR];
-    int err;
+    int  err;
+
     get_file_extension(texture->name, ext);
 
     LOGD("Loading: %s", texture->name);

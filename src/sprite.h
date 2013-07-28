@@ -81,6 +81,11 @@ typedef struct sprite_t
      */
     unsigned int position_uniform;
 
+    /**
+     * Vertex positions of the sprite.
+     *
+     * Right now it's only stored for Vertex Buffer attribute.
+     */
     float vertices[4][2];
 
     /**
@@ -100,6 +105,7 @@ typedef struct sprite_t
      * the projection matrix system. (Default: -1,-1 -> +1,+1).
      */
     float height;
+
 } sprite_t;
 
 
