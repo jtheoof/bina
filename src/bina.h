@@ -41,9 +41,12 @@
 #endif
 
 /* TODO make it more pretty from config.h */
-#ifdef __ANDROID_API__
+#ifdef ANDROID
 #include <jni.h>
+
 #include <android/log.h>
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
 
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
@@ -52,6 +55,8 @@
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+
+static AAssetManager* asset_manager_g = NULL;
 #else
 #define LOGD(...)                                                             \
     fprintf(stdout, "D/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \

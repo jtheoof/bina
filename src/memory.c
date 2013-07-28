@@ -9,13 +9,45 @@
 memory_t*
 memory_create(const char* filepath)
 {
-#ifdef ANDROID
-    LOGE(BINA_NOT_IMPLEMENTED);
-    return NULL;
-#else
     FILE* fd;
     memory_t* memory = NULL;
 
+#ifdef ANDROID
+    /* AAssetDir* assetDir = AAssetManager_openDir(mgr, ""); */
+    /* const char* filename = (const char*)NULL; */
+    /* while ((filename = AAssetDir_getNextFileName(assetDir)) != NULL) { */
+    /*     AAsset* asset = AAssetManager_open(mgr, filename, AASSET_MODE_STREAMING); */
+    /*     char buf[BUFSIZ]; */
+    /*     int nb_read = 0; */
+    /*     FILE* out = fopen(filename, "w"); */
+    /*     while ((nb_read = AAsset_read(asset, buf, BUFSIZ)) > 0) */
+    /*         fwrite(buf, nb_read, 1, out); */
+    /*     fclose(out); */
+    /*     AAsset_close(asset); */
+    /* } */
+    /* AAssetDir_close(assetDir); */
+
+    /* AAssetManager manager; */
+    /* pngAassetManager_ = assetManager; */
+    /* LOGI("Trying to load image..."); */
+    /* int HEADER_SIZE = 8; */
+    /* string filename = "skybox.png"; */
+    /* pngAsset_ = AAssetManager_open(pngAassetManager_, filename.c_str(), */
+    /*         AASSET_MODE_UNKNOWN); */
+    /* if (pngAsset_ == 0) { */
+    /*     LOGW("Asset \"%s\" not found.", filename.c_str()); */
+    /*     return 0; */
+    /* } */
+    /* off_t bufferSize = AAsset_getLength(pngAsset_); */
+    /* png_byte* buffer = new png_byte[HEADER_SIZE]; */
+    /* int numBytesRead = AAsset_read(pngAsset_, buffer, HEADER_SIZE); */
+    /* int numBytesRemaining = AAsset_getRemainingLength(pngAsset_); */
+    /* AAsset_seek(pngAsset_, 0, 0); */
+    /* AAsset_read(pngAsset_, data, size); */
+    /* int numBytesRemaining = AAsset_getRemainingLength(pngAsset_); */
+    /* LOGI("Read size: %d, remaining: %d", size, numBytesRemaining); */
+    return NULL;
+#else
     if ((fd = fopen(filepath, "rb")) == NULL) {
         LOGE("Unable to open: %s for reading", filepath);
         goto error;

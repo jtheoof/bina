@@ -201,6 +201,11 @@ texture_load_png(texture_t* texture)
         goto error;
     }
 
+    if (!texture->image) {
+        LOGE("No memory loaded for image data");
+        goto error;
+    }
+
     /* Set up our custom reading function useful for multi device loading. */
     png_set_read_fn(png_ptr, (void*) texture->image, texture_read_png_memory);
 

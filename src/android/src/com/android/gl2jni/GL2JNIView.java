@@ -33,6 +33,7 @@ package com.android.gl2jni;
 
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
@@ -324,12 +325,15 @@ class GL2JNIView extends GLSurfaceView {
     }
 
     private static class Renderer implements GLSurfaceView.Renderer {
+        static AssetManager assetManager;
+
         public void onDrawFrame(GL10 gl) {
             GL2JNILib.step();
         }
 
         public void onSurfaceChanged(GL10 gl, int width, int height) {
-            GL2JNILib.init(width, height);
+            /* TODO Load asset manager from here */
+            GL2JNILib.init(assetManager, width, height);
         }
 
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {

@@ -23,7 +23,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE           := libgl2jni
 LOCAL_CFLAGS           := -std=c99 -Werror -DHAVE_STDLIB_H -DHAVE_PNG_H -DANDROID
-LOCAL_LDLIBS           := -llog -lGLESv2 -lz
+LOCAL_LDLIBS           := -landroid -llog -lGLESv2 -lz
 LOCAL_STATIC_LIBRARIES := libpng
 LOCAL_C_INCLUDES       := \
 	$(LOCAL_PATH) \

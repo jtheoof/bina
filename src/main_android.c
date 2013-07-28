@@ -18,11 +18,10 @@
 
 #include "bina.h"
 
-JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_init(JNIEnv * env, jobject obj,  jint width, jint height);
-JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_step(JNIEnv * env, jobject obj);
-
-JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_init(JNIEnv * env, jobject obj,  jint width, jint height)
+JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_init(JNIEnv * env, jobject obj, jobject asset_manager,  jint width, jint height)
 {
+    /* asset_manager_g = AAssetManager_fromJava(env, asset_manager); */
+    /* LOGD("asset_manager_g: %p", (void*) asset_manager_g); */
     bina_init(width, height);
 }
 
