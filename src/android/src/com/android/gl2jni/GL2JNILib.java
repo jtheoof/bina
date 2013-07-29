@@ -32,4 +32,5 @@ public class GL2JNILib {
      */
      public static native void init(AssetManager manager, int width, int height);
      public static native void step();
+     public static native void touch(float x, float y);
 }

@@ -9,9 +9,9 @@
 /**
  * Elapsed time in ms since last frame.
  */
-int elapsed_g = 0;
-int current_g = 0;
-int previous_g = 0;
+int64_t elapsed_g  = 0;
+int64_t current_g  = 0;
+int64_t previous_g = 0;
 
 void
 renderer_init(camera_viewport_t* viewport)
@@ -56,26 +56,50 @@ renderer_pre_render(float r, float g, float b, float a)
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
+/* TODO Move specific code to approriate file */
+int64_t
+renderer_get_time_nano()
+{
+#ifdef UNIX
+    struct timespec t;
+
+    t.tv_sec = t.tv_nsec = 0;
+    if (clock_gettime(CLOCK_MONOTONIC, &t)) {
+        LOGE("clock_gettime returned an error");
+        return 0;
+    }
+
+    return (int64_t)(t.tv_sec)*1000000000LL + t.tv_nsec;
+#else
+    LOGE(BINA_NOT_IMPLEMENTED);
+
+    return 0;
+#endif
+}
+
 float
 renderer_get_time_elapsed()
 {
-    return elapsed_g / 1000.0f;
+    return elapsed_g / 1000000000.0f;
 }
 
 void
 renderer_render()
 {
+    static int tmp = 0;
     /* TODO There might be a way to make this completely generic with
      * time.h */
-#ifdef HAVE_GLUT_H
+
     /* LOGD("current_g: %i", current_g); */
     /* LOGD("elapsed_gl: %i", glutGet(GLUT_ELAPSED_TIME)); */
+    if (tmp++ >= 100) {
+        tmp = 0;
+        LOGD("Current time: %ld", renderer_get_time_nano());
+        LOGD("Time elapsed: %f",  renderer_get_time_elapsed());
+    }
     previous_g = current_g;
-    current_g = glutGet(GLUT_ELAPSED_TIME);
+    current_g = (int64_t) renderer_get_time_nano();
     elapsed_g = current_g - previous_g;
-#else
-    LOGE("You need to implemented elapsed time for this device");
-    current_g = 16;
-#endif
+
     render_bina();
 }

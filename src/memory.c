@@ -9,49 +9,9 @@
 memory_t*
 memory_create(const char* filepath)
 {
-    FILE* fd;
     memory_t* memory = NULL;
 
-#ifdef ANDROID
-    /* AAssetDir* assetDir = AAssetManager_openDir(mgr, ""); */
-    /* const char* filename = (const char*)NULL; */
-    /* while ((filename = AAssetDir_getNextFileName(assetDir)) != NULL) { */
-    /*     AAsset* asset = AAssetManager_open(mgr, filename, AASSET_MODE_STREAMING); */
-    /*     char buf[BUFSIZ]; */
-    /*     int nb_read = 0; */
-    /*     FILE* out = fopen(filename, "w"); */
-    /*     while ((nb_read = AAsset_read(asset, buf, BUFSIZ)) > 0) */
-    /*         fwrite(buf, nb_read, 1, out); */
-    /*     fclose(out); */
-    /*     AAsset_close(asset); */
-    /* } */
-    /* AAssetDir_close(assetDir); */
-
-    /* AAssetManager manager; */
-    /* pngAassetManager_ = assetManager; */
-    /* LOGI("Trying to load image..."); */
-    /* int HEADER_SIZE = 8; */
-    /* string filename = "skybox.png"; */
-    /* pngAsset_ = AAssetManager_open(pngAassetManager_, filename.c_str(), */
-    /*         AASSET_MODE_UNKNOWN); */
-    /* if (pngAsset_ == 0) { */
-    /*     LOGW("Asset \"%s\" not found.", filename.c_str()); */
-    /*     return 0; */
-    /* } */
-    /* off_t bufferSize = AAsset_getLength(pngAsset_); */
-    /* png_byte* buffer = new png_byte[HEADER_SIZE]; */
-    /* int numBytesRead = AAsset_read(pngAsset_, buffer, HEADER_SIZE); */
-    /* int numBytesRemaining = AAsset_getRemainingLength(pngAsset_); */
-    /* AAsset_seek(pngAsset_, 0, 0); */
-    /* AAsset_read(pngAsset_, data, size); */
-    /* int numBytesRemaining = AAsset_getRemainingLength(pngAsset_); */
-    /* LOGI("Read size: %d, remaining: %d", size, numBytesRemaining); */
-    return NULL;
-#else
-    if ((fd = fopen(filepath, "rb")) == NULL) {
-        LOGE("Unable to open: %s for reading", filepath);
-        goto error;
-    }
+    LOGD("Loading: %s into memory", filepath);
 
     memory = (memory_t*) calloc(1, sizeof(memory_t));
     if (!memory) {
@@ -59,20 +19,77 @@ memory_create(const char* filepath)
         goto error;
     }
 
+    /* Copying filepath */
+    strncpy(memory->filepath, filepath, MAX_PATH);
+
+#ifdef ANDROID
+    AAsset* asset = NULL;
+    /* char buf[BUFSIZ]; */
+    /* int nb_read = 0; */
+    off_t asset_length = 0;
+    const void* buffer = NULL;
+
+    if (!asset_manager_g) {
+        LOGE("Cannot load: %s, AssetManager is not loaded", filepath);
+        goto android_error;
+    }
+
+    asset = AAssetManager_open(asset_manager_g, filepath,
+                               AASSET_MODE_BUFFER);
+    if (!asset) {
+        LOGE("Cannot load: %s, Could not found asset", filepath); 
+        goto android_error;
+    }
+
+    /* Getting the pointer of the asset */
+    buffer = AAsset_getBuffer(asset);
+    LOGD("Asset: %s points to %p", buffer);
+
+    /* Getting buffer size */
+    memory->size = AAsset_getLength(asset); 
+    LOGD("Asset: %s has %d bytes", filepath, memory->size);
+
+    /* Allocating enough memory for buffer */
+    memory->buffer = (unsigned char *) calloc(1, memory->size + 1);
+    if (!memory->buffer) {
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        goto android_error;
+    }
+
+    /* Copying buffer into memory object buffer */
+    memcpy(memory->buffer, buffer, memory->size);
+    memory->buffer[memory->size] = 0;
+
+    AAsset_close(asset);
+
+    return memory;
+
+android_error:
+    if (asset) {
+        AAsset_close(asset);
+    }
+
+    goto error;
+#else
+    FILE* fd;
+
+    if ((fd = fopen(filepath, "rb")) == NULL) {
+        LOGE("Unable to open: %s for reading", filepath);
+        goto else_error;
+    }
+
     /* Getting buffer size */
     fseek(fd, 0, SEEK_END);
     memory->size = ftell(fd);
+    LOGD("Asset: %s has %d bytes", filepath, memory->size);
     fseek(fd, 0, SEEK_SET);
 
     /* Allocating enough memory for buffer */
     memory->buffer = (unsigned char *) calloc(1, memory->size + 1);
     if (!memory->buffer) {
         LOGE(BINA_NOT_ENOUGH_MEMORY);
-        goto error;
+        goto else_error;
     }
-
-    /* Copying filepath */
-    strncpy(memory->filepath, filepath, MAX_PATH);
 
     /* Reading buffer */
     fread(memory->buffer, memory->size, 1, fd);
@@ -80,13 +97,17 @@ memory_create(const char* filepath)
 
     fclose(fd);
     return memory;
+
+else_error:
+    if (fd) {
+        fclose(fd);
+    }
+
+    goto error;
 #endif
 
 error:
     memory_delete(&memory);
-    if (fd) {
-        fclose(fd);
-    }
 
     return NULL;
 }

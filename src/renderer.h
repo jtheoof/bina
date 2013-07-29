@@ -35,6 +35,16 @@ void renderer_pre_render(float r, float g, float b, float a);
 void renderer_render();
 
 /**
+ * Retrieves time.
+ *
+ * Could be time elapsed since epoch or time elapsed since programme started
+ * depending on CLOCK implementation. See man clock_gettime.
+ *
+ * @return Time elapsed in nanoseconds.
+ */
+int64_t renderer_get_time_nano();
+
+/**
  * Returns the time elapsed in ms since last render.
  *
  * The implementation of this function can vary depending on the the device.

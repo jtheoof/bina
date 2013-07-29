@@ -493,9 +493,9 @@ texture_load(texture_t* texture)
     char ext[MAX_CHAR];
     int  err;
 
-    get_file_extension(texture->name, ext);
+    LOGD("Loading: %s from memory", texture->name);
 
-    LOGD("Loading: %s", texture->name);
+    get_file_extension(texture->name, ext);
 
     if (!strcmp(ext, "png")) {
         err = texture_load_png(texture);

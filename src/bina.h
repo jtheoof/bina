@@ -33,12 +33,11 @@
 #define MAX_PATH 260
 #endif
 
-#ifndef UNIX
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-#endif
+#include <time.h>
 
 /* TODO make it more pretty from config.h */
 #ifdef ANDROID
@@ -56,7 +55,7 @@
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 
-static AAssetManager* asset_manager_g = NULL;
+AAssetManager* asset_manager_g;
 #else
 #define LOGD(...)                                                             \
     fprintf(stdout, "D/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \

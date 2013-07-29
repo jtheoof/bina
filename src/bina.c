@@ -46,8 +46,8 @@ bina_init(int width, int height)
     viewport.width = width;
     viewport.height = height;
 
-    background = sprite_create("../artwork/background.png", pos, 2.0f, 2.0f);
-    brian = sprite_create("../artwork/brian.png", pos, 0.19f, 0.66f);
+    background = sprite_create("artwork/background.png", pos, 2.0f, 2.0f);
+    brian = sprite_create("artwork/brian.png", pos, 0.19f, 0.66f);
 
     /* No animator for now, only when gamer clicks or taps. */
     brian_animator = NULL;

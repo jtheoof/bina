@@ -18,14 +18,32 @@
 
 #include "bina.h"
 
-JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_init(JNIEnv * env, jobject obj, jobject asset_manager,  jint width, jint height)
+JNIEXPORT void JNICALL
+Java_com_android_gl2jni_GL2JNILib_touch(JNIEnv * env, jobject obj,
+                                        jfloat x, jfloat y)
 {
-    /* asset_manager_g = AAssetManager_fromJava(env, asset_manager); */
-    /* LOGD("asset_manager_g: %p", (void*) asset_manager_g); */
-    bina_init(width, height);
+    vec2_t coord;
+    coord.x = 2.0f * x / viewport.width;
+    coord.y = 2.0f - (2.0f * y / viewport.height);
+
+    LOGD("Screen: %d,%d", x, y);
+    LOGD("Viewport: %f,%f", coord.x, coord.y);
+
+    bina_animate_brian_to(coord, 1.0f);
 }
 
-JNIEXPORT void JNICALL Java_com_android_gl2jni_GL2JNILib_step(JNIEnv * env, jobject obj)
+JNIEXPORT void JNICALL
+Java_com_android_gl2jni_GL2JNILib_step(JNIEnv * env, jobject obj)
 {
     renderer_render();
+}
+
+JNIEXPORT void JNICALL
+Java_com_android_gl2jni_GL2JNILib_init(JNIEnv * env, jobject obj,
+                                       jobject asset_manager,
+                                       jint width, jint height)
+{
+    asset_manager_g = AAssetManager_fromJava(env, asset_manager);
+    LOGI("Initializing bina with viewport: %dx%d", width, height);
+    bina_init(width, height);
 }

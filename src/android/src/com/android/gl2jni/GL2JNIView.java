@@ -68,18 +68,30 @@ import javax.microedition.khronos.opengles.GL10;
 class GL2JNIView extends GLSurfaceView {
     private static String TAG = "GL2JNIView";
     private static final boolean DEBUG = false;
+    private static AssetManager assetManager;
 
-    public GL2JNIView(Context context) {
+    public GL2JNIView(Context context, AssetManager manager)
+    {
         super(context);
-        init(false, 0, 0);
+        assetManager = manager;
+        init(false, 0, 0, manager);
     }
 
-    public GL2JNIView(Context context, boolean translucent, int depth, int stencil) {
+    public GL2JNIView(Context context, boolean translucent,
+                      AssetManager manager, int depth, int stencil)
+    {
         super(context);
-        init(translucent, depth, stencil);
+        init(translucent, depth, stencil, manager);
     }
 
-    private void init(boolean translucent, int depth, int stencil) {
+    private void init(boolean translucent, int depth, int stencil, 
+                      AssetManager manager)
+    {
+
+        /* Copy over the asset manager from the activity.
+         * This will be especially useful when loading assets from C.
+         */
+        assetManager = manager;
 
         /* By default, GLSurfaceView() creates a RGB_565 opaque surface.
          * If we want a translucent one, we should change the surface's
@@ -105,8 +117,16 @@ class GL2JNIView extends GLSurfaceView {
                              new ConfigChooser(5, 6, 5, 0, depth, stencil) );
 
         /* Set the renderer responsible for frame rendering */
-        setRenderer(new Renderer());
+        setRenderer(new Renderer(assetManager));
     }
+
+    public boolean onTouchEvent(final MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            GL2JNILib.touch(event.getRawX(), event.getRawY());
+        }
+        return true;
+    }
+
 
     private static class ContextFactory implements GLSurfaceView.EGLContextFactory {
         private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
@@ -325,7 +345,12 @@ class GL2JNIView extends GLSurfaceView {
     }
 
     private static class Renderer implements GLSurfaceView.Renderer {
-        static AssetManager assetManager;
+        private static AssetManager assetManager;
+
+        public Renderer(AssetManager manager)
+        {
+            assetManager = manager;
+        }
 
         public void onDrawFrame(GL10 gl) {
             GL2JNILib.step();
