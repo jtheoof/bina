@@ -48,6 +48,9 @@
     <ClInclude Include="..\..\..\vector.h">
       <Filter>bina</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\memory.h">
+      <Filter>bina</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\bina.c">
@@ -75,6 +78,9 @@
       <Filter>bina</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\vector.c">
+      <Filter>bina</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\memory.c">
       <Filter>bina</Filter>
     </ClCompile>
   </ItemGroup>

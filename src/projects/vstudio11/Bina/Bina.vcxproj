@@ -91,6 +91,7 @@
     <ClInclude Include="..\..\..\bina.h" />
     <ClInclude Include="..\..\..\camera.h" />
     <ClInclude Include="..\..\..\error.h" />
+    <ClInclude Include="..\..\..\memory.h" />
     <ClInclude Include="..\..\..\renderer.h" />
     <ClInclude Include="..\..\..\shader.h" />
     <ClInclude Include="..\..\..\sprite.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\..\..\bina.c" />
     <ClCompile Include="..\..\..\camera.c" />
     <ClCompile Include="..\..\..\main_glut.c" />
+    <ClCompile Include="..\..\..\memory.c" />
     <ClCompile Include="..\..\..\renderer.c" />
     <ClCompile Include="..\..\..\shader.c" />
     <ClCompile Include="..\..\..\sprite.c" />
