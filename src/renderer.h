@@ -42,7 +42,7 @@ void renderer_render();
  *
  * @return Time elapsed in nanoseconds.
  */
-int64_t renderer_get_time_nano();
+/* int64_t renderer_get_time_nano(); */
 
 /**
  * Returns the time elapsed in ms since last render.
@@ -52,4 +52,4 @@ int64_t renderer_get_time_nano();
  *
  * @return The elapsed time in ms.
  */
-float renderer_get_time_elapsed();
+/* float renderer_get_time_elapsed(); */

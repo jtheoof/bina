@@ -19,18 +19,29 @@
 #include "bina.h"
 
 int window_id_g;
-int prev_time_g = 0;
-int curr_time_g = 0;
+
+/** Number of miliseconds since last frame was drawn. */
+int elap_time_g = 0;
+
+float
+main_get_time_elapsed()
+{
+    return elap_time_g / 1000.0f;
+}
 
 void
 main_glut_display_cb(void)
 {
-    curr_time_g = glutGet(GLUT_ELAPSED_TIME);
+    static int prev_time = 0;
+    static int curr_time = 0;
+
+    curr_time = glutGet(GLUT_ELAPSED_TIME);
 
     glutPostRedisplay();
 
-    if (curr_time_g - prev_time_g >= 16) {
-        prev_time_g = curr_time_g;
+    if (curr_time - prev_time >= 1) {
+        elap_time_g = curr_time - prev_time;
+        prev_time = curr_time;
         renderer_render();
         glutSwapBuffers();
 

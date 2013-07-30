@@ -244,6 +244,10 @@ sprite_animator_create(sprite_t* sprite, vec2_t to, float speed, float elapsed)
      animator->offset.x = (to.x - from.x) / steps;
      animator->offset.y = (to.y - from.y) / steps;
 
+     LOGD("Sprite animator was created from: (%f,%f) to: (%f, %f) "
+          "at speed: %f with elapsed time: %f", from.x, from.y, to.x, to.y,
+          speed, elapsed);
+
      return animator;
 
 error:

@@ -68,7 +68,7 @@ bina_end()
 void
 bina_animate_brian_to(vec2_t to, float speed)
 {
-    float elapsed = renderer_get_time_elapsed();
+    float elapsed = main_get_time_elapsed();
 
     if (brian_animator) {
         sprite_animator_delete(&brian_animator);

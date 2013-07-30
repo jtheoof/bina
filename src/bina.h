@@ -184,6 +184,24 @@ void bina_end();
  * @param speed The speed we want to set brian to.
  */
 void bina_animate_brian_to(vec2_t to, float speed);
+
+/* TODO Move this to its own main.h ? */
+
+/**
+ * Retrieves the time elapsed in seconds since previous call.
+ *
+ * Note that the target FPS is at least 60 FPS (0.016s between frames).
+ * This code needs is platform dependant for now. It means that it has its own
+ * implementation in main_glut.c and main_android.c. The reason is because
+ * getting time is usually specific to the platform. We can be more precise
+ * and separate it into its own time_os.c later on.
+ *
+ * @return The time elapsed since last call to the same function in seconds.
+ */
+float main_get_time_elapsed();
+
+/* TODO Move this to approriate file */
+
 /**
  * Prints useful info about about OpenGL.
  *

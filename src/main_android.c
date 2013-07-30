@@ -18,6 +18,16 @@
 
 #include "bina.h"
 
+/**
+ * Number of nanoseconds since last frame was drawn. */
+uint64_t elap_time_g = 0;
+
+float
+main_get_time_elapsed()
+{
+    return (elap_time_g) / 1000000000.0f;
+}
+
 JNIEXPORT void JNICALL
 Java_com_android_gl2jni_GL2JNILib_touch(JNIEnv * env, jobject obj,
                                         jfloat x, jfloat y)
@@ -35,6 +45,21 @@ Java_com_android_gl2jni_GL2JNILib_touch(JNIEnv * env, jobject obj,
 JNIEXPORT void JNICALL
 Java_com_android_gl2jni_GL2JNILib_step(JNIEnv * env, jobject obj)
 {
+    static int64_t prev_time = 0;
+    static int64_t curr_time = 0;
+
+    struct timespec t;
+
+    t.tv_sec = t.tv_nsec = 0;
+    if (clock_gettime(CLOCK_MONOTONIC, &t)) {
+        LOGE("clock_gettime returned an error");
+    } else {
+        prev_time = curr_time;
+        curr_time = (int64_t) (t.tv_sec) * 1000000000LL + t.tv_nsec;
+    }
+
+    elap_time_g = curr_time - prev_time;
+
     renderer_render();
 }
 
