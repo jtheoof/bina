@@ -14,8 +14,10 @@
 
 #pragma once
 
+/* TODO Make error codes more flexible to print with custom values. */
 #define BINA_NOT_ENOUGH_MEMORY "Not enough memory"
 #define BINA_NOT_IMPLEMENTED   "Not implemented"
+#define BINA_INVALID_PARAM     "Invalid parameter" /* Which one?! See todo */
 
 typedef struct token_string_t
 {

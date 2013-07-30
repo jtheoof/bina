@@ -236,17 +236,23 @@ sprite_animator_create(sprite_t* sprite, vec2_t to, float speed, float elapsed)
          goto error;
      }
 
+     if (elapsed <= 0) {
+         LOGE(BINA_INVALID_PARAM);
+         goto error;
+     }
+
      norm  = sqrtf(powf(to.x - from.x, 2.0f) + powf(to.y - from.y, 2.0f));
      steps = (int) (norm * speed * 1.0f / elapsed);
 
      animator->steps    = steps;
      animator->step     = 0;
+     animator->ielapsed = elapsed;
      animator->offset.x = (to.x - from.x) / steps;
      animator->offset.y = (to.y - from.y) / steps;
 
      LOGD("Sprite animator was created from: (%f,%f) to: (%f, %f) "
-          "at speed: %f with elapsed time: %f", from.x, from.y, to.x, to.y,
-          speed, elapsed);
+          "in %d steps at speed: %f with elapsed time: %f",
+          from.x, from.y, to.x, to.y, steps, speed, elapsed);
 
      return animator;
 
@@ -276,10 +282,17 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
     unsigned int steps = animator->steps;
     unsigned int cur   = animator->step;
 
-    float  fix = elapsed / 0.016f;    /* Fix offset by elapsed time */
+    float  ielap = animator->ielapsed;
+    float  fix;
     vec2_t pos = sprite->position;
     vec2_t off = animator->offset;
 
+    if (ielap <= 0.0f) {
+        return 0;
+    }
+
+    fix = elapsed / ielap;  /* Fix offset by elapsed time */
+    
     if (cur < steps) {
         sprite->position.x = pos.x + off.x * fix;
         sprite->position.y = pos.y + off.y * fix;

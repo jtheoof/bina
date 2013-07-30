@@ -35,6 +35,18 @@ typedef struct sprite_animator_t
     unsigned int step;
 
     /**
+     * Initial elapsed time.
+     *
+     * Right now, animators are created with the current elapsed time when
+     * call executes the code. This is done to compute the number of steps
+     * required to make the move from point A to point B. There is for sure
+     * a much better way to do it. But for now it works.
+     * This is used when animating the sprite later so that the offset can be
+     * multplied by the right amont. ielapsed stands for initial_elapsed.
+     */
+    float ielapsed;
+
+    /**
      * The offset we need to add to current position on each update.
      */
     vec2_t offset;

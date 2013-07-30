@@ -10,6 +10,7 @@ memory_t*
 memory_create(const char* filepath)
 {
     memory_t* memory = NULL;
+    FILE* fd = NULL;
 
     LOGD("Loading: %s into memory", filepath);
 
@@ -71,8 +72,6 @@ android_error:
 
     goto error;
 #else
-    FILE* fd;
-
     if ((fd = fopen(filepath, "rb")) == NULL) {
         LOGE("Unable to open: %s for reading", filepath);
         goto else_error;

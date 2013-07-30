@@ -6,13 +6,6 @@
 
 #include "bina.h"
 
-/**
- * Elapsed time in ms since last frame.
- */
-int64_t elapsed_g  = 0;
-int64_t current_g  = 0;
-int64_t previous_g = 0;
-
 void
 renderer_init(camera_viewport_t* viewport)
 {
