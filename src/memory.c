@@ -44,11 +44,9 @@ memory_create(const char* filepath)
 
     /* Getting the pointer of the asset */
     buffer = AAsset_getBuffer(asset);
-    LOGD("Asset: %s points to %p", buffer);
 
     /* Getting buffer size */
     memory->size = AAsset_getLength(asset); 
-    LOGD("Asset: %s has %d bytes", filepath, memory->size);
 
     /* Allocating enough memory for buffer */
     memory->buffer = (unsigned char *) calloc(1, memory->size + 1);
@@ -80,7 +78,6 @@ android_error:
     /* Getting buffer size */
     fseek(fd, 0, SEEK_END);
     memory->size = ftell(fd);
-    LOGD("Asset: %s has %d bytes", filepath, memory->size);
     fseek(fd, 0, SEEK_SET);
 
     /* Allocating enough memory for buffer */

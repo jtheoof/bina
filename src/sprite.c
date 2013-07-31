@@ -288,7 +288,7 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
     vec2_t off = animator->offset;
 
     if (ielap <= 0.0f) {
-        return 0;
+        return steps - cur; /* wait a bit */
     }
 
     fix = elapsed / ielap;  /* Fix offset by elapsed time */

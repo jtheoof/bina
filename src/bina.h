@@ -39,7 +39,10 @@
 #include <math.h>
 #include <time.h>
 
-/* TODO make it more pretty from config.h */
+/* TODO Get rid of this and integrate it in the build system.
+ */
+/* #define DEBUG */
+
 #ifdef ANDROID
 #include <jni.h>
 
@@ -51,12 +54,22 @@
 #include <GLES2/gl2ext.h>
 
 #define LOG_TAG   "gl2jni"
+
+/* TODO make it more pretty from config.h */
+# ifdef DEBUG
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+# else
+#define LOGD(...) { }
+#define LOGI(...) { }
+# endif
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 
 AAssetManager* asset_manager_g;
+
 #else
+
+# ifdef DEBUG
 #define LOGD(...)                                                             \
     fprintf(stdout, "D/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
     fprintf(stdout, __VA_ARGS__);                                             \
@@ -65,11 +78,16 @@ AAssetManager* asset_manager_g;
     fprintf(stdout, "I/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
     fprintf(stdout, __VA_ARGS__);                                             \
     fprintf(stdout, "\n");
+# else
+#define LOGD(...) { }
+#define LOGI(...) { }
+# endif
 #define LOGE(...)                                                             \
     fprintf(stderr, "E/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
     fprintf(stderr, __VA_ARGS__);                                             \
     fprintf(stderr, "\n");
-#endif
+
+#endif /* ANDROID */
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -111,13 +129,14 @@ camera_viewport_t viewport;
 sprite_t* background;
 sprite_t* brian;
 
+#define SPRITES_DEMO 500
+
+sprite_t** sprites_demo;
+sprite_animator_t** animators_demo;
+
 sprite_animator_t* brian_animator;
 
 /* ************************ */
-
-/* TODO Get rid of this and integrate it in the build system.
- */
-#define DEBUG
 
 #ifdef DEBUG
 
@@ -211,3 +230,9 @@ float main_get_time_elapsed();
  * @param s An OpenGL enum we want to print. For example GL_EXTENSIONS.
  */
 void print_gl_string(const char* name, GLenum s);
+
+/**
+ * Temporary animation function to move random sprites.
+ */
+void bina_animate_demo_sprite(sprite_t* sprite, sprite_animator_t** animator,
+                              float elapsed);

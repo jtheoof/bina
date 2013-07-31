@@ -25,7 +25,29 @@ renderer_init(camera_viewport_t* viewport)
     camera_set_viewport(viewport);
 }
 
-static void
+void
+animate_sprites_demo(float elapsed)
+{
+    unsigned int i, s;
+
+    for (i = 0; i < SPRITES_DEMO; i++) {
+        if (animators_demo[i]) {
+            s = sprite_animator_animate(sprites_demo[i], animators_demo[i],
+                                        elapsed);
+            if (!s) {
+                LOGD("Sprite: %d finished", i);
+                sprite_animator_delete(&animators_demo[i]);
+                bina_animate_demo_sprite(sprites_demo[i], &animators_demo[i],
+                                         elapsed);
+            }
+        }
+        if (sprites_demo[i]) {
+            sprite_render(sprites_demo[i]);
+        }
+    }
+}
+
+void
 render_bina()
 {
     /* main_get_time_elapsed is defined in main_[platform].c */
@@ -33,14 +55,16 @@ render_bina()
 
     renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f);
 
+    sprite_render(background);
+
     if (brian_animator) {
         if (!sprite_animator_animate(brian, brian_animator, elapsed)) {
             sprite_animator_delete(&brian_animator);
         }
     }
 
-    sprite_render(background);
     sprite_render(brian);
+    animate_sprites_demo(elapsed);
 }
 
 void
@@ -53,11 +77,16 @@ renderer_pre_render(float r, float g, float b, float a)
 void
 renderer_render()
 {
-    static int tmp = 0;
+    static float time = 0;
+    static int   frames = 0;
 
-    if (tmp++ >= 60) {
-        tmp = 0;
-        LOGD("Time elapsed: %f", main_get_time_elapsed());
+    time += main_get_time_elapsed();
+    frames++;
+
+    if (time >= 1.0f) {
+        LOGE("FPS: %d", frames);
+        time = 0.0f;
+        frames = 0;
     }
 
     render_bina();

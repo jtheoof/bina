@@ -18,10 +18,10 @@
 
 #include "bina.h"
 
-int window_id_g;
+static int window_id_g = 0;
 
 /** Number of miliseconds since last frame was drawn. */
-int elap_time_g = 0;
+static int elap_time_g = 0;
 
 float
 main_get_time_elapsed()
