@@ -12,10 +12,6 @@
 
 #pragma once
 
-#ifdef HAVE_PNG_H
-#include <png.h>
-#endif
-
 /**
  * The texture structure used to control a texture behaviors and
  * properties.

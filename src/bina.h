@@ -33,15 +33,33 @@
 #define MAX_PATH 260
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#ifdef HAVE_STDIO_H
 #include <stdio.h>
+#endif
+
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
+
+#ifdef HAVE_CTYPE_H
 #include <ctype.h>
+#endif
+
+#ifdef HAVE_MATH_H
 #include <math.h>
+#endif
+
+#ifdef HAVE_TIME_H
 #include <time.h>
+#endif
 
 /* TODO Get rid of this and integrate it in the build system.
  */
-/* #define DEBUG */
+#define DEBUG
 
 #ifdef ANDROID
 #include <jni.h>
@@ -93,25 +111,25 @@ AAssetManager* asset_manager_g;
 #include <stdlib.h>
 #endif
 
-#ifdef HAVE_GLEW_H
+#ifdef HAVE_GL_GLEW_H
 #include "GL/glew.h"
 #endif
 
-#ifdef HAVE_GLUT_H
+#ifdef HAVE_GL_GLUT_H
 #include "GL/glut.h"
 #endif
 
-#ifdef HAVE_GL_H
+#ifdef HAVE_GL_GL_H
 #include "GL/gl.h"
-#endif
-
-#ifdef HAVE_GLU_H
-#include "GL/glu.h"
 #endif
 
 #ifdef USE_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES
 #include "GL/glext.h"
+#endif
+
+#ifdef HAVE_PNG_H
+#include <png.h>
 #endif
 
 #include "error.h"

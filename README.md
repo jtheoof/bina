@@ -1,10 +1,8 @@
-Introduction
-============
+# Introduction
 
 Bina is **THE BEST** project ever made.
 
-Authors
-=======
+# Authors
 
 With key participants and talents from:
 
@@ -16,7 +14,14 @@ Johan Attali: Apple fan boy, addicted to Apple products, finding QT pretty cute.
 Jeremy Attali: Android fan boy, addicted to Google products, finding Javascript
 pretty neat.
 
-License
-=======
+# Installation
+
+## Linux
+
+sudo apt-get install mesa-common-dev
+sudo apt-get install libglew-dev
+sudo apt-get install libpng12-dev
+
+# License
 
 TO BE DETERMINED.

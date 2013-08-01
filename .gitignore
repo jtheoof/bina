@@ -1,9 +1,21 @@
 # Code
 node_modules/
 
+# Build
+build/
+
+# GNU Autoconf
+# GNU Automake
+Makefile.in
+aclocal.m4
+autom4te.cache/
+autotools/
+configure
+src/config.h.in
+
 # Linux
 *.o
-src/tags
+tags
 
 # Mac
 src/xxd/xxd.dSYM

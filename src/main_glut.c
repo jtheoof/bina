@@ -140,12 +140,12 @@ main(int argc, char** argv)
 	glutInitWindowSize(GAME_WIDTH, GAME_HEIGHT);
     window_id_g = glutCreateWindow(APP_TITLE);
 
-#ifdef HAVE_GLEW_H
+#ifdef HAVE_GL_GLEW_H
     err = glewInit();
-    if (GLEW_OK != err)
-    {
-      /* Problem: glewInit failed, something is seriously wrong. */
-      fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+    if (GLEW_OK != err) {
+        /* Problem: glewInit failed, something is seriously wrong. */
+        LOGE("Could not initialize glew");
+        exit(-1);
     }
     fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 #endif

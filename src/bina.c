@@ -69,6 +69,9 @@ bina_init(int width, int height)
     viewport.height = height;
 
     background = sprite_create("artwork/background.png", pos, 2.0f, 2.0f);
+
+    pos.x = 1.0f;
+    pos.y = 0.2f;
     brian = sprite_create("artwork/brian.png", pos, 0.19f, 0.66f);
 
     sprites_demo = (sprite_t**) calloc(SPRITES_DEMO, sizeof(sprite_t*));
