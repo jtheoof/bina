@@ -129,7 +129,7 @@ camera_viewport_t viewport;
 sprite_t* background;
 sprite_t* brian;
 
-#define SPRITES_DEMO 500
+#define SPRITES_DEMO 5
 
 sprite_t** sprites_demo;
 sprite_animator_t** animators_demo;
