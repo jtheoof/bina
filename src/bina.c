@@ -41,8 +41,8 @@ bina_animate_demo_sprite(sprite_t* sprite, sprite_animator_t** animator,
     long int rx, ry;
     vec2_t rto;
 
-    rx = random() % 2001;
-    ry = random() % 2001;
+    rx = rand() % 2001;
+    ry = rand() % 2001;
 
     rto.x = (rx / 2000.0f * 2.0f) - 0.0f;
     rto.y = (ry / 2000.0f * 2.0f) - 0.0f;
@@ -59,7 +59,6 @@ bina_init(int width, int height)
 
     vec2_t pos;
     vec2_t rpos;
-    vec2_t rto;
 
     pos.x = 0.0f;
     pos.y = 0.0f;
@@ -77,8 +76,8 @@ bina_init(int width, int height)
                                                   sizeof(sprite_animator_t*));
 
     for (i = 0; i < SPRITES_DEMO; i++) {
-        rx = random() % 2001;
-        ry = random() % 2001;
+        rx = rand() % 2001;
+        ry = rand() % 2001;
 
         rpos.x = (rx / 2000.0f * 2.0f) - 0.0f;
         rpos.y = (ry / 2000.0f * 2.0f) - 0.0f;
