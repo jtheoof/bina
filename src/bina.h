@@ -37,6 +37,10 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+
 #ifdef HAVE_STDIO_H
 #include <stdio.h>
 #endif
@@ -106,10 +110,6 @@ AAssetManager* asset_manager_g;
     fprintf(stderr, "\n");
 
 #endif /* ANDROID */
-
-#ifdef HAVE_STDLIB_H
-#include <stdlib.h>
-#endif
 
 #ifdef HAVE_GL_GLEW_H
 #include "GL/glew.h"
