@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -22,7 +30,20 @@
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
@@ -35,11 +56,22 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\..\..\..;$(SolutionDir)\lib\freeglut\include;$(SolutionDir)\lib\glew\include;$(SolutionDir)\lib\libpng\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\lib\freeglut\lib;$(SolutionDir)\lib\glew\lib;$(SolutionDir)\lib\libpng\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir);$(SolutionDir)\..\..\..;$(SolutionDir)\lib\freeglut\include;$(SolutionDir)\lib\glew\include;$(SolutionDir)\lib\libpng\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\lib\freeglut\lib;$(SolutionDir)\lib\glew\lib;$(SolutionDir)\lib\libpng\lib;$(LibraryPath)</LibraryPath>
@@ -49,12 +81,34 @@
     <IncludePath>$(SolutionDir);$(SolutionDir)\..\..\..;$(SolutionDir)\lib\freeglut\include;$(SolutionDir)\lib\glew\include;$(SolutionDir)\lib\libpng\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\lib\freeglut\lib;$(SolutionDir)\lib\glew\lib;$(SolutionDir)\lib\libpng\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\..\..\..;$(SolutionDir)\lib\freeglut\include;$(SolutionDir)\lib\glew\include;$(SolutionDir)\lib\libpng\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\lib\freeglut\lib;$(SolutionDir)\lib\glew\lib;$(SolutionDir)\lib\libpng\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;HAVE_STDLIB_H;HAVE_GL_H;HAVE_GLU_H;HAVE_GLEW_H;HAVE_GLUT_H;HAVE_PNG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;HAVE_STDLIB_H;HAVE_STDIO_H;HAVE_STRING_H;HAVE_CTYPE_H;HAVE_MATH_H;HAVE_TIME_H;HAVE_PNG_H;HAVE_GL_GLUT_H;HAVE_GL_GLEW_H;HAVE_GLUT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>bina.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;libpng16.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;HAVE_STDLIB_H;HAVE_STDIO_H;HAVE_STRING_H;HAVE_CTYPE_H;HAVE_MATH_H;HAVE_TIME_H;HAVE_PNG_H;HAVE_GL_GLUT_H;HAVE_GL_GLEW_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>bina.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -76,7 +130,28 @@
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>$(SolutionDir)\..\..\..\</PrecompiledHeaderFile>
-      <PreprocessorDefinitions>WIN32;HAVE_STDLIB_H;HAVE_GL_H;HAVE_GLU_H;HAVE_GLEW_H;HAVE_GLUT_H;HAVE_PNG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;HAVE_STDLIB_H;HAVE_STDIO_H;HAVE_STRING_H;HAVE_CTYPE_H;HAVE_MATH_H;HAVE_TIME_H;HAVE_PNG_H;HAVE_GL_GLUT_H;HAVE_GL_GLEW_H;HAVE_GLUT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;libpng16.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>$(SolutionDir)\..\..\..\bina.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>WIN32;HAVE_STDLIB_H;HAVE_STDIO_H;HAVE_STRING_H;HAVE_CTYPE_H;HAVE_MATH_H;HAVE_TIME_H;HAVE_PNG_H;HAVE_GL_GLUT_H;HAVE_GL_GLEW_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

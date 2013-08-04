@@ -25,7 +25,7 @@ typedef struct vec3_t
     float z;
 } vec3_t;
 
-static inline vec2_t
+static vec2_t
 vec2_sub(const vec2_t a, const vec2_t b)
 {
     vec2_t r;
@@ -36,7 +36,7 @@ vec2_sub(const vec2_t a, const vec2_t b)
     return r;
 }
 
-static inline vec2_t
+static vec2_t
 vec2_add(const vec2_t a, const vec2_t b)
 {
     vec2_t r;

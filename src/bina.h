@@ -61,6 +61,11 @@
 #include <time.h>
 #endif
 
+/* TODO Clean this, it's really ugly. */
+#if _MSC_VER
+#define snprintf _snprintf
+#endif
+
 /* TODO Get rid of this and integrate it in the build system.
  */
 #define DEBUG
