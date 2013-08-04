@@ -136,10 +136,17 @@ void
 bina_animate_porc_to(vec2_t to, float speed)
 {
     float elapsed = main_get_time_elapsed();
+    texture_list_t* list = NULL;
 
     if (ani_porc) {
         sprite_animator_delete(&ani_porc);
     }
 
-    ani_porc = sprite_animator_create(porc, NULL, to, speed, elapsed);
+    if (porc->position.x <= to.x) {
+        list = porc_r_tex;
+    } else {
+        list = porc_l_tex;
+    }
+
+    ani_porc = sprite_animator_create(porc, list, to, speed, elapsed);
 }

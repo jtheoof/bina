@@ -128,6 +128,11 @@ typedef struct sprite_animator_t
     float ielapsed;
 
     /**
+     * Time elapsed in seconds since the animation has started.
+     */
+    float elapsed;
+
+    /**
      * The offset we need to add to current position on each update.
      */
     vec2_t offset;

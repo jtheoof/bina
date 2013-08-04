@@ -262,6 +262,7 @@ sprite_animator_create(sprite_t* sprite, texture_list_t* textures,
      animator->steps    = steps;
      animator->step     = 0;
      animator->ielapsed = elapsed;
+     animator->elapsed  = 0.0f;
      animator->offset.x = (to.x - from.x) / steps;
      animator->offset.y = (to.y - from.y) / steps;
      animator->textures = textures;
@@ -297,22 +298,33 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
 {
     unsigned int steps = animator->steps;
     unsigned int cur   = animator->step;
+    unsigned int anim  = 0; /* Current index in texturs (if any) */
+    unsigned int size  = 0; /* Number of textures (if any) */
 
     float  ielap = animator->ielapsed;
     float  fix;
     vec2_t pos = sprite->position;
     vec2_t off = animator->offset;
 
+    animator->elapsed += elapsed;
+
     if (ielap <= 0.0f) {
         return steps - cur; /* wait a bit */
     }
 
     fix = elapsed / ielap;  /* Fix offset by elapsed time */
-    
+
     if (cur < steps) {
         sprite->position.x = pos.x + off.x * fix;
         sprite->position.y = pos.y + off.y * fix;
         animator->step++;
     }
+
+    if (animator->textures) {
+        size = animator->textures->size;
+        anim = (unsigned int) (animator->elapsed * 24.0f) % size;
+        sprite->texture = animator->textures->textures[anim];
+    }
+
     return steps - cur;
 }
