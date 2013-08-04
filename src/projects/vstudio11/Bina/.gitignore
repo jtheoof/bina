@@ -1,5 +1,8 @@
 Debug/
 ipch/
+Bina.*build*
 *.sdf
 *.opensdf
 *.suo
+*.tlog
+*.log
