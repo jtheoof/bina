@@ -16,42 +16,6 @@
 
 #pragma once
 
-/**
- * A simple animator for sprites.
- *
- * Right now it only allows to update positions based on linear updates.
- * This could be improved a lot by adding rotations, scaling, ...
- */
-typedef struct sprite_animator_t
-{
-    /**
-     * How many steps are required in the animation.
-     */
-    unsigned int steps;
-
-    /**
-     * The current step we are in while animating the sprite.
-     */
-    unsigned int step;
-
-    /**
-     * Initial elapsed time.
-     *
-     * Right now, animators are created with the current elapsed time when
-     * call executes the code. This is done to compute the number of steps
-     * required to make the move from point A to point B. There is for sure
-     * a much better way to do it. But for now it works.
-     * This is used when animating the sprite later so that the offset can be
-     * multplied by the right amont. ielapsed stands for initial_elapsed.
-     */
-    float ielapsed;
-
-    /**
-     * The offset we need to add to current position on each update.
-     */
-    vec2_t offset;
-} sprite_animator_t;
-
 typedef struct sprite_t
 {
     /**
@@ -59,11 +23,24 @@ typedef struct sprite_t
      *
      * This is mandatory in the current implementation but we could imagine
      * sprites without any texture, just colors for example.
+     * The nice thing about this current implementation is that the pointer to
+     * the #texture_t object can vary and this can be used to render different
+     * animations.
      */
     texture_t* texture;
 
     /* OpenGL specifics */
     unsigned int program;
+
+    /**
+     * Vertex shader id.
+     */
+    unsigned int vshader;
+
+    /**
+     * Fragment shader id.
+     */
+    unsigned int fshader;
 
     /* Position attribute. */
     unsigned int position_attrib;
@@ -120,25 +97,86 @@ typedef struct sprite_t
 
 } sprite_t;
 
+/**
+ * A simple animator for sprites.
+ *
+ * Right now it only allows to update positions based on linear updates.
+ * This could be improved a lot by adding rotations, scaling, ...
+ */
+typedef struct sprite_animator_t
+{
+    /**
+     * How many steps are required in the animation.
+     */
+    unsigned int steps;
+
+    /**
+     * The current step we are in while animating the sprite.
+     */
+    unsigned int step;
+
+    /**
+     * Initial elapsed time.
+     *
+     * Right now, animators are created with the current elapsed time when
+     * call executes the code. This is done to compute the number of steps
+     * required to make the move from point A to point B. There is for sure
+     * a much better way to do it. But for now it works.
+     * This is used when animating the sprite later so that the offset can be
+     * multplied by the right amont. ielapsed stands for initial_elapsed.
+     */
+    float ielapsed;
+
+    /**
+     * The offset we need to add to current position on each update.
+     */
+    vec2_t offset;
+
+    /**
+     * The list of textures to use during sprite animation.
+     *
+     * Can be set to NULL if there is no switching between textures.
+     */
+    texture_list_t* textures;
+
+} sprite_animator_t;
 
 /**
  * Creates a new sprite and allocates the necessary memory.
  *
- * @param texture_name The name of the texture to load.
- * This means that it will call the necessary functions to load the texture as
- * well so the user does not have to do it.
+ * @param texture The texture associate with the sprite. Can be NULL.
+ * @position The original position of the sprite.
+ * @offset The offset that represents the actual center of the object.
+ * This is like the 0, 0 of the object in its coordinate system.
+ * @size The size in x (width) and y (height) of the sprite.
  * @return A new sprite object with the memory already allocated.
  */
-sprite_t* sprite_create(const char* texture_name, vec2_t position,
-                        float width, float height);
+sprite_t* sprite_create(const texture_t* texture,
+                        const vec2_t position,
+                        const vec2_t offset,
+                        const vec2_t size);
 
 /**
  * Frees the memory of a sprite.
  *
+ * Note that the sprite should not be responsible for deleting the texture.
+ * The texture should be deleted by the object that created it.
  * @param sprite The sprite to free.
  */
 void sprite_delete(sprite_t** sprite);
 
+/**
+ * Updates a sprite with a new texture previously created.
+ *
+ * This method is useful when animating a sprite and updating its texture at
+ * the same time. It's more useful to call this function before #sprite_render
+ * because #sprite_render will use sprite->texture to render the right
+ * texture.
+ *
+ * @param sprite The sprite to update.
+ * @param texture The pointer to the new texture.
+ */
+void sprite_set_texture(sprite_t* sprite, texture_t* texture);
 
 /**
  * Renders a sprite to the screen.
@@ -157,18 +195,20 @@ void sprite_render(sprite_t* sprite);
  *
  * @param sprite The original sprite we want to animate. It contains the
  * original position.
+ * @param tex The texture list to use during animation. Can be NULL if there
+ * is no switching.
  * @param to The end position. Where the sprite should end up.
  * @param speed The speed at which the sprite should be moving.
  * The speed is taken into account when computing the steps.
- * @elapsed The time elapsed since last frame. It used to get an idea of how
+ * @elap The time elapsed since last frame. It used to get an idea of how
  * far the renderer is going. Right now the implementation if too basic, for
  * example if last frame was very slow for some reason then the number of
  * steps will be very short even if GPU rendering comes back up right after.
  * @return The animator with proper memory allocated. You need to call
  * #sprite_animator_delete to clean up the memory used by the structure.
  */
-sprite_animator_t* sprite_animator_create(sprite_t* sprite, vec2_t to,
-                                          float speed, float elapsed);
+sprite_animator_t* sprite_animator_create(sprite_t* sprite, texture_list_t* tex,
+                                          vec2_t to, float speed, float elap);
 
 /**
  * Frees memory allocated by #sprite_animator_create.

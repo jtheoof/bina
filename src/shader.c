@@ -38,10 +38,18 @@ shader_create_shader(GLenum type, const char* source)
     return shader;
 }
 
-unsigned int
-shader_create_program(const char* vertex, const char* fragment)
+void
+shader_delete_shader(unsigned int shader)
 {
-    GLuint vertex_shader, fragment_shader;
+    GL_CHECK(glDeleteShader, shader);
+}
+
+unsigned int
+shader_create_program(const char* vertex, const char* fragment,
+                      unsigned int* vid, unsigned int* fid)
+{
+    GLuint vertex_shader = 0;
+    GLuint fragment_shader = 0;
     GLuint program = glCreateProgram();
     GLint link_status;
     GLint length = 0;
@@ -80,14 +88,28 @@ shader_create_program(const char* vertex, const char* fragment)
     }
 
     LOGI("Created program: %d", program);
+
+    *vid = vertex_shader;
+    *fid = fragment_shader;
+
     return program;
 
 error:
-    if (program) {
-        glDeleteProgram(program);
-    }
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
+    glDeleteProgram(program);
 
     LOGE("Could not create program");
+
+    *vid = 0;
+    *fid = 0;
+
     return 0;
+}
+
+void
+shader_delete_program(unsigned int program)
+{
+    GL_CHECK(glDeleteProgram, program);
 }
 

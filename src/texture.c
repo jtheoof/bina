@@ -157,7 +157,7 @@ texture_read_png_memory(png_structp pngp, png_bytep bytep, png_size_t size)
 }
 
 int
-texture_load_png(texture_t* texture)
+texture_load_png(memory_t* memory, texture_t* texture)
 {
     png_structp png_ptr = NULL;
     png_infop info_ptr = NULL;
@@ -201,13 +201,13 @@ texture_load_png(texture_t* texture)
         goto error;
     }
 
-    if (!texture->image) {
-        LOGE("No memory loaded for image data");
+    if (!memory) {
+        LOGE("No memory raw data loaded from asset");
         goto error;
     }
 
     /* Set up our custom reading function useful for multi device loading. */
-    png_set_read_fn(png_ptr, (void*) texture->image, texture_read_png_memory);
+    png_set_read_fn(png_ptr, (void*) memory, texture_read_png_memory);
 
     /* If we have already
      * read some of the signature */
@@ -293,7 +293,7 @@ texture_load_png(texture_t* texture)
 
     row_pointers = (png_bytepp) malloc(sizeof(png_bytepp) * height);
     if (!row_pointers) {
-        LOGE("Not enought memory to create row_pointers");
+        LOGE("Not enough memory to create row_pointers");
         goto error;
     }
 
@@ -309,6 +309,7 @@ texture_load_png(texture_t* texture)
 
     /* Free memory we don't need anymore */
     free(row_pointers);
+    row_pointers = NULL;
 
     texture_print_info(texture);
 
@@ -430,6 +431,7 @@ texture_t*
 texture_create(const char* name)
 {
     texture_t* texture;
+    memory_t*  memory;
 
     texture = (texture_t*) malloc(sizeof(texture_t));
 
@@ -442,9 +444,8 @@ texture_create(const char* name)
 
     texture->id     = 0;
     texture->pixels = NULL;
-    texture->image  = memory_create(name); /* Load texture into memory */
 
-    if (texture_load(texture)) {
+    if (texture_load(name, texture)) {
         LOGE("An error occured while loading the texture");
         goto error;
     }
@@ -474,6 +475,7 @@ texture_delete(texture_t** texture)
 
         if (tex->pixels) {
             free(tex->pixels);
+            tex->pixels = NULL;
         }
 
         if (tex->image) {
@@ -487,23 +489,88 @@ texture_delete(texture_t** texture)
     }
 }
 
-int
-texture_load(texture_t* texture)
+texture_list_t*
+texture_create_list(const char* animation,
+                    const char* ext,
+                    const unsigned short size)
 {
+    texture_list_t* ret = NULL;
+    char tmp[MAX_PATH];
+    char* fmt = "%s/%s_%02d.%s";
+    int i;
+
+    ret = (texture_list_t*) calloc(1, sizeof(texture_list_t));
+    if (!ret) {
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        goto error;
+    }
+
+    ret->size = size;
+    ret->textures = (texture_t**) calloc(size, sizeof(texture_t*));
+
+    if (!ret->textures) {
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        goto error;
+    }
+
+    for (i = 0; i < size; i++) {
+        snprintf(tmp, MAX_PATH, fmt, "animations", animation, i, ext);
+        ret->textures[i] = texture_create(tmp);
+    }
+
+    return ret;
+
+error:
+    texture_delete_list(&ret);
+
+    return NULL;
+}
+
+void
+texture_delete_list(texture_list_t** list)
+{
+    texture_list_t* tmp = *list;
+    int i;
+
+    if (tmp) {
+        if (tmp->textures) {
+            for (i = 0; i < tmp->size; i++) {
+                texture_delete(&tmp->textures[i]);
+            }
+            free(tmp->textures);
+            tmp->textures = NULL;
+        }
+        free(tmp);
+        *list = NULL;
+    }
+}
+
+int
+texture_load(const char* name, texture_t* texture)
+{
+    memory_t* memory = NULL;
+
     char ext[MAX_CHAR];
     int  err;
 
-    LOGD("Loading: %s from memory", texture->name);
-
-    get_file_extension(texture->name, ext);
+    get_file_extension(name, ext);
 
     if (!strcmp(ext, "png")) {
-        err = texture_load_png(texture);
+        memory = memory_create(name); /* Load texture into memory */
+        err = texture_load_png(memory, texture);
     } else if (!strcmp(ext, "tga")) {
         LOGE("Extension tga need some work with texture");
     } else {
         LOGE("Extension: %s not implemented for texturing", ext);
     }
+
+    /* The object loaded in memory has been loaded and put into
+     * texture->pixels so there is no need for previous original data.
+     * We do not store the texture->image, simply point to NULL. Perhaps it
+     * will be useful later.
+     */
+    memory_delete(&memory);
+    texture->image = NULL;
 
     return err;
 }
@@ -554,6 +621,14 @@ texture_gl_create(texture_t* texture)
              texture->pixels);
 
     GL_CHECK(glBindTexture, texture->target, 0);
+
+    /* XXX Since the texture data is now in GPU, we do not need the memory to
+     * texture->pixels. It is safe to free it.
+     */
+    if (texture->pixels) {
+        free(texture->pixels);
+        texture->pixels = NULL;
+    }
 
     return 0;
 }

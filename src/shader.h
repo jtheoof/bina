@@ -53,13 +53,30 @@
 unsigned int shader_create_shader(GLenum type, const char* source);
 
 /**
+ * Deletes a shader.
+ *
+ * @param shader The shader id to delete (obtained from glCreateShader).
+ */
+void shader_delete_shader(unsigned int shader);
+
+/**
  * Creates a new OpenGL program object.
  *
  * It requires two valid sources. One vertex shader and one fragment shader.
  *
  * @param vertex The vertex shader of the program.
  * @param fragment The fragement shader of the program.
+ * @param vid The vertex shader id.
+ * @param fid The fragment shader id.
  * @return The id of the program generated and stored in GPU. 0 if something
  * went wrong.
  */
-unsigned int shader_create_program(const char* vertex, const char* fragment);
+unsigned int shader_create_program(const char* vertex, const char* fragment,
+                                   unsigned int* vid,  unsigned int* fid);
+
+/**
+ * Deletes a program.
+ *
+ * @param shader The program id to delete (obtained from glCreateProgram).
+ */
+void shader_delete_program(unsigned int program);

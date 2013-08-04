@@ -47,89 +47,99 @@ bina_animate_demo_sprite(sprite_t* sprite, sprite_animator_t** animator,
     rto.x = (rx / 2000.0f * 2.0f) - 0.0f;
     rto.y = (ry / 2000.0f * 2.0f) - 0.0f;
 
-    *animator = sprite_animator_create(sprite, rto, 1.0f, elapsed);
+    /* *animator = sprite_animator_create(sprite, rto, 1.0f, elapsed); */
 }
 
 void
 bina_init(int width, int height)
 {
-    int i;
-    long int rx, ry;
-    float elapsed = main_get_time_elapsed();
-
-    vec2_t pos;
-    vec2_t rpos;
-
-    pos.x = 0.0f;
-    pos.y = 0.0f;
+    bina_load_background("backgrounds/bedroom_artist.png");
+    bina_load_porc();
 
     viewport.x = 0;
     viewport.y = 0;
     viewport.width = width;
     viewport.height = height;
-
-    background = sprite_create("artwork/background.png", pos, 2.0f, 2.0f);
-
-    pos.x = 1.0f;
-    pos.y = 0.2f;
-    brian = sprite_create("artwork/brian.png", pos, 0.19f, 0.66f);
-
-    sprites_demo = (sprite_t**) calloc(SPRITES_DEMO, sizeof(sprite_t*));
-    animators_demo = (sprite_animator_t**) calloc(SPRITES_DEMO,
-                                                  sizeof(sprite_animator_t*));
-
-    for (i = 0; i < SPRITES_DEMO; i++) {
-        rx = rand() % 2001;
-        ry = rand() % 2001;
-
-        rpos.x = (rx / 2000.0f * 2.0f) - 0.0f;
-        rpos.y = (ry / 2000.0f * 2.0f) - 0.0f;
-
-        sprites_demo[i] = sprite_create("artwork/brian.png", rpos,
-                                        0.19f, 0.66f);
-
-        bina_animate_demo_sprite(sprites_demo[i], &animators_demo[i], 0.016f);
-    }
-
-    /* No animator for now, only when gamer clicks or taps. */
-    brian_animator = NULL;
-
     renderer_init(&viewport);
 }
 
 void
 bina_end()
 {
-    int i;
+    /* int i; */
 
-    if (sprites_demo) {
-        for (i = 0; i < SPRITES_DEMO; i++) {
-            sprite_delete(&sprites_demo[i]);
-        }
-        free(sprites_demo);
-    }
+    /* if (sprites_demo) { */
+    /*     for (i = 0; i < SPRITES_DEMO; i++) { */
+    /*         sprite_delete(&sprites_demo[i]); */
+    /*     } */
+    /*     free(sprites_demo); */
+    /* } */
 
-    if (animators_demo) {
-        for (i = 0; i < SPRITES_DEMO; i++) {
-            sprite_animator_delete(&animators_demo[i]);
-        }
-        free(animators_demo);
-    }
+    /* if (animators_demo) { */
+    /*     for (i = 0; i < SPRITES_DEMO; i++) { */
+    /*         sprite_animator_delete(&animators_demo[i]); */
+    /*     } */
+    /*     free(animators_demo); */
+    /* } */
 
-    sprite_delete(&background);
-    sprite_delete(&brian);
+    texture_delete(&back_tex);
+    texture_delete_list(&porc_r_tex);
+    texture_delete_list(&porc_l_tex);
 
-    sprite_animator_delete(&brian_animator);
+    sprite_delete(&back);
+    sprite_delete(&porc);
+
+    sprite_animator_delete(&ani_porc);
 }
 
 void
-bina_animate_brian_to(vec2_t to, float speed)
+bina_load_background(const char* filepath)
+{
+    vec2_t pos, off, size;
+
+    pos.x = 0.0f;
+    pos.y = 0.0f;
+
+    off.x = 0.0f;
+    off.y = 0.0f;
+
+    size.x = 2.0f;
+    size.y = 2.0f;
+
+    back_tex = texture_create(filepath);
+    back = sprite_create(back_tex, pos, off, size);
+}
+
+void
+bina_load_porc()
+{
+    vec2_t pos, off, size;
+
+    pos.x = 0.5f;
+    pos.y = 0.2f;
+
+    off.x = 0.43f;
+    off.y = 0.2f;
+
+    size.x = 0.86f;
+    size.y = 1.53f;
+
+    porc_r_tex = texture_create_list("perso1_walkCycle_cameraLeft", "png", 21);
+    porc_l_tex = texture_create_list("perso1_walkCycle_cameraRight", "png", 21);
+    porc = sprite_create(porc_r_tex->textures[0], pos, off, size);
+
+    /* No animator for now, only when gamer clicks or taps. */
+    ani_porc = NULL;
+}
+
+void
+bina_animate_porc_to(vec2_t to, float speed)
 {
     float elapsed = main_get_time_elapsed();
 
-    if (brian_animator) {
-        sprite_animator_delete(&brian_animator);
+    if (ani_porc) {
+        sprite_animator_delete(&ani_porc);
     }
 
-    brian_animator = sprite_animator_create(brian, to, speed, elapsed);
+    ani_porc = sprite_animator_create(porc, NULL, to, speed, elapsed);
 }

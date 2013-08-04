@@ -144,15 +144,19 @@ AAssetManager* asset_manager_g;
 
 camera_viewport_t viewport;
 
-sprite_t* background;
-sprite_t* brian;
+sprite_t* back;
+sprite_t* porc;
 
-#define SPRITES_DEMO 5
+texture_t* back_tex;
+texture_list_t* porc_r_tex;
+texture_list_t* porc_l_tex;
 
-sprite_t** sprites_demo;
-sprite_animator_t** animators_demo;
+#define SPRITES_DEMO 0 /* Slow at 998 */
 
-sprite_animator_t* brian_animator;
+/* sprite_t** sprites_demo; */
+/* sprite_animator_t** animators_demo; */
+
+sprite_animator_t* ani_porc;
 
 /* ************************ */
 
@@ -213,14 +217,30 @@ void bina_init(int width, int height);
 void bina_end();
 
 /**
- * Animate brian on the screen when clicking or tapping.
+ * Loads the background into the game.
+ *
+ * The background in pretty important because it defines the size of the
+ * biggest element that will be drawn to the viewport.
+ * This will set the default size for smaller sprites.
+ *
+ * @param filepath The file path of the background to load.
+ */
+void bina_load_background(const char* filepath);
+
+/**
+ * Loads Porc Gerard into the scene.
+ */
+void bina_load_porc();
+
+/**
+ * Animate porc on the screen when clicking or tapping.
  *
  * This is just a testing function. The goal is to make it work on every
  * device.
- * @param to The destination where brian should go.
- * @param speed The speed we want to set brian to.
+ * @param to The destination where porc should go.
+ * @param speed The speed we want to set porc to.
  */
-void bina_animate_brian_to(vec2_t to, float speed);
+void bina_animate_porc_to(vec2_t to, float speed);
 
 /* TODO Move this to its own main.h ? */
 

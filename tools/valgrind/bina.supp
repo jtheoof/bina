@@ -990,3 +990,11 @@
    obj:/usr/lib/x86_64-linux-gnu/dri/i965_dri.so
    fun:renderer_pre_render
 }
+{
+   gmon
+   Memcheck:Leak
+   fun:calloc
+   fun:monstartup
+   fun:__gmon_start__
+   obj:/lib/x86_64-linux-gnu/librt-2.15.so
+}

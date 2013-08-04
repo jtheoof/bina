@@ -25,6 +25,10 @@ typedef struct texture_t
 
     /**
      * Image (PNG, ...) stored in memory.
+     *
+     * Not sure if it is really useful to keep it into the structure. Right
+     * now we are freeing the memory when the texture is successfully loaded
+     * but perhaps later this object can be useful.
      */
     memory_t* image;
 
@@ -145,6 +149,26 @@ typedef struct texture_t
 } texture_t;
 
 /**
+ * A list of textures.
+ *
+ * Particularly useful to load sprite animations.
+ * Should probably make it a circular linked list.
+ */
+typedef struct texture_list_t
+{
+    /**
+     * The number of textures.
+     */
+    unsigned short size;
+
+    /**
+     * The array of textures that will be loaded for the animation.
+     */
+    texture_t** textures;
+
+} texture_list_t;
+
+/**
  * Creates a new texture from sratch.
  *
  * It will automatically load the texture from file or memory,
@@ -162,16 +186,54 @@ texture_t* texture_create(const char* name);
 void texture_delete(texture_t** texture);
 
 /**
+ * Creates multiple textures based on single filenaming.
+ *
+ * This should be used to load animations (mutliple textures at once).
+ * Note that right now, only PNG files are loaded this way.
+ * We could write a wrapper to the assets manager that will automatically list
+ * all the perso1_walkCycle_cameraLeft files listed and their extension.
+ * This way we would not have to pass #ext nor #size.
+ *
+ * @param animation The name of the group of textures to load.
+ * For example: perso1_walkCycle_cameraLeft
+ * This will load perso1_walkCycle_cameraLeft_0.png, ...
+ * @param ext The extension of the files to load.
+ * @param size The number of files to load.
+ * @return The list of texture_t* textures created.
+ */
+texture_list_t* texture_create_list(const char* animation,
+                                    const char* ext,
+                                    const unsigned short size);
+
+/**
+ * Frees memory occupied by a texture_list_t object.
+ *
+ * @param list The list to free.
+ */
+void texture_delete_list(texture_list_t** list);
+
+/**
  * Loads a texture object from a name.
+ * 
+ * The object is first loaded into memory and then passed to the approriate
+ * extension handler.
+ *
+ * @param name The name of the asset to load.
  * @param texture The texture object created.
  * @return 0 if call is successful, an error code otherwise.
  */
-int texture_load(texture_t* texture);
+int texture_load(const char* name, texture_t* texture);
 
 /**
  * Loads a PNG file (based on libpng).
+ *
+ * @param memory The original object loaded from assets in its original
+ * format.
+ * @param texture The texture object that will contain the RAW data used by
+ * OpenGL.
+ * @return 0 if call is successful, an error code otherwise.
  */
-int texture_load_png(texture_t* texture);
+int texture_load_png(memory_t* memory, texture_t* texture);
 
 /**
  * Reads a PNG file from memory.

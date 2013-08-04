@@ -128,22 +128,19 @@ static const float sprite_texices_g[] = {
 };
 
 sprite_t*
-sprite_create(const char* texture_name, vec2_t position,
-              float width, float height)
+sprite_create(const texture_t* texture, const vec2_t position,
+              const vec2_t offset, const vec2_t size)
 {
     sprite_t* sprite;
     unsigned int program;
+    float width = size.x;
+    float height = size.y;
 
     sprite = (sprite_t*) malloc(sizeof(sprite_t));
 
-    if (!sprite) {
-        LOGE("Not enough memory to create sprite: %s", texture_name);
-        return NULL;
-    }
-
-    sprite->texture = texture_create(texture_name);
     sprite->program = shader_create_program(sprite_vertex_shader_g,
-                                            sprite_fragment_shader_g);
+                                            sprite_fragment_shader_g,
+                                            &sprite->vshader, &sprite->fshader);
 
     program = sprite->program;
     if (program) {
@@ -152,24 +149,25 @@ sprite_create(const char* texture_name, vec2_t position,
         sprite->texture_attrib = glGetAttribLocation(program, "texture_a");
         sprite->texture_uniform = glGetUniformLocation(program, "texture_u");
 
-        LOGD("Sprite has position_u: %d", sprite->position_uniform);
-        LOGD("Sprite has position_a: %d", sprite->position_attrib);
-        LOGD("Sprite has texture_a: %d", sprite->texture_attrib);
-        LOGD("Sprite has texture_u: %d", sprite->texture_uniform);
+        LOGD("Sprite has position: uniform: %d, attribute: %d "
+             "texture: uniform: %d, attribute: %d",
+             sprite->position_uniform, sprite->position_attrib,
+             sprite->texture_uniform,  sprite->texture_attrib);
     }
 
-    sprite->vertices[0][0] = -1.0f;
-    sprite->vertices[0][1] = -1.0f + height;
-    sprite->vertices[1][0] = -1.0f;
-    sprite->vertices[1][1] = -1.0f;
-    sprite->vertices[2][0] = -1.0f + width;
-    sprite->vertices[2][1] = -1.0f + height;
-    sprite->vertices[3][0] = -1.0f + width;
-    sprite->vertices[3][1] = -1.0f;
+    sprite->vertices[0][0] = -1.0f - offset.x;
+    sprite->vertices[0][1] = -1.0f + height - offset.y;
+    sprite->vertices[1][0] = -1.0f - offset.x;
+    sprite->vertices[1][1] = -1.0f - offset.y;
+    sprite->vertices[2][0] = -1.0f + width - offset.x;
+    sprite->vertices[2][1] = -1.0f + height - offset.y;
+    sprite->vertices[3][0] = -1.0f + width - offset.x;
+    sprite->vertices[3][1] = -1.0f - offset.y;
 
     sprite->position = position;
     sprite->width = width;
     sprite->height = height;
+    sprite->texture = texture;
 
     return sprite;
 }
@@ -178,12 +176,28 @@ void
 sprite_delete(sprite_t** sprite)
 {
     sprite_t* s = *sprite;
+    /* XXX The sprite should not be responsible for deleting the texture.
+     * The texture should be deleted by the object that created it.
+     */
     if (s) {
-        texture_delete(&s->texture);
+        shader_delete_shader(s->vshader);
+        shader_delete_shader(s->fshader);
+        shader_delete_program(s->program);
+        /* if (s->texture) { */
+        /*     texture_delete(&s->texture); */
+        /* } */
         free(s);
         s = NULL;
     }
     *sprite = s;
+}
+
+void
+sprite_set_texture(sprite_t* sprite, texture_t* texture)
+{
+    if (sprite && texture) {
+        sprite->texture = texture;
+    }
 }
 
 void
@@ -222,7 +236,8 @@ sprite_render(sprite_t* sprite)
 }
 
 sprite_animator_t*
-sprite_animator_create(sprite_t* sprite, vec2_t to, float speed, float elapsed)
+sprite_animator_create(sprite_t* sprite, texture_list_t* textures,
+                       vec2_t to, float speed, float elapsed)
 {
      sprite_animator_t* animator;    /* Animator object returned */
      unsigned int steps = 1;         /* Number of steps */
@@ -249,6 +264,7 @@ sprite_animator_create(sprite_t* sprite, vec2_t to, float speed, float elapsed)
      animator->ielapsed = elapsed;
      animator->offset.x = (to.x - from.x) / steps;
      animator->offset.y = (to.y - from.y) / steps;
+     animator->textures = textures;
 
      LOGD("Sprite animator was created from: (%f,%f) to: (%f, %f) "
           "in %d steps at speed: %f with elapsed time: %f",
