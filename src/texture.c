@@ -431,7 +431,6 @@ texture_t*
 texture_create(const char* name)
 {
     texture_t* texture;
-    memory_t*  memory;
 
     texture = (texture_t*) malloc(sizeof(texture_t));
 
@@ -638,7 +637,6 @@ texture_gl_delete(texture_t* texture)
 {
     if (texture->id) {
         GL_CHECK(glDeleteTextures, 1, &texture->id);
-        texture->id;
     }
 
     return 0;

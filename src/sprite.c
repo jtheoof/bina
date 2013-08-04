@@ -128,7 +128,7 @@ static const float sprite_texices_g[] = {
 };
 
 sprite_t*
-sprite_create(const texture_t* texture, const vec2_t position,
+sprite_create(texture_t* texture, const vec2_t position,
               const vec2_t offset, const vec2_t size)
 {
     sprite_t* sprite;

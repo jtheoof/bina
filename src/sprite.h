@@ -156,7 +156,7 @@ typedef struct sprite_animator_t
  * @size The size in x (width) and y (height) of the sprite.
  * @return A new sprite object with the memory already allocated.
  */
-sprite_t* sprite_create(const texture_t* texture,
+sprite_t* sprite_create(texture_t* texture,
                         const vec2_t position,
                         const vec2_t offset,
                         const vec2_t size);

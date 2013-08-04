@@ -6,17 +6,17 @@
 
 #include "bina.h"
 
-static const GLubyte*
-gl_error_string(GLenum errorCode)
-{
-    int i;
-    for (i = 0; gl_errors[i].string; i++) {
-        if (gl_errors[i].token == errorCode)
-            return (const GLubyte *) gl_errors[i].string;
-    }
+/* static const GLubyte* */
+/* gl_error_string(GLenum errorCode) */
+/* { */
+/*     int i; */
+/*     for (i = 0; gl_errors[i].string; i++) { */
+/*         if (gl_errors[i].token == errorCode) */
+/*             return (const GLubyte *) gl_errors[i].string; */
+/*     } */
 
-    return (const GLubyte *) 0;
-}
+/*     return (const GLubyte *) 0; */
+/* } */
 
 void
 print_gl_string(const char* name, GLenum s)
@@ -25,27 +25,27 @@ print_gl_string(const char* name, GLenum s)
     LOGI("GL %s = %s\n", name, v);
 }
 
-static void
-check_gl_error(void)
-{
-    GLint e;
-    for (e = glGetError(); e; e = glGetError()) {
-        LOGE("glError: %s (0x%x)\n", gl_error_string(e), e);
-    }
-}
+/* static void */
+/* check_gl_error(void) */
+/* { */
+/*     GLint e; */
+/*     for (e = glGetError(); e; e = glGetError()) { */
+/*         LOGE("glError: %s (0x%x)\n", gl_error_string(e), e); */
+/*     } */
+/* } */
 
 void
 bina_animate_demo_sprite(sprite_t* sprite, sprite_animator_t** animator,
                          float elapsed)
 {
-    long int rx, ry;
-    vec2_t rto;
+    /* long int rx, ry; */
+    /* vec2_t rto; */
 
-    rx = rand() % 2001;
-    ry = rand() % 2001;
+    /* rx = rand() % 2001; */
+    /* ry = rand() % 2001; */
 
-    rto.x = (rx / 2000.0f * 2.0f) - 0.0f;
-    rto.y = (ry / 2000.0f * 2.0f) - 0.0f;
+    /* rto.x = (rx / 2000.0f * 2.0f) - 0.0f; */
+    /* rto.y = (ry / 2000.0f * 2.0f) - 0.0f; */
 
     /* *animator = sprite_animator_create(sprite, rto, 1.0f, elapsed); */
 }
