@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04A9C09317B0269000B33816 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9C09217B0269000B33816 /* Cocoa.framework */; };
+		04A9C09D17B0269000B33816 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C09B17B0269000B33816 /* InfoPlist.strings */; };
+		04A9C09F17B0269000B33816 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C09E17B0269000B33816 /* main.m */; };
+		04A9C0A317B0269000B33816 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C0A117B0269000B33816 /* Credits.rtf */; };
+		04A9C0A617B0269000B33816 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C0A517B0269000B33816 /* AppDelegate.m */; };
+		04A9C0B217B02C7500B33816 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C0B117B02C7500B33816 /* MainWindowController.m */; };
+		04A9C0B517B02CCE00B33816 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C0B417B02CCE00B33816 /* MainWindow.xib */; };
+		04A9C1AD17B02F5500B33816 /* bina.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C0F217B02F5500B33816 /* bina.c */; };
+		04A9C1AE17B02F5500B33816 /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C0F417B02F5500B33816 /* camera.c */; };
+		04A9C1B917B02F5500B33816 /* main_glut.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C10A17B02F5500B33816 /* main_glut.c */; };
+		04A9C1BB17B02F5500B33816 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C10C17B02F5500B33816 /* memory.c */; };
+		04A9C1F217B02F5500B33816 /* renderer.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C17C17B02F5500B33816 /* renderer.c */; };
+		04A9C1F317B02F5500B33816 /* shader.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C17E17B02F5500B33816 /* shader.c */; };
+		04A9C1F417B02F5500B33816 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C18017B02F5500B33816 /* sprite.c */; };
+		04A9C1F517B02F5500B33816 /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C18217B02F5500B33816 /* texture.c */; };
+		04A9C1F617B02F5500B33816 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C18417B02F5500B33816 /* utils.c */; };
+		04A9C1F717B02F5500B33816 /* vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C18617B02F5500B33816 /* vector.c */; };
+		04A9C1F917B02F8A00B33816 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9C1F817B02F8A00B33816 /* OpenGL.framework */; };
+		04A9C1FB17B0374000B33816 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9C1FA17B0373F00B33816 /* GLUT.framework */; };
+		04A9C20517B03A3B00B33816 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C1FD17B03A3B00B33816 /* background.png */; };
+		04A9C20617B03A3B00B33816 /* brian.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C1FE17B03A3B00B33816 /* brian.png */; };
+		04A9C20717B03A3B00B33816 /* character1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C1FF17B03A3B00B33816 /* character1.png */; };
+		04A9C20817B03A3B00B33816 /* character2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C20017B03A3B00B33816 /* character2.png */; };
+		04A9C20917B03A3B00B33816 /* character3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C20117B03A3B00B33816 /* character3.png */; };
+		04A9C20A17B03A3B00B33816 /* Guild-Wars-2-1982.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C20217B03A3B00B33816 /* Guild-Wars-2-1982.jpg */; };
+		04A9C20B17B03A3B00B33816 /* hello1.tga in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C20317B03A3B00B33816 /* hello1.tga */; };
+		04A9C20C17B03A3B00B33816 /* yoda.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C20417B03A3B00B33816 /* yoda.jpg */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		04A9C08F17B0269000B33816 /* Bina.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bina.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04A9C09217B0269000B33816 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		04A9C09517B0269000B33816 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		04A9C09617B0269000B33816 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		04A9C09717B0269000B33816 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		04A9C09A17B0269000B33816 /* Bina-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bina-Info.plist"; sourceTree = "<group>"; };
+		04A9C09C17B0269000B33816 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		04A9C09E17B0269000B33816 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		04A9C0A017B0269000B33816 /* Bina-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bina-Prefix.pch"; sourceTree = "<group>"; };
+		04A9C0A217B0269000B33816 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		04A9C0A417B0269000B33816 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		04A9C0A517B0269000B33816 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		04A9C0B017B02C7500B33816 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
+		04A9C0B117B02C7500B33816 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
+		04A9C0B417B02CCE00B33816 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		04A9C0F217B02F5500B33816 /* bina.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bina.c; sourceTree = "<group>"; };
+		04A9C0F317B02F5500B33816 /* bina.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bina.h; sourceTree = "<group>"; };
+		04A9C0F417B02F5500B33816 /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camera.c; sourceTree = "<group>"; };
+		04A9C0F517B02F5500B33816 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		04A9C0F617B02F5500B33816 /* error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = error.h; sourceTree = "<group>"; };
+		04A9C10A17B02F5500B33816 /* main_glut.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main_glut.c; sourceTree = "<group>"; };
+		04A9C10C17B02F5500B33816 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
+		04A9C10D17B02F5500B33816 /* memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; };
+		04A9C17C17B02F5500B33816 /* renderer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = renderer.c; sourceTree = "<group>"; };
+		04A9C17D17B02F5500B33816 /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer.h; sourceTree = "<group>"; };
+		04A9C17E17B02F5500B33816 /* shader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shader.c; sourceTree = "<group>"; };
+		04A9C17F17B02F5500B33816 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shader.h; sourceTree = "<group>"; };
+		04A9C18017B02F5500B33816 /* sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
+		04A9C18117B02F5500B33816 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
+		04A9C18217B02F5500B33816 /* texture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = texture.c; sourceTree = "<group>"; };
+		04A9C18317B02F5500B33816 /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
+		04A9C18417B02F5500B33816 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utils.c; sourceTree = "<group>"; };
+		04A9C18517B02F5500B33816 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		04A9C18617B02F5500B33816 /* vector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vector.c; sourceTree = "<group>"; };
+		04A9C18717B02F5500B33816 /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = "<group>"; };
+		04A9C1F817B02F8A00B33816 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		04A9C1FA17B0373F00B33816 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		04A9C1FD17B03A3B00B33816 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		04A9C1FE17B03A3B00B33816 /* brian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brian.png; sourceTree = "<group>"; };
+		04A9C1FF17B03A3B00B33816 /* character1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = character1.png; sourceTree = "<group>"; };
+		04A9C20017B03A3B00B33816 /* character2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = character2.png; sourceTree = "<group>"; };
+		04A9C20117B03A3B00B33816 /* character3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = character3.png; sourceTree = "<group>"; };
+		04A9C20217B03A3B00B33816 /* Guild-Wars-2-1982.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Guild-Wars-2-1982.jpg"; sourceTree = "<group>"; };
+		04A9C20317B03A3B00B33816 /* hello1.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = hello1.tga; sourceTree = "<group>"; };
+		04A9C20417B03A3B00B33816 /* yoda.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yoda.jpg; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04A9C08C17B0269000B33816 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04A9C1FB17B0374000B33816 /* GLUT.framework in Frameworks */,
+				04A9C1F917B02F8A00B33816 /* OpenGL.framework in Frameworks */,
+				04A9C09317B0269000B33816 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04A9C08617B0269000B33816 = {
+			isa = PBXGroup;
+			children = (
+				04A9C1FA17B0373F00B33816 /* GLUT.framework */,
+				04A9C09817B0269000B33816 /* Bina */,
+				04A9C09117B0269000B33816 /* Frameworks */,
+				04A9C09017B0269000B33816 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		04A9C09017B0269000B33816 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C08F17B0269000B33816 /* Bina.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04A9C09117B0269000B33816 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C1F817B02F8A00B33816 /* OpenGL.framework */,
+				04A9C09217B0269000B33816 /* Cocoa.framework */,
+				04A9C09417B0269000B33816 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		04A9C09417B0269000B33816 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C09517B0269000B33816 /* AppKit.framework */,
+				04A9C09617B0269000B33816 /* CoreData.framework */,
+				04A9C09717B0269000B33816 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		04A9C09817B0269000B33816 /* Bina */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C1FC17B03A3B00B33816 /* artwork */,
+				04A9C0B817B02F5500B33816 /* src */,
+				04A9C0B317B02CA200B33816 /* NIB */,
+				04A9C0AF17B02C5800B33816 /* Controllers */,
+				04A9C0A417B0269000B33816 /* AppDelegate.h */,
+				04A9C0A517B0269000B33816 /* AppDelegate.m */,
+				04A9C09917B0269000B33816 /* Supporting Files */,
+			);
+			path = Bina;
+			sourceTree = "<group>";
+		};
+		04A9C09917B0269000B33816 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C09A17B0269000B33816 /* Bina-Info.plist */,
+				04A9C09B17B0269000B33816 /* InfoPlist.strings */,
+				04A9C09E17B0269000B33816 /* main.m */,
+				04A9C0A017B0269000B33816 /* Bina-Prefix.pch */,
+				04A9C0A117B0269000B33816 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04A9C0AF17B02C5800B33816 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C0B017B02C7500B33816 /* MainWindowController.h */,
+				04A9C0B117B02C7500B33816 /* MainWindowController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		04A9C0B317B02CA200B33816 /* NIB */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C0B417B02CCE00B33816 /* MainWindow.xib */,
+			);
+			path = NIB;
+			sourceTree = "<group>";
+		};
+		04A9C0B817B02F5500B33816 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C0F217B02F5500B33816 /* bina.c */,
+				04A9C0F317B02F5500B33816 /* bina.h */,
+				04A9C0F417B02F5500B33816 /* camera.c */,
+				04A9C0F517B02F5500B33816 /* camera.h */,
+				04A9C0F617B02F5500B33816 /* error.h */,
+				04A9C10A17B02F5500B33816 /* main_glut.c */,
+				04A9C10C17B02F5500B33816 /* memory.c */,
+				04A9C10D17B02F5500B33816 /* memory.h */,
+				04A9C17C17B02F5500B33816 /* renderer.c */,
+				04A9C17D17B02F5500B33816 /* renderer.h */,
+				04A9C17E17B02F5500B33816 /* shader.c */,
+				04A9C17F17B02F5500B33816 /* shader.h */,
+				04A9C18017B02F5500B33816 /* sprite.c */,
+				04A9C18117B02F5500B33816 /* sprite.h */,
+				04A9C18217B02F5500B33816 /* texture.c */,
+				04A9C18317B02F5500B33816 /* texture.h */,
+				04A9C18417B02F5500B33816 /* utils.c */,
+				04A9C18517B02F5500B33816 /* utils.h */,
+				04A9C18617B02F5500B33816 /* vector.c */,
+				04A9C18717B02F5500B33816 /* vector.h */,
+			);
+			name = src;
+			path = ../../..;
+			sourceTree = "<group>";
+		};
+		04A9C1FC17B03A3B00B33816 /* artwork */ = {
+			isa = PBXGroup;
+			children = (
+				04A9C1FD17B03A3B00B33816 /* background.png */,
+				04A9C1FE17B03A3B00B33816 /* brian.png */,
+				04A9C1FF17B03A3B00B33816 /* character1.png */,
+				04A9C20017B03A3B00B33816 /* character2.png */,
+				04A9C20117B03A3B00B33816 /* character3.png */,
+				04A9C20217B03A3B00B33816 /* Guild-Wars-2-1982.jpg */,
+				04A9C20317B03A3B00B33816 /* hello1.tga */,
+				04A9C20417B03A3B00B33816 /* yoda.jpg */,
+			);
+			name = artwork;
+			path = ../../../../artwork;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04A9C08E17B0269000B33816 /* Bina */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04A9C0AC17B0269000B33816 /* Build configuration list for PBXNativeTarget "Bina" */;
+			buildPhases = (
+				04A9C08B17B0269000B33816 /* Sources */,
+				04A9C08C17B0269000B33816 /* Frameworks */,
+				04A9C08D17B0269000B33816 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bina;
+			productName = Bina;
+			productReference = 04A9C08F17B0269000B33816 /* Bina.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		04A9C08717B0269000B33816 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Johan Attali";
+			};
+			buildConfigurationList = 04A9C08A17B0269000B33816 /* Build configuration list for PBXProject "Bina" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 04A9C08617B0269000B33816;
+			productRefGroup = 04A9C09017B0269000B33816 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				04A9C08E17B0269000B33816 /* Bina */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		04A9C08D17B0269000B33816 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04A9C09D17B0269000B33816 /* InfoPlist.strings in Resources */,
+				04A9C0A317B0269000B33816 /* Credits.rtf in Resources */,
+				04A9C0B517B02CCE00B33816 /* MainWindow.xib in Resources */,
+				04A9C20517B03A3B00B33816 /* background.png in Resources */,
+				04A9C20617B03A3B00B33816 /* brian.png in Resources */,
+				04A9C20717B03A3B00B33816 /* character1.png in Resources */,
+				04A9C20817B03A3B00B33816 /* character2.png in Resources */,
+				04A9C20917B03A3B00B33816 /* character3.png in Resources */,
+				04A9C20A17B03A3B00B33816 /* Guild-Wars-2-1982.jpg in Resources */,
+				04A9C20B17B03A3B00B33816 /* hello1.tga in Resources */,
+				04A9C20C17B03A3B00B33816 /* yoda.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04A9C08B17B0269000B33816 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04A9C09F17B0269000B33816 /* main.m in Sources */,
+				04A9C0A617B0269000B33816 /* AppDelegate.m in Sources */,
+				04A9C0B217B02C7500B33816 /* MainWindowController.m in Sources */,
+				04A9C1AD17B02F5500B33816 /* bina.c in Sources */,
+				04A9C1AE17B02F5500B33816 /* camera.c in Sources */,
+				04A9C1B917B02F5500B33816 /* main_glut.c in Sources */,
+				04A9C1BB17B02F5500B33816 /* memory.c in Sources */,
+				04A9C1F217B02F5500B33816 /* renderer.c in Sources */,
+				04A9C1F317B02F5500B33816 /* shader.c in Sources */,
+				04A9C1F417B02F5500B33816 /* sprite.c in Sources */,
+				04A9C1F517B02F5500B33816 /* texture.c in Sources */,
+				04A9C1F617B02F5500B33816 /* utils.c in Sources */,
+				04A9C1F717B02F5500B33816 /* vector.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		04A9C09B17B0269000B33816 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04A9C09C17B0269000B33816 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		04A9C0A117B0269000B33816 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04A9C0A217B0269000B33816 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		04A9C0AA17B0269000B33816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		04A9C0AB17B0269000B33816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		04A9C0AD17B0269000B33816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bina/Bina-Prefix.pch";
+				HAVE_PNG_H = 1;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				INFOPLIST_FILE = "Bina/Bina-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = "-lpng";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		04A9C0AE17B0269000B33816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Bina/Bina-Prefix.pch";
+				HAVE_PNG_H = 1;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				INFOPLIST_FILE = "Bina/Bina-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = "-lpng";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04A9C08A17B0269000B33816 /* Build configuration list for PBXProject "Bina" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04A9C0AA17B0269000B33816 /* Debug */,
+				04A9C0AB17B0269000B33816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04A9C0AC17B0269000B33816 /* Build configuration list for PBXNativeTarget "Bina" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04A9C0AD17B0269000B33816 /* Debug */,
+				04A9C0AE17B0269000B33816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 04A9C08717B0269000B33816 /* Project object */;
+}

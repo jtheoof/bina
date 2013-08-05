@@ -21,6 +21,7 @@ tags
 src/xxd/xxd.dSYM
 *.DS_Store
 *xcuserstate
+*xcuserdata
 
 # Windows
 *.exe
