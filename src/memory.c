@@ -112,9 +112,16 @@ void
 memory_delete(memory_t** memory)
 {
     memory_t* tmp = *memory;
-    free(tmp->buffer);
-    free(tmp);
-    *memory = NULL;
+
+    if (tmp) {
+        if (tmp->buffer) {
+            free(tmp->buffer);
+        }
+        free(tmp);
+        tmp = NULL;
+    }
+
+    *memory = tmp;
 }
 
 
