@@ -161,7 +161,6 @@ main(int argc, char** argv)
     glutReshapeFunc(main_glut_reshape_cb);
     glutDisplayFunc(main_glut_display_cb);
     glutTimerFunc(GAME_REFRESH_RATE, main_glut_timer_cb, 0);
-//    glutIdleFunc(main_glut_idle_cb);
 
     bina_init(GAME_WIDTH, GAME_HEIGHT);
 
