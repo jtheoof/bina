@@ -36,16 +36,20 @@ main_glut_display_cb(void)
     static int curr_time = 0;
 
     curr_time = glutGet(GLUT_ELAPSED_TIME);
+    
+    elap_time_g = curr_time - prev_time;
+    prev_time = curr_time;
+    
+    renderer_render();
+    glutSwapBuffers();
+}
 
+void
+main_glut_timer_cb(int t)
+{
     glutPostRedisplay();
-
-    if (curr_time - prev_time >= 1) {
-        elap_time_g = curr_time - prev_time;
-        prev_time = curr_time;
-        renderer_render();
-        glutSwapBuffers();
-
-    }
+    
+    glutTimerFunc(GAME_REFRESH_RATE, main_glut_timer_cb, 0);
 }
 
 void
@@ -156,7 +160,7 @@ main(int argc, char** argv)
     glutMouseFunc(main_glut_mouse_cb);
     glutReshapeFunc(main_glut_reshape_cb);
     glutDisplayFunc(main_glut_display_cb);
-    glutIdleFunc(main_glut_idle_cb);
+    glutTimerFunc(GAME_REFRESH_RATE, main_glut_timer_cb, 0);
 
     bina_init(GAME_WIDTH, GAME_HEIGHT);
 
