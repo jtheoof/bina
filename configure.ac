@@ -41,6 +41,7 @@ AM_CONDITIONAL([LINUX_HOST], [test "x$LINUX_HOST" = "xtrue"])
 dnl Checks for programs.
 AC_PROG_CC
 
+dnl TODO Fail if GL or GLUT not found.
 AX_CHECK_GL
 AX_CHECK_GLUT
 
