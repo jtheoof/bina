@@ -18,7 +18,10 @@ pretty neat.
 
 ## Linux
 
+See .travis.yml:
+
     sudo apt-get install mesa-common-dev
+    sudo apt-get install freeglut-dev
     sudo apt-get install libglew-dev
     sudo apt-get install libpng12-dev
 
