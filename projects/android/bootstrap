@@ -1,0 +1,3 @@
+#!/bin/sh -e
+
+android update project -p . -t android-10
