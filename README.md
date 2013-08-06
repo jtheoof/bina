@@ -18,9 +18,9 @@ pretty neat.
 
 ## Linux
 
-sudo apt-get install mesa-common-dev
-sudo apt-get install libglew-dev
-sudo apt-get install libpng12-dev
+    sudo apt-get install mesa-common-dev
+    sudo apt-get install libglew-dev
+    sudo apt-get install libpng12-dev
 
 # License
 
