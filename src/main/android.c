@@ -29,8 +29,8 @@ main_get_time_elapsed()
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_gl2jni_GL2JNILib_touch(JNIEnv * env, jobject obj,
-                                        jfloat x, jfloat y)
+Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
+                                    jfloat x, jfloat y)
 {
     vec2_t coord;
     coord.x = 2.0f * x / viewport.width;
@@ -43,7 +43,7 @@ Java_com_android_gl2jni_GL2JNILib_touch(JNIEnv * env, jobject obj,
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_gl2jni_GL2JNILib_step(JNIEnv * env, jobject obj)
+Java_com_android_bina_BinaLib_step(JNIEnv * env, jobject obj)
 {
     static int64_t prev_time = 0;
     static int64_t curr_time = 0;
@@ -64,9 +64,9 @@ Java_com_android_gl2jni_GL2JNILib_step(JNIEnv * env, jobject obj)
 }
 
 JNIEXPORT void JNICALL
-Java_com_android_gl2jni_GL2JNILib_init(JNIEnv * env, jobject obj,
-                                       jobject asset_manager,
-                                       jint width, jint height)
+Java_com_android_bina_BinaLib_init(JNIEnv * env, jobject obj,
+                                   jobject asset_manager,
+                                   jint width, jint height)
 {
     asset_manager_g = AAssetManager_fromJava(env, asset_manager);
     LOGI("Initializing bina with viewport: %dx%d", width, height);

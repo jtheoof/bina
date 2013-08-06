@@ -21,7 +21,7 @@ include $(call all-subdir-makefiles)
 LOCAL_PATH := $(TOP_PATH)/../../../src
 include $(CLEAR_VARS)
 
-LOCAL_MODULE           := libgl2jni
+LOCAL_MODULE           := libbina
 LOCAL_STATIC_LIBRARIES := libpng
 LOCAL_CFLAGS           := \
     -Werror         \
