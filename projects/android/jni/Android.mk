@@ -18,37 +18,37 @@ LOCAL_PATH := $(call my-dir)
 
 include $(call all-subdir-makefiles)
 
-LOCAL_PATH := $(TOP_PATH)
+LOCAL_PATH := $(TOP_PATH)/../../../src
 include $(CLEAR_VARS)
 
 LOCAL_MODULE           := libgl2jni
 LOCAL_STATIC_LIBRARIES := libpng
 LOCAL_CFLAGS           := \
-   -Werror         \
-   -DHAVE_STDLIB_H \
-   -DHAVE_STDIO_H  \
-   -DHAVE_STRING_H \
-   -DHAVE_CTYPE_H  \
-   -DHAVE_MATH_H   \
-   -DHAVE_TIME_H   \
-   -DHAVE_PNG_H    \
-   -DANDROID       \
-   -DUNIX
+    -Werror         \
+    -DHAVE_STDLIB_H \
+    -DHAVE_STDIO_H  \
+    -DHAVE_STRING_H \
+    -DHAVE_CTYPE_H  \
+    -DHAVE_MATH_H   \
+    -DHAVE_TIME_H   \
+    -DHAVE_PNG_H    \
+    -DANDROID       \
+    -DUNIX
 
-LOCAL_LDLIBS           := -landroid -llog -lGLESv2 -lz
-LOCAL_C_INCLUDES       := \
-	$(LOCAL_PATH) \
-	$(LOCAL_PATH)/lib/libpng
-LOCAL_SRC_FILES        :=\
-	../../utils.c \
-	../../vector.c \
-	../../memory.c \
-	../../texture.c \
-	../../sprite.c \
-	../../shader.c \
-	../../camera.c \
-	../../renderer.c \
-	../../bina.c \
-	../../main_android.c
+LOCAL_LDLIBS     := -landroid -llog -lGLESv2 -lz
+LOCAL_C_INCLUDES := \
+    $(LOCAL_PATH) \
+    $(TOP_PATH)/lib/libpng
+LOCAL_SRC_FILES  := \
+    main/android.c \
+    vector.c       \
+    bina.c         \
+    shader.c       \
+    utils.c        \
+    memory.c       \
+    texture.c      \
+    sprite.c       \
+    camera.c       \
+    renderer.c
 
 include $(BUILD_SHARED_LIBRARY)
