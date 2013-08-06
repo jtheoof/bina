@@ -229,13 +229,18 @@ void sprite_animator_delete(sprite_animator_t** animator);
  * different graphics performance. We base the initial speed of the sprite on
  * a 60 FPS rendering throughput (0.016s between each frame).
  *
+ * If there is a texture list associated with the animator, we also update the
+ * current texture based on Yaum's real time rendering (24 FPS).
+ *
  * @param sprite The sprite to animate.
  * @param animator The animator previously created.
  * @param elapsed The time elapsed in ms since last frame.
- * @return The number of steps left. When this function returns 0, it is
+ * @return The number of steps left. When this function returns 0, it means
+ * that there is no more step to animate. But there could be a texturing
+ * animation to finish. We return -1 if, in addition to that, there is no more
+ * texture to animate (we have reached the end of the sequence). It is
  * mandatory to clean up the memory and free animator object through
  * #sprite_animator_delete.
  */
-unsigned int sprite_animator_animate(sprite_t* sprite,
-                                     sprite_animator_t* animator,
-                                     float elapsed);
+int sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
+                            float elapsed);

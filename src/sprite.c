@@ -292,7 +292,7 @@ sprite_animator_delete(sprite_animator_t** animator)
     }
 }
 
-unsigned int
+int
 sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
                         float elapsed)
 {
@@ -300,6 +300,8 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
     unsigned int cur   = animator->step;
     unsigned int anim  = 0; /* Current index in texturs (if any) */
     unsigned int size  = 0; /* Number of textures (if any) */
+
+    int ret = steps - cur;
 
     float  ielap = animator->ielapsed;
     float  fix;
@@ -309,7 +311,7 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
     animator->elapsed += elapsed;
 
     if (ielap <= 0.0f) {
-        return steps - cur; /* wait a bit */
+        return ret; /* wait a bit */
     }
 
     fix = elapsed / ielap;  /* Fix offset by elapsed time */
@@ -324,7 +326,12 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
         size = animator->textures->size;
         anim = (unsigned int) (animator->elapsed * 24.0f) % size;
         sprite->texture = animator->textures->textures[anim];
+
+        /* We have reached the end of the animation */
+        if (anim == 0 && ret == 0) {
+            return -1;
+        }
     }
 
-    return steps - cur;
+    return ret;
 }

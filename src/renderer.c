@@ -65,7 +65,7 @@ update_porc_animation(float elapsed)
     }
 
     if (ani_porc) {
-        if (!sprite_animator_animate(porc, ani_porc, elapsed)) {
+        if (sprite_animator_animate(porc, ani_porc, elapsed) == -1) {
             sprite_animator_delete(&ani_porc);
         }
     }
