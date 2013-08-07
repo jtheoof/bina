@@ -67,10 +67,6 @@
 #define snprintf _snprintf
 #endif
 
-/* TODO Get rid of this and integrate it in the build system.
- */
-#define DEBUG
-
 #ifdef ANDROID
 #include <jni.h>
 
