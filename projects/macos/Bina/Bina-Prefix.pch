@@ -11,6 +11,6 @@
     #import <Cocoa/Cocoa.h>
 #endif
 
-#define HAVE_PNG_H
+#include "config.h"
 
 
