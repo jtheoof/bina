@@ -15,9 +15,6 @@ dnl Being able to run configure means the system is Unix (compatible).
 AC_DEFINE(UNIX, 1, Unix system)
 AC_DEFINE(USE_GLEXT_PROTOTYPES, 1, Use OpenGL extension prototypes)
 
-# AC_CHECK_HEADERS([GL/glew.h],,
-#                  AC_MSG_ERROR([GL/glew.h header cannot be found.]))
-
 dnl Check for the flag that fails if stuff are missing.
 AC_MSG_CHECKING(--enable-fail-if-missing argument)
 AC_ARG_ENABLE(fail_if_missing,
@@ -41,13 +38,6 @@ AM_CONDITIONAL([LINUX_HOST], [test "x$LINUX_HOST" = "xtrue"])
 dnl Checks for programs.
 AC_PROG_CC
 
-dnl TODO Fail if GL or GLUT not found.
-AX_CHECK_GL
-AX_CHECK_GLUT
-
-BN_CHECK_GLEW
-BN_CHECK_PNG
-
 dnl Checking main c headers
 AC_CHECK_HEADERS( \
     stdio.h                                        \
@@ -59,24 +49,16 @@ AC_CHECK_HEADERS( \
     AC_MSG_NOTICE([main c headers found]),         \
     AC_MSG_ERROR([missing main c headers files]))
 
-dnl Library: PNG {{{
-dnl BN_CHECK_PNG
-dnl AC_CHECK_HEADERS( \
-dnl     png.h,                                                                \
-dnl     AC_MSG_NOTICE([png.h found. can unleash the power of the bina. ]),    \
-dnl     AC_MSG_ERROR([png.h not found. install libpng development package.]))
-dnl
-dnl AC_CHECK_LIB([png], [png_create_read_struct],
-dnl     [LDFLAGS="$LDFLAGS -lpng"],
-dnl     [AC_MSG_ERROR([libpng not found. install libpng development package.])])
-dnl }}}
+AX_CHECK_GL
+AX_CHECK_GLUT
 
-dnl Enable debug
-dnl DEBUG=no
-dnl AC_ARG_ENABLE([debug],
-dnl   AS_HELP_STRING([--enable-debug],
-dnl     [Turn on debugging]),
-dnl   [DEBUG=$enableval], [])
+BN_CHECK_GLEW
+BN_CHECK_PNG
+
+AS_IF(
+  [test "x$ax_cv_check_glut_libglut" = "xno"],
+  AC_MSG_ERROR([missing GLUT library. install freeglut3-dev])
+)
 
 dnl Extra flags
 CFLAGS="$CFLAGS"
