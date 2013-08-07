@@ -4,6 +4,9 @@ node_modules/
 # Build
 build/
 
+# Assets
+assets/
+
 # GNU Autoconf
 # GNU Automake
 Makefile.in
