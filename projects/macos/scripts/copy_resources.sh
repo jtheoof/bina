@@ -5,14 +5,17 @@
 
 #set -exu
 
-PATH_RES="/Users/johan/Documents/Projects/personal/bina/artwork"
+PATH_RES="${SRCROOT}/../../assets"
 
 folders=`ls ${PATH_RES}`
 for folder in ${folders}; do
-    if [ -d "${PATH_RES}" ]; then
-      echo "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/$folder"
+    from="${PATH_RES}/${folder}"
+    to="${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+
+    if [ -d "${from}" ]; then
+      echo $from;
+      echo $to;
+      rsync -avyz ${from} ${to}
       #rsync -avyz $exclude_option "$sub_type_path/" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
     fi
 done
-
-die now
