@@ -328,8 +328,8 @@ sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
         sprite->texture = animator->textures->textures[anim];
 
         /* We have reached the end of the animation */
-        if (anim == 0 && ret == 0) {
-            return -1;
+        if (ret == 0) {
+            sprite->texture = animator->textures->textures[0];
         }
     }
 
