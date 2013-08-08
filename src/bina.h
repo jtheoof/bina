@@ -155,12 +155,7 @@ texture_list_t* porc_l_tex;
 
 #define SPRITES_DEMO 0 /* Slow at 998 */
 
-/* sprite_t** sprites_demo; */
-/* sprite_animator_t** animators_demo; */
-
 sprite_animator_t* ani_porc;
-
-/* ************************ */
 
 #ifdef DEBUG
 

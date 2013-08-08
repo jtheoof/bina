@@ -2,7 +2,7 @@
  * Contains the rendering functions.
  *
  * Should be almost completely agnostic of the differences between OpenGL and
- * OpenGL ES.
+ * OpenGL ES. Retrieving time spent and elapsed is platform dependent for now.
  */
 
 /**
@@ -33,23 +33,3 @@ void renderer_pre_render(float r, float g, float b, float a);
  * This where the common rendering parts comes into place.
  */
 void renderer_render();
-
-/**
- * Retrieves time.
- *
- * Could be time elapsed since epoch or time elapsed since programme started
- * depending on CLOCK implementation. See man clock_gettime.
- *
- * @return Time elapsed in nanoseconds.
- */
-/* int64_t renderer_get_time_nano(); */
-
-/**
- * Returns the time elapsed in ms since last render.
- *
- * The implementation of this function can vary depending on the the device.
- * For example GLUT has a very easy way to set it up.
- *
- * @return The elapsed time in ms.
- */
-/* float renderer_get_time_elapsed(); */

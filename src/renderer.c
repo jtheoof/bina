@@ -25,28 +25,6 @@ renderer_init(camera_viewport_t* viewport)
     camera_set_viewport(viewport);
 }
 
-/* void */
-/* animate_sprites_demo(float elapsed) */
-/* { */
-/*     unsigned int i, s; */
-
-/*     for (i = 0; i < SPRITES_DEMO; i++) { */
-/*         /1* if (animators_demo[i]) { *1/ */
-/*         /1*     s = sprite_animator_animate(sprites_demo[i], animators_demo[i], *1/ */
-/*         /1*                                 elapsed); *1/ */
-/*         /1*     if (!s) { *1/ */
-/*         /1*         LOGD("Sprite: %d finished", i); *1/ */
-/*         /1*         sprite_animator_delete(&animators_demo[i]); *1/ */
-/*         /1*         bina_animate_demo_sprite(sprites_demo[i], &animators_demo[i], *1/ */
-/*         /1*                                  elapsed); *1/ */
-/*         /1*     } *1/ */
-/*         /1* } *1/ */
-/*         if (sprites_demo[i]) { */
-/*             sprite_render(sprites_demo[i]); */
-/*         } */
-/*     } */
-/* } */
-
 static void
 update_porc_animation(float elapsed)
 {
@@ -69,8 +47,6 @@ update_porc_animation(float elapsed)
             sprite_animator_delete(&ani_porc);
         }
     }
-
-    /* sprite_set_texture(porc, porc_r_tex->textures[id]); */
 }
 
 void

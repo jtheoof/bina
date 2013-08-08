@@ -220,7 +220,7 @@ sprite_render(sprite_t* sprite)
 
     if (texture) {
         glActiveTexture(GL_TEXTURE0 + texture->unit);
-	    glBindTexture(texture->target, texture->id);
+        glBindTexture(texture->target, texture->id);
         glUniform1i(sprite->texture_uniform, texture->unit);
     }
 
@@ -228,10 +228,10 @@ sprite_render(sprite_t* sprite)
 
     glDisableVertexAttribArray(sprite->texture_attrib);
     glDisableVertexAttribArray(sprite->position_attrib);
-	glUseProgram(0);
+    glUseProgram(0);
 
     if (texture) {
-	    glBindTexture(texture->target, 0);
+        glBindTexture(texture->target, 0);
     }
 }
 
