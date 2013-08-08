@@ -65,22 +65,6 @@ bina_init(int width, int height)
 void
 bina_end()
 {
-    /* int i; */
-
-    /* if (sprites_demo) { */
-    /*     for (i = 0; i < SPRITES_DEMO; i++) { */
-    /*         sprite_delete(&sprites_demo[i]); */
-    /*     } */
-    /*     free(sprites_demo); */
-    /* } */
-
-    /* if (animators_demo) { */
-    /*     for (i = 0; i < SPRITES_DEMO; i++) { */
-    /*         sprite_animator_delete(&animators_demo[i]); */
-    /*     } */
-    /*     free(animators_demo); */
-    /* } */
-
     texture_delete(&back_tex);
     texture_delete_list(&porc_r_tex);
     texture_delete_list(&porc_l_tex);
