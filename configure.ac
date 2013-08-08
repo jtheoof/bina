@@ -9,7 +9,7 @@ dnl Keep things clean
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([1.10 -Wall -Werror foreign])
+AM_INIT_AUTOMAKE([1.10 foreign])
 
 dnl Being able to run configure means the system is Unix (compatible).
 AC_DEFINE(UNIX, 1, Unix system)
@@ -36,7 +36,7 @@ esac
 AM_CONDITIONAL([LINUX_HOST], [test "x$LINUX_HOST" = "xtrue"])
 
 dnl Checks for programs.
-AC_PROG_CC
+AC_PROG_CC([clang gcc cl cc])
 
 dnl Checking main c headers
 AC_CHECK_HEADERS( \
@@ -61,7 +61,7 @@ AS_IF(
 )
 
 dnl Extra flags
-CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -Wall -Werror"
 LDFLAGS="$LDFLAGS"
 
 AC_SUBST(CFLAGS)
