@@ -19,8 +19,8 @@
 #pragma warning(disable : 4996)
 #endif
 
-#define GAME_WIDTH        940
-#define GAME_HEIGHT       546
+#define GAME_WIDTH        960
+#define GAME_HEIGHT       540
 #define GAME_REFRESH_RATE 16.666667 /* 60 times per second */
 
 #define APP_TITLE "This is Binaaaaaaaaaaaaaaa"
