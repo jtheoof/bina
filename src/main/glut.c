@@ -47,9 +47,10 @@ main_glut_display_cb(void)
 void
 main_glut_timer_cb(int t)
 {
-    glutPostRedisplay();
-    
-    glutTimerFunc(GAME_REFRESH_RATE, main_glut_timer_cb, 0);
+    if (window_id_g) {
+        glutPostRedisplay();
+        glutTimerFunc(GAME_REFRESH_RATE, main_glut_timer_cb, 0);
+    }
 }
 
 void
@@ -68,6 +69,7 @@ main_glut_normal_keys_cb(unsigned char key, int x, int y)
     switch (key) {
         case 27: /* Escape key */
             glutDestroyWindow(window_id_g);
+            window_id_g = 0;
             break;
     }
 }
@@ -90,6 +92,7 @@ main_glut_special_keys_cb(int key, int x, int y) {
     }
 
     glutDestroyWindow(window_id_g);
+    window_id_g = 0;
 }
 
 void
@@ -126,22 +129,22 @@ main(int argc, char** argv)
 {
     int screenWidth, screenHeight;
     int posX, posY;
-	GLenum err;
+    GLenum err;
 
     /* Init GLUT */
     glutInit(&argc, argv);
 
-	/* RGBA with double buffer */
-	glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE | GLUT_DEPTH);
+    /* RGBA with double buffer */
+    glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE | GLUT_DEPTH);
 
-	/* Create centered window */
-	screenWidth = glutGet(GLUT_SCREEN_WIDTH);
-	screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
-	posX = (screenWidth >> 1) - (GAME_WIDTH >> 1);
-	posY = (screenHeight >> 1) - (GAME_HEIGHT >> 1);
+    /* Create centered window */
+    screenWidth = glutGet(GLUT_SCREEN_WIDTH);
+    screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
+    posX = (screenWidth >> 1) - (GAME_WIDTH >> 1);
+    posY = (screenHeight >> 1) - (GAME_HEIGHT >> 1);
 
-	glutInitWindowPosition(posX, posY);
-	glutInitWindowSize(GAME_WIDTH, GAME_HEIGHT);
+    glutInitWindowPosition(posX, posY);
+    glutInitWindowSize(GAME_WIDTH, GAME_HEIGHT);
     window_id_g = glutCreateWindow(APP_TITLE);
 
 #ifdef HAVE_GL_GLEW_H
@@ -151,7 +154,7 @@ main(int argc, char** argv)
         LOGE("Could not initialize glew");
         exit(-1);
     }
-    fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+    LOGI("Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 #endif
 
     /* Setting up callbacks */
