@@ -21,7 +21,7 @@
 
 #define GAME_WIDTH        960
 #define GAME_HEIGHT       540
-#define GAME_REFRESH_RATE 16.666667 /* 60 times per second */
+#define GAME_REFRESH_RATE 16  /* 60 times per second */
 
 #define APP_TITLE "This is Binaaaaaaaaaaaaaaa"
 

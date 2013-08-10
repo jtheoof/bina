@@ -549,8 +549,8 @@ texture_load(const char* name, texture_t* texture)
 {
     memory_t* memory = NULL;
 
-    char ext[MAX_CHAR];
-    int  err;
+    char ext[MAX_CHAR] = "";
+    int  err = 0;
 
     get_file_extension(name, ext);
 
