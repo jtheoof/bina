@@ -153,19 +153,6 @@ AAssetManager* asset_manager_g;
 /* Engine */
 #include "renderer.h"
 
-camera_viewport_t viewport;
-
-sprite_t* back;
-sprite_t* porc;
-
-texture_t* back_tex;
-texture_list_t* porc_r_tex;
-texture_list_t* porc_l_tex;
-
-#define SPRITES_DEMO 0 /* Slow at 998 */
-
-sprite_animator_t* ani_porc;
-
 scene_t* scene;
 
 #ifdef DEBUG
@@ -207,6 +194,18 @@ scene_t* scene;
     gl(__VA_ARGS__);
 #endif
 
+typedef struct bina_t
+{
+    /**
+     * Current scene loaded and present on the screen.
+     *
+     * A scene, for now, is composed of the background image and an associated
+     * scale map which serves to compute the scale of object depending on its
+     * position on the image.
+     */
+    scene_t* curScene;
+} bina_t;
+
 /**
  * Initalization of program.
  *
@@ -223,22 +222,6 @@ void bina_init(int width, int height);
  * Perhaps code or callback can vary depending on devices.
  */
 void bina_end();
-
-/**
- * Loads the background into the game.
- *
- * The background in pretty important because it defines the size of the
- * biggest element that will be drawn to the viewport.
- * This will set the default size for smaller sprites.
- *
- * @param filepath The file path of the background to load.
- */
-void bina_load_background(const char* filepath);
-
-/**
- * Loads Porc Gerard into the scene.
- */
-void bina_load_porc();
 
 /**
  * Animate porc on the screen when clicking or tapping.
@@ -276,9 +259,3 @@ float main_get_time_elapsed();
  * @param s An OpenGL enum we want to print. For example GL_EXTENSIONS.
  */
 void print_gl_string(const char* name, GLenum s);
-
-/**
- * Temporary animation function to move random sprites.
- */
-void bina_animate_demo_sprite(sprite_t* sprite, sprite_animator_t** animator,
-                              float elapsed);

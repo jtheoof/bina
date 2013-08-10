@@ -28,25 +28,19 @@ renderer_init(camera_viewport_t* viewport)
 static void
 update_porc_animation(float elapsed)
 {
-    static float time = 0.0f;
-    static int id = 0;
+    /* static float time = 0.0f; */
+    /* static int id = 0; */
 
-    time += elapsed;
+    /* time += elapsed; */
 
     /* Increase texture id for Real time rendering at 24 fps */
-    if (time >= 0.042f) {
-        id++;
-        if (id >= porc_r_tex->size) {
-            id = 0;
-        }
-        time = 0.0f;
-    }
-
-    if (ani_porc) {
-        if (!sprite_animator_animate(porc, ani_porc, elapsed)) {
-            sprite_animator_delete(&ani_porc);
-        }
-    }
+    /* if (time >= 0.042f) { */
+    /*     id++; */
+    /*     if (porc_r_tex && id >= porc_r_tex->size) { */
+    /*         id = 0; */
+    /*     } */
+    /*     time = 0.0f; */
+    /* } */
 }
 
 void
@@ -57,7 +51,7 @@ render_bina()
 
     renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f);
 
-    /* update_porc_animation(elapsed); */
+    update_porc_animation(elapsed);
 
     scene_render(scene);
 

@@ -174,9 +174,12 @@ typedef struct texture_list_t
  * It will automatically load the texture from file or memory,
  * create a new OpenGL texture object and fill the pixels.
  * @param name The name of the texture to load.
+ * @param keep A flag to indicate wether or not we want to retain the texture
+ * loaded into memory or just send it to the GPU and release the memory.
+ * For example in the case of scale maps, we want to keep the object in memory.
  * @return The fresh new allocated texture.
  */
-texture_t* texture_create(const char* name);
+texture_t* texture_create(const char* name, const short keep);
 
 /**
  * Removes the texture from memory.
@@ -219,10 +222,11 @@ void texture_delete_list(texture_list_t** list);
  * extension handler.
  *
  * @param name The name of the asset to load.
+ * @param keep A flag to either keep the texture in memory or not.
  * @param texture The texture object created.
  * @return 0 if call is successful, an error code otherwise.
  */
-int texture_load(const char* name, texture_t* texture);
+int texture_load(const char* name, const short keep, texture_t* texture);
 
 /**
  * Loads a PNG file (based on libpng).

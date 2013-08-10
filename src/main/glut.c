@@ -56,6 +56,10 @@ main_glut_timer_cb(int t)
 void
 main_glut_reshape_cb(int width, int height)
 {
+    camera_viewport_t viewport;
+
+    viewport.x = 0;
+    viewport.y = 0;
     viewport.width = width;
     viewport.height = height;
 
@@ -99,15 +103,15 @@ void
 main_glut_mouse_cb(int button, int state, int x, int y)
 {
     vec2_t coord;
+    GLint  viewport[4];
 
+    glGetIntegerv(GL_VIEWPORT, viewport);
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        coord.x = 2.0f * x / viewport.width;
-        coord.y = 2.0f - (2.0f * y / viewport.height);
+        coord.x = 2.0f * x / viewport[2];
+        coord.y = 2.0f - (2.0f * y / viewport[3]);
 
         LOGD("Screen: %d,%d", x, y);
         LOGD("Viewport: %f,%f", coord.x, coord.y);
-
-        /* bina_animate_porc_to(coord, 2.0f); */
     }
 
     glutPostRedisplay();

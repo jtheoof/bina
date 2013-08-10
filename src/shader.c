@@ -12,7 +12,7 @@
  */
 
 /**
- * Vertex shader used for simple sprites.
+ * Vertex shader used for simple backgrounds.
  *
  * This is a basic vertex shader used for position and texturing.
  *
@@ -50,17 +50,32 @@
  * The varying texture is set to the texture attribute. It will then be passed
  * to the fragment shader.
  */
-static const char sprite_vertex_shader_g[] =
+static const char background_vshader_g[] =
     "#ifdef GL_ES\n"
     "precision mediump float;\n"
     "#endif\n"
-    "uniform vec4 position_u;\n"
+    "uniform   vec4 position_u;\n"
     "attribute vec4 position_a;\n"
     "attribute vec2 texture_a;\n"
     "varying   vec2 texture_v;\n"
     "void main() {\n"
     "    vec4 offset = vec4(position_u.x, position_u.y, 0, 0);\n"
     "    gl_Position = position_a + offset;\n"
+    "    texture_v = texture_a;\n"
+    "}\n";
+
+static const char character_vshader_g[] =
+    "#ifdef GL_ES\n"
+    "precision mediump float;\n"
+    "#endif\n"
+    "uniform   vec4  position_u;\n"
+    "uniform   float scaling_u;\n"
+    "attribute vec4  position_a;\n"
+    "attribute vec2  texture_a;\n"
+    "varying   vec2  texture_v;\n"
+    "void main() {\n"
+    "    vec4 offset = vec4(position_u.x, position_u.y, 0, 0);\n"
+    "    gl_Position = (position_a + offset) * scaling_u;\n"
     "    texture_v = texture_a;\n"
     "}\n";
 
@@ -94,7 +109,7 @@ static const char sprite_vertex_shader_g[] =
  * This is the main function of the vertex shader. texture2D is used to apply
  * a texture data to the right texture coordinates (texices).
  */
-static const char sprite_fragment_shader_g[] =
+static const char simpletex_fshader_g[] =
     "#ifdef GL_ES\n"
     "precision mediump float;\n"
     "#endif\n"
@@ -143,8 +158,7 @@ shader_delete_shader(unsigned int shader)
 }
 
 unsigned int
-shader_create_program(program_type_e type,
-                      unsigned int* vid, unsigned int* fid)
+shader_create_program(program_type_e type)
 {
     GLuint vs = 0;
     GLuint fs = 0;
@@ -154,8 +168,12 @@ shader_create_program(program_type_e type,
 
     switch(type) {
       case PROGRAM_BACKGROUND:
-        vs = shader_create_shader(GL_VERTEX_SHADER, sprite_vertex_shader_g);
-        fs = shader_create_shader(GL_FRAGMENT_SHADER, sprite_fragment_shader_g);
+        vs = shader_create_shader(GL_VERTEX_SHADER, background_vshader_g);
+        fs = shader_create_shader(GL_FRAGMENT_SHADER, simpletex_fshader_g);
+        break;
+      case PROGRAM_CHARACTER:
+        vs = shader_create_shader(GL_VERTEX_SHADER, character_vshader_g);
+        fs = shader_create_shader(GL_FRAGMENT_SHADER, simpletex_fshader_g);
         break;
       default:
         LOGE("program type: %d is not implemented", type);
@@ -189,10 +207,10 @@ shader_create_program(program_type_e type,
         goto error;
     }
 
-    LOGI("Created program: %d", program);
+    GL_CHECK(glDeleteShader, vs);
+    GL_CHECK(glDeleteShader, fs);
 
-    *vid = vs;
-    *fid = fs;
+    LOGI("Created program: %d", program);
 
     return program;
 
@@ -202,9 +220,6 @@ error:
     glDeleteShader(vs);
     glDeleteShader(fs);
     glDeleteProgram(program);
-
-    *vid = 0;
-    *fid = 0;
 
     return 0;
 }

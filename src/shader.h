@@ -47,6 +47,16 @@ typedef enum program_type_e
  *
  * It requires a valid source.
  *
+ * As stated in OpenGL documentation: glDeleteShader frees the memory and
+ * invalidates the name associated with the shader object specified by shader.
+ * This command effectively undoes the effects of a call to glCreateShader.
+ * If a shader object to be deleted is attached to a program object, it will
+ * be flagged for deletion, but it will not be deleted until it is no longer
+ * attached to any program object, for any rendering context (i.e., it must be
+ * detached from wherever it was attached before it will be deleted).
+ *
+ * So it is safe to delete the shader upon creation.
+ *
  * @param type The shader type to compile.
  * Can be:
  *  - GL_VERTEX_SHADER
@@ -72,13 +82,10 @@ void shader_delete_shader(unsigned int shader);
  *
  * @param type The type of program to create. This allows to reuse a same
  * program for different sprites if their shaders are the same.
- * @param vid The vertex shader id.
- * @param fid The fragment shader id.
  * @return The id of the program generated and stored in GPU. 0 if something
  * went wrong.
  */
-unsigned int shader_create_program(program_type_e type,
-                                   unsigned int* vid,  unsigned int* fid);
+unsigned int shader_create_program(program_type_e type);
 
 /**
  * Deletes a program.

@@ -29,27 +29,17 @@ typedef struct sprite_t
      */
     texture_t* texture;
 
-    /* OpenGL specifics */
+    /* OpenGL program previously created by #shader_create_program. */
     unsigned int program;
 
-    /**
-     * Vertex shader id.
-     */
-    unsigned int vshader;
-
-    /**
-     * Fragment shader id.
-     */
-    unsigned int fshader;
-
     /* Position attribute. */
-    unsigned int position_attrib;
+    int position_attrib;
 
     /* TODO Move these into the texture structure or a specific program
      * structure.
      */
-    unsigned int texture_attrib;
-    unsigned int texture_uniform;
+    int texture_attrib;
+    int texture_uniform;
 
     /**
      * The position of the left-bottom coordinate of the sprite.
@@ -68,7 +58,16 @@ typedef struct sprite_t
      * uniform allows us to change a vertex buffer variable from the C code
      * (CPU memory).
      */
-    unsigned int position_uniform;
+    int position_uniform;
+
+    /**
+     *
+     * The OpenGL uniform of the scaling, used by the vertex shader.
+     *
+     * Not all sprites have this uniform. Check their vertex shader to know
+     * for sure.
+     */
+    int scaling_uniform;
 
     /**
      * Vertex positions of the sprite.
@@ -92,6 +91,8 @@ typedef struct sprite_t
      *
      * Can vary from the texture itself because the sprite is represented in
      * the projection matrix system. (Default: -1,-1 -> +1,+1).
+     *
+     * Default: 1.0f;
      */
     float height;
 
@@ -157,6 +158,7 @@ typedef struct sprite_animator_t
  * @return A new sprite object with the memory already allocated.
  */
 sprite_t* sprite_create(texture_t* texture,
+                        const unsigned int program,
                         const vec2_t position,
                         const vec2_t offset,
                         const vec2_t size);

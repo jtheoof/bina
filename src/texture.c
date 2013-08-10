@@ -428,7 +428,7 @@ texture_load_tga(const char *filename,
 }
 
 texture_t*
-texture_create(const char* name)
+texture_create(const char* name, const short keep)
 {
     texture_t* texture;
 
@@ -444,7 +444,7 @@ texture_create(const char* name)
     texture->id     = 0;
     texture->pixels = NULL;
 
-    if (texture_load(name, texture)) {
+    if (texture_load(name, keep, texture)) {
         LOGE("An error occured while loading the texture");
         goto error;
     }
@@ -514,7 +514,7 @@ texture_create_list(const char* animation,
 
     for (i = 0; i < size; i++) {
         snprintf(tmp, MAX_PATH, fmt, "animations", animation, i, ext);
-        ret->textures[i] = texture_create(tmp);
+        ret->textures[i] = texture_create(tmp, 0);
     }
 
     return ret;
@@ -545,7 +545,7 @@ texture_delete_list(texture_list_t** list)
 }
 
 int
-texture_load(const char* name, texture_t* texture)
+texture_load(const char* name, const short keep, texture_t* texture)
 {
     memory_t* memory = NULL;
 
@@ -563,13 +563,16 @@ texture_load(const char* name, texture_t* texture)
         LOGE("Extension: %s not implemented for texturing", ext);
     }
 
-    /* The object loaded in memory has been loaded and put into
-     * texture->pixels so there is no need for previous original data.
-     * We do not store the texture->image, simply point to NULL. Perhaps it
-     * will be useful later.
+    /* The object has been loaded in memory and put into texture->pixels so
+     * there is no need for previous original data. We do not store the
+     * texture->image, simply point to NULL. Perhaps it will be useful later.
      */
-    memory_delete(&memory);
-    texture->image = NULL;
+    if (!keep) {
+        memory_delete(&memory);
+        texture->image = NULL;
+    } else {
+        texture->image = memory;
+    }
 
     return err;
 }

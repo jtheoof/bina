@@ -7,18 +7,6 @@
 #include "bina.h"
 
 /**
- * Constant holding default values for vertices.
- *
- * Not sure it will be used at all.
- */
-static const float sprite_vertices_g[] = {
-    -1.0f,  1.0f,
-    -1.0f, -1.0f,
-     1.0f,  1.0f,
-     1.0f, -1.0f
-};
-
-/**
  * Constant holding default values for texices.
  *
  * This will probably always be the same, so keeping it should make sense.
@@ -31,30 +19,32 @@ static const float sprite_texices_g[] = {
 };
 
 sprite_t*
-sprite_create(texture_t* texture, const vec2_t position,
-              const vec2_t offset, const vec2_t size)
+sprite_create(texture_t* texture, const unsigned int program,
+              const vec2_t position, const vec2_t offset, const vec2_t size)
 {
     sprite_t* sprite;
-    unsigned int program;
     float width = size.x;
     float height = size.y;
 
     sprite = (sprite_t*) malloc(sizeof(sprite_t));
 
-    sprite->program = shader_create_program(PROGRAM_BACKGROUND,
-                                            &sprite->vshader, &sprite->fshader);
+    sprite->program = program;
 
-    program = sprite->program;
     if (program) {
         sprite->position_uniform = glGetUniformLocation(program, "position_u");
+        sprite->scaling_uniform = glGetUniformLocation(program, "scaling_u");
         sprite->position_attrib = glGetAttribLocation(program, "position_a");
         sprite->texture_attrib = glGetAttribLocation(program, "texture_a");
         sprite->texture_uniform = glGetUniformLocation(program, "texture_u");
 
-        LOGD("Sprite has position: uniform: %d, attribute: %d "
-             "texture: uniform: %d, attribute: %d",
+        LOGD("In program: %d, "
+             "[position]: uniform: %d, attribute: %d "
+             "[texture]: uniform: %d, attribute: %d "
+             "[scaling]: uniform: %d",
+             program,
              sprite->position_uniform, sprite->position_attrib,
-             sprite->texture_uniform,  sprite->texture_attrib);
+             sprite->texture_uniform,  sprite->texture_attrib,
+             sprite->scaling_uniform);
     }
 
     sprite->vertices[0][0] = -1.0f - offset.x;
@@ -82,8 +72,6 @@ sprite_delete(sprite_t** sprite)
      * The texture should be deleted by the object that created it.
      */
     if (s) {
-        shader_delete_shader(s->vshader);
-        shader_delete_shader(s->fshader);
         shader_delete_program(s->program);
         free(s);
         s = NULL;
