@@ -133,14 +133,24 @@ AAssetManager* asset_manager_g;
 #include <png.h>
 #endif
 
+/* Utils */
 #include "error.h"
 #include "utils.h"
+
+/* Math */
 #include "vector.h"
+#include "camera.h"
+
+/* Memory */
 #include "memory.h"
 #include "texture.h"
-#include "sprite.h"
 #include "shader.h"
-#include "camera.h"
+
+/* Objects */
+#include "sprite.h"
+#include "scene.h"
+
+/* Engine */
 #include "renderer.h"
 
 camera_viewport_t viewport;
@@ -155,6 +165,8 @@ texture_list_t* porc_l_tex;
 #define SPRITES_DEMO 0 /* Slow at 998 */
 
 sprite_animator_t* ani_porc;
+
+scene_t* scene;
 
 #ifdef DEBUG
 

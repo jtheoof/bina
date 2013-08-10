@@ -107,7 +107,7 @@ main_glut_mouse_cb(int button, int state, int x, int y)
         LOGD("Screen: %d,%d", x, y);
         LOGD("Viewport: %f,%f", coord.x, coord.y);
 
-        bina_animate_porc_to(coord, 2.0f);
+        /* bina_animate_porc_to(coord, 2.0f); */
     }
 
     glutPostRedisplay();

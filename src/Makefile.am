@@ -10,7 +10,8 @@ bina_SOURCES = \
     texture.c   \
     sprite.c    \
     camera.c    \
-    renderer.c
+    renderer.c  \
+    scene.c
 
 bina_LDADD = \
     $(GL_LIBS)   \

@@ -18,8 +18,8 @@ renderer_init(camera_viewport_t* viewport)
     GL_CHECK(glEnable, GL_BLEND);
     GL_CHECK(glBlendFunc, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	GL_CHECK(glDisable, GL_DEPTH_TEST);
-	GL_CHECK(glDepthMask, GL_FALSE);
+    GL_CHECK(glDisable, GL_DEPTH_TEST);
+    GL_CHECK(glDepthMask, GL_FALSE);
 
     /* Set up the viewport */
     camera_set_viewport(viewport);
@@ -57,10 +57,12 @@ render_bina()
 
     renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f);
 
-    update_porc_animation(elapsed);
+    /* update_porc_animation(elapsed); */
 
-    sprite_render(back);
-    sprite_render(porc);
+    scene_render(scene);
+
+    /* sprite_render(back); */
+    /* sprite_render(porc); */
 }
 
 void

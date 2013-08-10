@@ -6,54 +6,17 @@
 
 #include "bina.h"
 
-/* static const GLubyte* */
-/* gl_error_string(GLenum errorCode) */
-/* { */
-/*     int i; */
-/*     for (i = 0; gl_errors[i].string; i++) { */
-/*         if (gl_errors[i].token == errorCode) */
-/*             return (const GLubyte *) gl_errors[i].string; */
-/*     } */
-
-/*     return (const GLubyte *) 0; */
-/* } */
-
 void
 print_gl_string(const char* name, GLenum s)
 {
     LOGI("GL %s = %s\n", name, glGetString(s));
 }
 
-/* static void */
-/* check_gl_error(void) */
-/* { */
-/*     GLint e; */
-/*     for (e = glGetError(); e; e = glGetError()) { */
-/*         LOGE("glError: %s (0x%x)\n", gl_error_string(e), e); */
-/*     } */
-/* } */
-
-void
-bina_animate_demo_sprite(sprite_t* sprite, sprite_animator_t** animator,
-                         float elapsed)
-{
-    /* long int rx, ry; */
-    /* vec2_t rto; */
-
-    /* rx = rand() % 2001; */
-    /* ry = rand() % 2001; */
-
-    /* rto.x = (rx / 2000.0f * 2.0f) - 0.0f; */
-    /* rto.y = (ry / 2000.0f * 2.0f) - 0.0f; */
-
-    /* *animator = sprite_animator_create(sprite, rto, 1.0f, elapsed); */
-}
-
 void
 bina_init(int width, int height)
 {
-    bina_load_background("backgrounds/bedroom_artist.png");
-    bina_load_porc();
+    bina_load_background("scenes/bedroomArtist/background.png");
+    /* bina_load_porc(); */
 
     viewport.x = 0;
     viewport.y = 0;
@@ -65,14 +28,15 @@ bina_init(int width, int height)
 void
 bina_end()
 {
-    texture_delete(&back_tex);
-    texture_delete_list(&porc_r_tex);
-    texture_delete_list(&porc_l_tex);
+    /* texture_delete(&back_tex); */
+    /* texture_delete_list(&porc_r_tex); */
+    /* texture_delete_list(&porc_l_tex); */
 
-    sprite_delete(&back);
-    sprite_delete(&porc);
+    /* sprite_delete(&back); */
+    /* sprite_delete(&porc); */
 
-    sprite_animator_delete(&ani_porc);
+    /* sprite_animator_delete(&ani_porc); */
+    scene_unload(&scene);
 }
 
 void
@@ -89,8 +53,9 @@ bina_load_background(const char* filepath)
     size.x = 2.0f;
     size.y = 2.0f;
 
-    back_tex = texture_create(filepath);
-    back = sprite_create(back_tex, pos, off, size);
+    /* back_tex = texture_create(filepath); */
+    /* back = sprite_create(back_tex, pos, off, size); */
+    scene = scene_load("bedroomArtist", 0.5f, 0.75f);
 }
 
 void

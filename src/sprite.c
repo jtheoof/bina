@@ -183,9 +183,6 @@ sprite_delete(sprite_t** sprite)
         shader_delete_shader(s->vshader);
         shader_delete_shader(s->fshader);
         shader_delete_program(s->program);
-        /* if (s->texture) { */
-        /*     texture_delete(&s->texture); */
-        /* } */
         free(s);
         s = NULL;
     }
@@ -203,8 +200,16 @@ sprite_set_texture(sprite_t* sprite, texture_t* texture)
 void
 sprite_render(sprite_t* sprite)
 {
-    vec2_t pos = sprite->position;
-    texture_t* texture = sprite->texture;
+    vec2_t pos;
+    texture_t* texture;
+
+    if (!sprite) {
+        LOGE("sprite does not exist");
+        return;
+    }
+
+    pos = sprite->position;
+    texture = sprite->texture;
 
     glUseProgram(sprite->program);
 
