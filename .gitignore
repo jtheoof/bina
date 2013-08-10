@@ -9,12 +9,17 @@ assets/
 
 # GNU Autoconf
 # GNU Automake
+Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache/
 autotools/
 configure
 src/config.h.in
+config.status
+src/.deps/
+src/config.h
+stamp-h1
 
 # Linux
 *.o
@@ -46,3 +51,4 @@ src/xxd/xxd.dSYM
 *.swp
 *~
 *.pyc
+*.log
