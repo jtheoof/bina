@@ -125,11 +125,6 @@ AAssetManager* asset_manager_g;
 #include "GL/gl.h"
 #endif
 
-#ifdef USE_GLEXT_PROTOTYPES
-#define GL_GLEXT_PROTOTYPES
-#include "GL/glext.h"
-#endif
-
 #ifdef HAVE_PNG_H
 #include <png.h>
 #endif

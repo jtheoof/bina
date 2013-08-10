@@ -13,7 +13,6 @@ AM_INIT_AUTOMAKE([1.10 foreign])
 
 dnl Being able to run configure means the system is Unix (compatible).
 AC_DEFINE(UNIX, 1, Unix system)
-AC_DEFINE(USE_GLEXT_PROTOTYPES, 1, Use OpenGL extension prototypes)
 
 dnl Check for the flag that fails if stuff are missing.
 AC_MSG_CHECKING(--enable-fail-if-missing argument)
