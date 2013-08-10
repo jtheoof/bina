@@ -14,11 +14,12 @@ Makefile.in
 aclocal.m4
 autom4te.cache/
 autotools/
-configure
-src/config.h.in
 config.status
+configure
 src/.deps/
+src/bina
 src/config.h
+src/config.h.in
 stamp-h1
 
 # Linux
@@ -45,10 +46,10 @@ src/xxd/xxd.dSYM
 *.RES
 
 # All
-*.rej
-*.orig
+*.log
 *.mo
+*.orig
+*.pyc
+*.rej
 *.swp
 *~
-*.pyc
-*.log
