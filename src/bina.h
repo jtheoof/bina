@@ -121,6 +121,10 @@ AAssetManager* asset_manager_g;
 #include "GL/glut.h"
 #endif
 
+#ifdef HAVE_GLUT_GLUT_H
+#include "GLUT/glut.h"
+#endif
+
 #ifdef HAVE_GL_GL_H
 #include "GL/gl.h"
 #endif
