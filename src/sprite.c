@@ -6,103 +6,6 @@
 
 #include "bina.h"
 
-/* TODO Move these shaders to their file once file access is made easy on
- * devices.
- */
-
-/**
- * Vertex shader used for simple sprites.
- *
- * This is a basic vertex shader used for position and texturing.
- *
- * The first three lines are used to deal with precision on devices. Since
- * it's not GLSL spec varies from OpenGL to OpenGL ES we need a specific
- * define when rendering for GL_ES.
- *
- * <code>
- *  attribute vec4 position_a;
- * </code>
- * This declares our attribute to set the vertices positions.
- * <br>
- * <code>
- *  attribute vec2 texture_a;
- * </code>
- * This declares our attribute to set the texices positions.
- * <br>
- * <code>
- *  attribute vec2 texture_v;
- * </code>
- * This declares our varing to set the texices positions. This is passed to
- * the fragment shader later in the graphics pipeline and is used to actually
- * apply those texture coordinates to the pixels associated with the texture.
- * <br>
- * <code>
- *  attribute vec4 position_a;
- *  void main() {
- *      gl_Position = position_a;
- *      texture_v = texture_a;
- *  };
- * </code>
- * This is the main function of the shader.
- * gl_Position is a specific variable used by OpenGL to set the position of
- * the vertices. We tell it to be the attribute we are passing.
- * The varying texture is set to the texture attribute. It will then be passed
- * to the fragment shader.
- */
-static const char sprite_vertex_shader_g[] =
-    "#ifdef GL_ES\n"
-    "precision mediump float;\n"
-    "#endif\n"
-    "uniform vec4 position_u;\n"
-    "attribute vec4 position_a;\n"
-    "attribute vec2 texture_a;\n"
-    "varying   vec2 texture_v;\n"
-    "void main() {\n"
-    "    vec4 offset = vec4(position_u.x, position_u.y, 0, 0);\n"
-    "    gl_Position = position_a + offset;\n"
-    "    texture_v = texture_a;\n"
-    "}\n";
-
-/**
- * Fragment (or pixel) shader used for simple sprites.
- *
- * This is a basic fragment shader used for only texturing.
- *
- * The first three lines are used to deal with precision on devices. Since
- * it's not GLSL spec varies from OpenGL to OpenGL ES we need a specific
- * define when rendering for GL_ES.
- *
- * <code>
- *  uniform sampler2D texture_u;
- * </code>
- * This declares our uniform to set the data of the texture itself. Since the
- * data is stored on machine memory, we need a way to transfer this C texture
- * into the GPU. This is done through the use of uniforms. This allows us to
- * set the texture to the GPU to be processed by the fragment shader.
- * <code>
- *  varying vec2 texture_v;
- * </code>
- * This is the varying texture we set previously in our vertex shader. It is
- * now arriving in our fragment shader and we use it to make up the texture
- * with the right texices.
- * <code>
- *  void main() {
- *      gl_FragColor = texture2D(texture_u, texture_v);
- *  };
- * </code>
- * This is the main function of the vertex shader. texture2D is used to apply
- * a texture data to the right texture coordinates (texices).
- */
-static const char sprite_fragment_shader_g[] =
-    "#ifdef GL_ES\n"
-    "precision mediump float;\n"
-    "#endif\n"
-    "uniform sampler2D texture_u;\n"
-    "varying vec2      texture_v;\n"
-    "void main() {\n"
-    "    gl_FragColor = texture2D(texture_u, texture_v);\n"
-    "}\n";
-
 /**
  * Constant holding default values for vertices.
  *
@@ -138,8 +41,7 @@ sprite_create(texture_t* texture, const vec2_t position,
 
     sprite = (sprite_t*) malloc(sizeof(sprite_t));
 
-    sprite->program = shader_create_program(sprite_vertex_shader_g,
-                                            sprite_fragment_shader_g,
+    sprite->program = shader_create_program(PROGRAM_BACKGROUND,
                                             &sprite->vshader, &sprite->fshader);
 
     program = sprite->program;
@@ -204,7 +106,6 @@ sprite_render(sprite_t* sprite)
     texture_t* texture;
 
     if (!sprite) {
-        LOGE("sprite does not exist");
         return;
     }
 

@@ -36,6 +36,12 @@
 
 #pragma once
 
+typedef enum program_type_e
+{
+    PROGRAM_BACKGROUND = 1,
+    PROGRAM_CHARACTER
+} program_type_e;
+
 /**
  * Creates a new OpenGL shader object.
  *
@@ -64,14 +70,14 @@ void shader_delete_shader(unsigned int shader);
  *
  * It requires two valid sources. One vertex shader and one fragment shader.
  *
- * @param vertex The vertex shader of the program.
- * @param fragment The fragement shader of the program.
+ * @param type The type of program to create. This allows to reuse a same
+ * program for different sprites if their shaders are the same.
  * @param vid The vertex shader id.
  * @param fid The fragment shader id.
  * @return The id of the program generated and stored in GPU. 0 if something
  * went wrong.
  */
-unsigned int shader_create_program(const char* vertex, const char* fragment,
+unsigned int shader_create_program(program_type_e type,
                                    unsigned int* vid,  unsigned int* fid);
 
 /**
