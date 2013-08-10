@@ -36,10 +36,10 @@ main_glut_display_cb(void)
     static int curr_time = 0;
 
     curr_time = glutGet(GLUT_ELAPSED_TIME);
-    
+
     elap_time_g = curr_time - prev_time;
     prev_time = curr_time;
-    
+
     renderer_render();
     glutSwapBuffers();
 }
