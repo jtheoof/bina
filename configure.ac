@@ -60,7 +60,7 @@ AS_IF(
 )
 
 dnl Extra flags
-CFLAGS="$CFLAGS -Wall -Werror"
+CFLAGS="$CFLAGS"
 LDFLAGS="$LDFLAGS"
 
 AC_SUBST(CFLAGS)
