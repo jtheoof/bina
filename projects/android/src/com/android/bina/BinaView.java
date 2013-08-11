@@ -357,7 +357,6 @@ class BinaView extends GLSurfaceView {
         }
 
         public void onSurfaceChanged(GL10 gl, int width, int height) {
-            /* TODO Load asset manager from here */
             BinaLib.init(assetManager, width, height);
         }
 

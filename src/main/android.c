@@ -33,13 +33,15 @@ Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
                                     jfloat x, jfloat y)
 {
     vec2_t coord;
-    coord.x = 2.0f * x / viewport.width;
-    coord.y = 2.0f - (2.0f * y / viewport.height);
+    GLint  viewport[4];
 
-    LOGD("Screen: %d,%d", x, y);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    coord.x = 2.0f * x / viewport[2];
+    coord.y = 2.0f - (2.0f * y / viewport[3]);
+
+    LOGD("Screen: %f,%f", x, y);
     LOGD("Viewport: %f,%f", coord.x, coord.y);
-
-    bina_animate_porc_to(coord, 1.0f);
 }
 
 JNIEXPORT void JNICALL
@@ -68,7 +70,12 @@ Java_com_android_bina_BinaLib_init(JNIEnv * env, jobject obj,
                                    jobject asset_manager,
                                    jint width, jint height)
 {
-    asset_manager_g = AAssetManager_fromJava(env, asset_manager);
     LOGI("Initializing bina with viewport: %dx%d", width, height);
+
+    asset_manager_g = AAssetManager_fromJava(env, asset_manager);
+    if (!asset_manager_g) {
+        LOGE("Could not load Android Asset Manager");
+    }
+
     bina_init(width, height);
 }

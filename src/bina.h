@@ -77,7 +77,7 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-#define LOG_TAG   "gl2jni"
+#define LOG_TAG   "bina"
 
 /* TODO make it more pretty from config.h */
 # ifdef DEBUG

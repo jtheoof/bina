@@ -32,8 +32,7 @@ LOCAL_CFLAGS           := \
     -DHAVE_MATH_H   \
     -DHAVE_TIME_H   \
     -DHAVE_PNG_H    \
-    -DANDROID       \
-    -DUNIX
+    -DANDROID
 
 LOCAL_LDLIBS     := -landroid -llog -lGLESv2 -lz
 LOCAL_C_INCLUDES := \
@@ -49,6 +48,7 @@ LOCAL_SRC_FILES  := \
     texture.c      \
     sprite.c       \
     camera.c       \
-    renderer.c
+    renderer.c     \
+    scene.c
 
 include $(BUILD_SHARED_LIBRARY)
