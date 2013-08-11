@@ -46,8 +46,25 @@ typedef struct camera_viewport_t
 void camera_set_viewport(camera_viewport_t* viewport);
 
 /**
- * Supposed to set the orthographic camera.
+ * Converts screen coordinates to coordinates in the current projection
+ * matrix.
  *
- * <strong>NOT YET IMPLEMENTED ON DEVICES.</strong>
+ * For now the project matrix is the default one.
+ *
+ * In OpenGL, initially the object and camera frames are the same.
+ * - Default model-view matrix is an identity The camera is located at origin
+ *   and points in the negative z direction OpenGL also specifies a default
+ *   view volume that is a cube with sides of length 2 centered at the origin
+ * - Default projection matrix is an identity
+ * @param x The x coordinate in current screen space.
+ * @param y The y coordinate in current screen space.
+ * @param coord The computed coordinates.
  */
-void camera_set_ortho(int width, int height);
+void camera_screen_coord_to_proj(const int x, const int y, vec2_t* coord);
+
+/**
+ * Retrieves OpenGL viewport object.
+ *
+ * @param viewport A GLint[4] array
+ */
+void camera_get_viewport(int* viewport);

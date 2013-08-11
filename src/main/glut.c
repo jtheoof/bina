@@ -103,18 +103,19 @@ void
 main_glut_mouse_cb(int button, int state, int x, int y)
 {
     vec2_t coord;
-    GLint  viewport[4];
+    GLint  viewport[4], width, height;
 
-    glGetIntegerv(GL_VIEWPORT, viewport);
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        coord.x = 2.0f * x / viewport[2];
-        coord.y = 2.0f - (2.0f * y / viewport[3]);
+        camera_screen_coord_to_proj(x, y, &coord);
+        camera_get_viewport(viewport);
+
+        width  = viewport[2];
+        height = viewport[3];
 
         LOGD("Screen: %d,%d", x, y);
+        LOGD("Relative: %f,%f", (float) x / width, (float) y / height);
         LOGD("Viewport: %f,%f", coord.x, coord.y);
     }
-
-    glutPostRedisplay();
 }
 
 void

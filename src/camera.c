@@ -13,13 +13,27 @@ camera_set_viewport(camera_viewport_t* viewport)
                          viewport->width, viewport->height);
 }
 
-/* TODO IMPLEMENT THIS */
 void
-camera_set_ortho(int width, int height)
+camera_get_viewport(int* viewport)
 {
-#if defined(USE_OPENGL_ES) || \
-    defined(__ANDROID_API__)
-#else
-#endif
-    LOGE(BINA_NOT_IMPLEMENTED);
+    if (!viewport) {
+        return;
+    }
+
+    glGetIntegerv(GL_VIEWPORT, viewport);
+}
+
+void
+camera_screen_coord_to_proj(const int x, const int y, vec2_t* coord)
+{
+    GLint  viewport[4];
+
+    if (!coord) {
+        return;
+    }
+
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    coord->x = 2.0f * x / viewport[2];
+    coord->y = 2.0f - (2.0f * y / viewport[3]);
 }
