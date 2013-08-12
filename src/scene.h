@@ -52,19 +52,84 @@ typedef struct scene_t
      */
     unsigned int bg_prog;
 
-    float minsize;
+    /**
+     * Minimum scale of the character.
+     *
+     * This is a normalized value. For example 0.5f will mean that the minimum
+     * size of the character will be half of the original one.
+     */
+    float scale_min;
 
-    float maxsize;
+    /**
+     * Maximum scale of the character.
+     *
+     * This is a normalized value. For example 1.0f will mean that the maximum
+     * size of the character will be the original one.
+     */
+    float scale_max;
 
+    /**
+     * The difference between #scale_max and #scale_min.
+     *
+     * This is used in order to avoid doing it many times.
+     */
+    float scale_dif;
+
+    /**
+     * The character that moves around the scene.
+     */
     sprite_t* character;
+
 } scene_t;
 
+/**
+ * Loads a scene with a name.
+ *
+ * The scene also specifies the minimum scale and maximum scale of the
+ * character.
+ *
+ * @param name The name of the scene. Must be the name of the folder present
+ * in 'scenes' assets. The folder must contain a 'background.png' and
+ * 'scaleMap.png' file.
+ * @param minsize The minimum scaling ratio of the character.
+ * @param maxsize The maximum scaling ratio of the character.
+ * @return The scene created.
+ */
 scene_t* scene_load(const char* name, const float minsize, const float maxsize);
 
 /**
  * The scene is responsible for releasing memory of the texture object it has
  * created for background and scale map sprites.
+ *
+ * @param scene The scene to delete.
  */
 void scene_unload(scene_t** scene);
 
+/**
+ * Renders the scene.
+ *
+ * @param scene The scene to render.
+ */
 void scene_render(scene_t* scene);
+
+/**
+ * Moves the character in the scene.
+ *
+ * @param scene The scene where the character is present.
+ * @param to The destination where the character should go.
+ * @param speed The speed we want to set it to.
+ */
+void scene_move_character_to(scene_t* scene, vec2_t to, float speed);
+
+/**
+ * Computes the size of the character based on its position thanks to the
+ * scale map.
+ *
+ * @param scene The scene where the character is.
+ * @param norm A normalized point (0 to 1) that represents the coordinate we
+ * are looking for in the scale map.
+ * @return A ratio between 0 and 1 that corresponds to the pixel size.
+ * 0 stands for minimum size in the scene. 1 stands for maximum size in the
+ * scene.
+ */
+float scene_compute_character_size(scene_t* scene, const vec2_t norm);

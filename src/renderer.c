@@ -76,7 +76,7 @@ renderer_render()
     frames++;
 
     if (time >= 1.0f) {
-        LOGI("FPS: %d", frames);
+        /* LOGI("FPS: %d", frames); */
         time = 0.0f;
         frames = 0;
     }

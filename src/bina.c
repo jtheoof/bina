@@ -32,3 +32,8 @@ bina_end()
 {
     scene_unload(&scene);
 }
+
+void bina_animate_porc_to(vec2_t to, float speed)
+{
+    scene_move_character_to(scene, to, speed);
+}

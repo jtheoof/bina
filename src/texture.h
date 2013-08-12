@@ -12,6 +12,8 @@
 
 #pragma once
 
+/* TODO Scale maps should have their own loading process perhaps */
+
 /**
  * The texture structure used to control a texture behaviors and
  * properties.
@@ -54,7 +56,10 @@ typedef struct texture_t
 
     /**
      * The texture byte.
-     * TODO Find out what that is used for.
+     *
+     * This represents the number of bytes used for each pixel.
+     * For example and RGBA PNG file requires 4 bytes per pixel when a simple
+     * GRAY only requires 1 byte.
      */
     unsigned char byte;
 
@@ -130,7 +135,7 @@ typedef struct texture_t
      * been put to GPU through GlTexImage2d. This needs to be checked, it
      * would free some memory.
      */
-    void* pixels;
+    unsigned char* pixels;
 
     /**
      * The number of mipmaps (PVRTC only).

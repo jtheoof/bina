@@ -20,7 +20,8 @@ static const float sprite_texices_g[] = {
 
 sprite_t*
 sprite_create(texture_t* texture, const unsigned int program,
-              const vec2_t position, const vec2_t offset, const vec2_t size)
+              const vec2_t position, const vec2_t offset, const vec2_t size,
+              const float scale)
 {
     sprite_t* sprite;
     float width = size.x;
@@ -47,19 +48,30 @@ sprite_create(texture_t* texture, const unsigned int program,
              sprite->scaling_uniform);
     }
 
-    sprite->vertices[0][0] = -1.0f - offset.x;
-    sprite->vertices[0][1] = -1.0f + height - offset.y;
-    sprite->vertices[1][0] = -1.0f - offset.x;
-    sprite->vertices[1][1] = -1.0f - offset.y;
-    sprite->vertices[2][0] = -1.0f + width - offset.x;
-    sprite->vertices[2][1] = -1.0f + height - offset.y;
-    sprite->vertices[3][0] = -1.0f + width - offset.x;
-    sprite->vertices[3][1] = -1.0f - offset.y;
+    /* sprite->vertices[0][0] = -1.0f - offset.x; */
+    /* sprite->vertices[0][1] = -1.0f + 2.0f * height - offset.y; */
+    /* sprite->vertices[1][0] = -1.0f - offset.x; */
+    /* sprite->vertices[1][1] = -1.0f - offset.y; */
+    /* sprite->vertices[2][0] = -1.0f + 2.0f * width - offset.x; */
+    /* sprite->vertices[2][1] = -1.0f + 2.0f * height - offset.y; */
+    /* sprite->vertices[3][0] = -1.0f + 2.0f * width - offset.x; */
+    /* sprite->vertices[3][1] = -1.0f - offset.y; */
+
+    sprite->vertices[0][0] = -1.0f;
+    sprite->vertices[0][1] = -1.0f + 2.0f * height;
+    sprite->vertices[1][0] = -1.0f;
+    sprite->vertices[1][1] = -1.0f;
+    sprite->vertices[2][0] = -1.0f + 2.0f * width;
+    sprite->vertices[2][1] = -1.0f + 2.0f * height;
+    sprite->vertices[3][0] = -1.0f + 2.0f * width;
+    sprite->vertices[3][1] = -1.0f;
 
     sprite->position = position;
-    sprite->width = width;
-    sprite->height = height;
-    sprite->texture = texture;
+    sprite->offset   = offset;
+    sprite->scale    = scale;
+    sprite->width    = width;
+    sprite->height   = height;
+    sprite->texture  = texture;
 
     return sprite;
 }
@@ -90,15 +102,26 @@ sprite_set_texture(sprite_t* sprite, texture_t* texture)
 void
 sprite_render(sprite_t* sprite)
 {
-    vec2_t pos;
+    vec2_t     pos;
+    /* vec2_t     off; */
     texture_t* texture;
+    int        posu, scau;
 
     if (!sprite) {
         return;
     }
 
+    /* TODO This should really be calculated from a change of basis matrix */
+    /* off.x =  2.0f * sprite->offset.x; */
+    /* off.y = -2.0f * sprite->offset.y; */
+
+    /* pos = vec2_sub(sprite->position, off); */
     pos = sprite->position;
+
     texture = sprite->texture;
+
+    posu = sprite->position_uniform;
+    scau = sprite->scaling_uniform;
 
     glUseProgram(sprite->program);
 
@@ -110,7 +133,12 @@ sprite_render(sprite_t* sprite)
     glVertexAttribPointer(sprite->texture_attrib, 2, GL_FLOAT, GL_FALSE, 0,
                           sprite_texices_g);
 
-    GL_CHECK(glUniform4f, sprite->position_uniform, pos.x, pos.y, 0.0f, 1.0f);
+    if (posu >= 0) {
+        GL_CHECK(glUniform4f, posu, pos.x, pos.y, 0.0f, 1.0f);
+    }
+    if (scau >= 0) {
+        GL_CHECK(glUniform1f, scau, sprite->scale);
+    }
 
     if (texture) {
         glActiveTexture(GL_TEXTURE0 + texture->unit);

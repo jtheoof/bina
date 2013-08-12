@@ -35,8 +35,8 @@ typedef struct sprite_t
     /* Position attribute. */
     int position_attrib;
 
-    /* TODO Move these into the texture structure or a specific program
-     * structure.
+    /* TODO Move all these OpenGL attributes into the texture structure or
+     * a specific program structure.
      */
     int texture_attrib;
     int texture_uniform;
@@ -50,6 +50,23 @@ typedef struct sprite_t
      * in the picture itself.
      */
     vec2_t position;
+
+    /**
+     * Barycenter of the sprite.
+     *
+     * A sprite can also optionally have an offset. This represents the center
+     * of gravity of the sprite. Think of it as the center of the sprite
+     * relative to the object size.
+     */
+    vec2_t offset;
+
+    /**
+     * Scale of the sprite.
+     *
+     * This is used in order to make a sprite bigger or smaller on the
+     * viewport.
+     */
+    float scale;
 
     /**
      * The OpenGL uniform of the position, used by the vertex shader.
@@ -151,17 +168,20 @@ typedef struct sprite_animator_t
  * Creates a new sprite and allocates the necessary memory.
  *
  * @param texture The texture associate with the sprite. Can be NULL.
- * @position The original position of the sprite.
- * @offset The offset that represents the actual center of the object.
+ * @param position The original position of the sprite.
+ * @param offset The offset that represents the actual center of the object.
  * This is like the 0, 0 of the object in its coordinate system.
- * @size The size in x (width) and y (height) of the sprite.
+ * @param size The size in x (width) and y (height) of the sprite.
+ * @param scale The initial scale of the sprite. Can be altered later via
+ * animation. This is what the scale map is for.
  * @return A new sprite object with the memory already allocated.
  */
 sprite_t* sprite_create(texture_t* texture,
                         const unsigned int program,
                         const vec2_t position,
                         const vec2_t offset,
-                        const vec2_t size);
+                        const vec2_t size,
+                        const float  scale);
 
 /**
  * Frees the memory of a sprite.

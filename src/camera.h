@@ -63,6 +63,12 @@ void camera_set_viewport(camera_viewport_t* viewport);
 void camera_screen_coord_to_proj(const int x, const int y, vec2_t* coord);
 
 /**
+ * Used to compute the absolute (normalized) point from a projection point.
+ * For example in the default projection matrix the point (0, 0) is (1/2, 1/2)
+ * in normalized coordinates.
+ */
+vec2_t camera_proj_to_absolute(const vec2_t point);
+/**
  * Retrieves OpenGL viewport object.
  *
  * @param viewport A GLint[4] array

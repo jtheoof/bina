@@ -285,7 +285,9 @@ texture_load_png(memory_t* memory, texture_t* texture)
 
     texture->type = GL_UNSIGNED_BYTE;
 
-    texture->pixels = malloc(row_bytes * height);
+    texture->size   = row_bytes * height;
+    texture->pixels = (unsigned char*) malloc(texture->size *
+                                              sizeof(unsigned char));
     if (!texture->pixels) {
         LOGE("Not enough memory to create pixels for texture");
         goto error;
@@ -457,6 +459,11 @@ texture_create(const char* name, const short keep)
 
     texture_gl_create(texture);
 
+    if (!keep && texture->pixels) {
+        free(texture->pixels);
+        texture->pixels = NULL;
+    }
+
     return texture;
 
 error:
@@ -552,6 +559,10 @@ texture_load(const char* name, const short keep, texture_t* texture)
     char ext[MAX_CHAR] = "";
     int  err = 0;
 
+    if (!texture) {
+        return 0;
+    }
+
     get_file_extension(name, ext);
 
     if (!strcmp(ext, "png")) {
@@ -623,14 +634,6 @@ texture_gl_create(texture_t* texture)
              texture->pixels);
 
     GL_CHECK(glBindTexture, texture->target, 0);
-
-    /* XXX Since the texture data is now in GPU, we do not need the memory to
-     * texture->pixels. It is safe to free it.
-     */
-    if (texture->pixels) {
-        free(texture->pixels);
-        texture->pixels = NULL;
-    }
 
     return 0;
 }
