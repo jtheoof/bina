@@ -101,6 +101,15 @@ scene_unload(scene_t** scene)
 void
 scene_render(scene_t* scene)
 {
+    static float angle = 0.0f;
+
+    float  sin   = cosf(angle);
+    mat4_t ident = mat4_identity();
+
+    if (sin < 0) {
+        sin *= -1.0f;
+    }
+
     if (!scene) {
         return;
     }
@@ -110,8 +119,11 @@ scene_render(scene_t* scene)
     }
 
     if (scene->character) {
+        scene->character->mvp = mat4_scale_1f(&ident, sin);
         sprite_render(scene->character);
     }
+
+    angle += PI / 100.0f;
 }
 
 void

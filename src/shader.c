@@ -66,17 +66,21 @@ static const char character_vshader_g[] =
     "#ifdef GL_ES\n"
     "precision mediump float;\n"
     "#endif\n"
+    "uniform   mat4  mvp_u;\n"
     "uniform   vec4  position_u;\n"
     "uniform   float scaling_u;\n"
     "attribute vec4  position_a;\n"
     "attribute vec2  texture_a;\n"
     "varying   vec2  texture_v;\n"
+    "mat4  tmp;\n"
     "void main() {\n"
-    "    vec4 offset   = vec4(position_u.x, position_u.y, 0, 0);\n"
-    "    vec4 position = position_a + offset;\n"
-    "    position.x  = position.x * scaling_u;\n"
-    "    position.y  = position.y * scaling_u;\n"
-    "    gl_Position = position;\n"
+    /* "    tmp = mat4(\n" */
+    /* "              vec4(0.1, 0  , 0  , 0  ),\n" */
+    /* "              vec4(0  , 0.1, 0  , 0  ),\n" */
+    /* "              vec4(0  , 0  , 0.1, 0  ),\n" */
+    /* "              vec4(0  , 0  , 0  , 1.0) \n" */
+    /* "          );\n" */
+    "    gl_Position = mvp_u * position_a;\n"
     "    texture_v = texture_a;\n"
     "}\n";
 

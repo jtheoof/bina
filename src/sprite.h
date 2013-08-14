@@ -42,6 +42,26 @@ typedef struct sprite_t
     int texture_uniform;
 
     /**
+     * The OpenGL uniform of the position, used by the vertex shader.
+     *
+     * We use a uniform because the position of the sprite could vary. The
+     * uniform allows us to change a vertex buffer variable from the C code
+     * (CPU memory).
+     */
+    int position_uniform;
+
+    /**
+     *
+     * The OpenGL uniform of the scaling, used by the vertex shader.
+     *
+     * Not all sprites have this uniform. Check their vertex shader to know
+     * for sure.
+     */
+    int scaling_uniform;
+
+    int mvp_uniform;
+
+    /**
      * The position of the left-bottom coordinate of the sprite.
      *
      * Later we can had more like "pivot point" to characterize a bit more the
@@ -69,24 +89,6 @@ typedef struct sprite_t
     float scale;
 
     /**
-     * The OpenGL uniform of the position, used by the vertex shader.
-     *
-     * We use a uniform because the position of the sprite could vary. The
-     * uniform allows us to change a vertex buffer variable from the C code
-     * (CPU memory).
-     */
-    int position_uniform;
-
-    /**
-     *
-     * The OpenGL uniform of the scaling, used by the vertex shader.
-     *
-     * Not all sprites have this uniform. Check their vertex shader to know
-     * for sure.
-     */
-    int scaling_uniform;
-
-    /**
      * Vertex positions of the sprite.
      *
      * Right now it's only stored for Vertex Buffer attribute.
@@ -112,6 +114,14 @@ typedef struct sprite_t
      * Default: 1.0f;
      */
     float height;
+
+    /**
+     * Matrix associated with the sprite.
+     *
+     * It contains the multiplications of:
+     * matrix = PROJECTION * VIEW * MODEL;
+     */
+    mat4_t mvp;
 
 } sprite_t;
 
