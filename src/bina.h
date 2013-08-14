@@ -138,7 +138,7 @@ AAssetManager* asset_manager_g;
 #include "utils.h"
 
 /* Math */
-#include "vector.h"
+#include "algebra.h"
 #include "camera.h"
 
 /* Memory */

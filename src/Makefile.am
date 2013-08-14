@@ -2,7 +2,7 @@ bin_PROGRAMS = bina
 
 bina_SOURCES = \
     main/glut.c \
-    vector.c    \
+    algebra.c   \
     bina.c      \
     shader.c    \
     utils.c     \
