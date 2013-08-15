@@ -33,51 +33,28 @@ sprite_create(texture_t* texture, const unsigned int program,
 
     if (program) {
         sprite->mvp_uniform      = glGetUniformLocation(program, "mvp_u");
-        sprite->position_uniform = glGetUniformLocation(program, "position_u");
-        sprite->scaling_uniform  = glGetUniformLocation(program, "scaling_u");
         sprite->position_attrib  = glGetAttribLocation(program, "position_a");
         sprite->texture_attrib   = glGetAttribLocation(program, "texture_a");
         sprite->texture_uniform  = glGetUniformLocation(program, "texture_u");
 
         LOGD("In program: %d, "
              "[mvp]: uniform: %d, "
-             "[position]: uniform: %d, attribute: %d "
-             "[texture]: uniform: %d, attribute: %d "
-             "[scaling]: uniform: %d",
+             "[position]: attribute: %d "
+             "[texture]: uniform: %d, attribute: %d",
              program,
              sprite->mvp_uniform,
-             sprite->position_uniform, sprite->position_attrib,
-             sprite->texture_uniform,  sprite->texture_attrib,
-             sprite->scaling_uniform);
+             sprite->position_attrib,
+             sprite->texture_uniform,  sprite->texture_attrib);
     }
 
-    /* sprite->vertices[0][0] = -1.0f - offset.x; */
-    /* sprite->vertices[0][1] = -1.0f + 2.0f * height - offset.y; */
-    /* sprite->vertices[1][0] = -1.0f - offset.x; */
-    /* sprite->vertices[1][1] = -1.0f - offset.y; */
-    /* sprite->vertices[2][0] = -1.0f + 2.0f * width - offset.x; */
-    /* sprite->vertices[2][1] = -1.0f + 2.0f * height - offset.y; */
-    /* sprite->vertices[3][0] = -1.0f + 2.0f * width - offset.x; */
-    /* sprite->vertices[3][1] = -1.0f - offset.y; */
-
-    /* sprite->vertices[0][0] = -1.0f; */
-    /* sprite->vertices[0][1] = -1.0f + 2.0f * height; */
-    /* sprite->vertices[1][0] = -1.0f; */
-    /* sprite->vertices[1][1] = -1.0f; */
-    /* sprite->vertices[2][0] = -1.0f + 2.0f * width; */
-    /* sprite->vertices[2][1] = -1.0f + 2.0f * height; */
-    /* sprite->vertices[3][0] = -1.0f + 2.0f * width; */
-    /* sprite->vertices[3][1] = -1.0f; */
-
-    float tmp = 1.0f;
-    sprite->vertices[0][0] = (-1.0f) * tmp;
-    sprite->vertices[0][1] = (-1.0f + 2.0f * height) * tmp;
-    sprite->vertices[1][0] = (-1.0f) * tmp;
-    sprite->vertices[1][1] = (-1.0f) * tmp;
-    sprite->vertices[2][0] = (-1.0f + 2.0f * width) * tmp;
-    sprite->vertices[2][1] = (-1.0f + 2.0f * height) * tmp;
-    sprite->vertices[3][0] = (-1.0f + 2.0f * width) * tmp;
-    sprite->vertices[3][1] = (-1.0f) * tmp;
+    sprite->vertices[0][0] = -1.0f;
+    sprite->vertices[0][1] = -1.0f + 2.0f * height;
+    sprite->vertices[1][0] = -1.0f;
+    sprite->vertices[1][1] = -1.0f;
+    sprite->vertices[2][0] = -1.0f + 2.0f * width;
+    sprite->vertices[2][1] = -1.0f + 2.0f * height;
+    sprite->vertices[3][0] = -1.0f + 2.0f * width;
+    sprite->vertices[3][1] = -1.0f;
 
     sprite->position = position;
     sprite->offset   = offset;
@@ -148,26 +125,16 @@ sprite_compute_mvp(sprite_t* sprite)
 void
 sprite_render(sprite_t* sprite)
 {
-    vec2_t     pos;
     /* vec2_t     off; */
-    texture_t* texture;
-    int        posu, scau, mvpu;
+    texture_t* texture;  /* texture of the sprite (optional) */
+    int        mvpu;     /* model view projection uniform */
 
     if (!sprite) {
         return;
     }
 
-    /* TODO This should really be calculated from a change of basis matrix */
-    /* off.x =  2.0f * sprite->offset.x; */
-    /* off.y = -2.0f * sprite->offset.y; */
-
-    /* pos = vec2_sub(sprite->position, off); */
-    pos = sprite->position;
-
     texture = sprite->texture;
 
-    posu = sprite->position_uniform;
-    scau = sprite->scaling_uniform;
     mvpu = sprite->mvp_uniform;
 
     glUseProgram(sprite->program);
@@ -180,12 +147,6 @@ sprite_render(sprite_t* sprite)
     glVertexAttribPointer(sprite->texture_attrib, 2, GL_FLOAT, GL_FALSE, 0,
                           sprite_texices_g);
 
-    if (posu >= 0) {
-        GL_CHECK(glUniform4f, posu, pos.x, pos.y, 0.0f, 1.0f);
-    }
-    if (scau >= 0) {
-        GL_CHECK(glUniform1f, scau, sprite->scale);
-    }
     if (mvpu >= 0) {
         sprite_compute_mvp(sprite);
         GL_CHECK(glUniformMatrix4fv, mvpu, 1, 0, (float*) &sprite->mvp);
