@@ -6,36 +6,66 @@
 
 #include "bina.h"
 
+static camera_t g_camera;
+
 void
-camera_set_viewport(camera_viewport_t* viewport)
+camera_set_viewport(const camera_viewport_t* viewport)
 {
+    g_camera.viewport = *viewport;
+
     GL_CHECK(glViewport, viewport->x, viewport->y,
                          viewport->width, viewport->height);
 }
 
-void
-camera_get_viewport(int* viewport)
+mat4_t
+camera_get_projection()
 {
-    if (!viewport) {
-        return;
-    }
-
-    glGetIntegerv(GL_VIEWPORT, viewport);
+    return g_camera.projection;
 }
 
 void
-camera_screen_coord_to_proj(const int x, const int y, vec2_t* coord)
+camera_set_projection(const mat4_t* projection)
 {
-    GLint  viewport[4];
+    g_camera.projection = *projection;
+}
 
-    if (!coord) {
-        return;
-    }
+/* void */
+/* camera_get_viewport(int* viewport) */
+/* { */
+/*     if (!viewport) { */
+/*         return; */
+/*     } */
+
+/*     glGetIntegerv(GL_VIEWPORT, viewport); */
+/* } */
+
+vec2_t
+camera_normalize_screen_coord(const vec2_t* point)
+{
+    vec2_t r;
+    GLint  viewport[4];
 
     glGetIntegerv(GL_VIEWPORT, viewport);
 
-    coord->x = 2.0f * x / viewport[2];
-    coord->y = 2.0f - (2.0f * y / viewport[3]);
+    r.x = point->x / viewport[2];
+    r.y = point->y / viewport[3];
+
+    return r;
+}
+
+vec2_t
+camera_screen_to_proj(const vec2_t* point)
+{
+    vec2_t r;
+    GLint  viewport[4];
+
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    /* TODO Transform this transformation into a matrix. */
+    r.x = ( 2.0f * point->x / viewport[2]) - 1.0f;
+    r.y = (-2.0f * point->y / viewport[3]) + 1.0f;
+
+    return r;
 }
 
 vec2_t

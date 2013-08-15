@@ -74,6 +74,40 @@ vec2_t vec2_sub(const vec2_t a, const vec2_t b);
 mat4_t mat4_identity(void);
 
 /**
- * Scales a matrix according to x, y, z floats.
+ * Creates an orthographic matrix.
+ */
+mat4_t mat4_ortho(const float left, const float right,
+                  const float bottom, const float top,
+                  const float near, const float far);
+
+/**
+ * Mutliplies a 4x4 matrix by a 2x2 vector to produce a translation matrix
+ * based on vector #v.
+ *
+ * The 2x2 vector is actually augmented into a 3x3 vector with z = 0.
+ *
+ * @param m The source matrix.
+ * @param v The translation vector.
+ * @return The translation matrix.
+ */
+mat4_t mat4_translate_vec2(const mat4_t* m, const vec2_t* v);
+
+/**
+ * Mutliplies a 4x4 matrix by a 3x3 vector to produce a translation matrix
+ * based on vector #v.
+ *
+ * @param m The source matrix.
+ * @param v The translation vector.
+ * @return The translation matrix.
+ */
+mat4_t mat4_translate_vec3(const mat4_t* m, const vec3_t* v);
+
+/**
+ * Scales a matrix according to a float that will be applied to the vectors of
+ * the matrices (same scaling in every coordinate).
+ *
+ * @param m The source matrix.
+ * @param s The scaling
+ * @return The scaling matrix.
  */
 mat4_t mat4_scale_1f(const mat4_t* m, const float s);

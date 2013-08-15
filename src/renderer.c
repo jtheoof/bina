@@ -7,7 +7,7 @@
 #include "bina.h"
 
 void
-renderer_init(camera_viewport_t* viewport)
+renderer_init(const camera_viewport_t* viewport, const mat4_t* projection)
 {
     /* print_gl_string("Version", GL_VERSION); */
     /* print_gl_string("Vendor", GL_VENDOR); */
@@ -23,6 +23,7 @@ renderer_init(camera_viewport_t* viewport)
 
     /* Set up the viewport */
     camera_set_viewport(viewport);
+    camera_set_projection(projection);
 }
 
 static void
@@ -53,7 +54,7 @@ render_bina()
 
     update_porc_animation(elapsed);
 
-    scene_render(scene);
+    scene_render(game.scene);
 
     /* sprite_render(back); */
     /* sprite_render(porc); */

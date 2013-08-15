@@ -106,6 +106,14 @@ sprite_delete(sprite_t** sprite)
 }
 
 void
+sprite_set_position(sprite_t* const sprite, const vec2_t* position)
+{
+    if (sprite && position) {
+        sprite->position = *position;
+    }
+}
+
+void
 sprite_set_scale(sprite_t* const sprite, const float scale)
 {
     if (sprite) {
@@ -124,12 +132,14 @@ sprite_set_texture(sprite_t* sprite, texture_t* texture)
 void
 sprite_compute_mvp(sprite_t* sprite)
 {
-    mat4_t matrix = mat4_identity();
+    mat4_t matrix;
+    mat4_t proj = camera_get_projection();
 
     if (!sprite) {
         return;
     }
 
+    matrix = mat4_translate_vec2(&proj, &sprite->position);
     matrix = mat4_scale_1f(&matrix, sprite->scale);
 
     sprite->mvp = matrix;

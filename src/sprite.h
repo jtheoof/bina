@@ -208,6 +208,14 @@ void sprite_delete(sprite_t** sprite);
  * @param srite The sprite to set the ratio.
  * @param scale The scale of the sprite.
  */
+void sprite_set_position(sprite_t* const sprite, const vec2_t* position);
+
+/**
+ * Sets the scale factor of a sprite.
+ *
+ * @param srite The sprite to set the ratio.
+ * @param scale The scale of the sprite.
+ */
 void sprite_set_scale(sprite_t* const sprite, const float scale);
 
 /**

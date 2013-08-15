@@ -103,22 +103,19 @@ void
 main_glut_mouse_cb(int button, int state, int x, int y)
 {
     float  elapsed = main_get_time_elapsed();
-    GLint  viewport[4], width, height;
-    vec2_t to;
+    vec2_t screen, norm, proj;
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        camera_get_viewport(viewport);
+        screen.x = x;
+        screen.y = y;
 
-        width  = viewport[2];
-        height = viewport[3];
+        norm = camera_normalize_screen_coord(&screen);
+        proj = camera_screen_to_proj(&screen);
 
-        to.x = (float) x / width;
-        to.y = (float) y / height;
+        LOGD("[point]: screen: %d, %d - norm: %f, %f - proj: %f, %f",
+             x, y, norm.x, norm.y, proj.x, proj.y)
 
-        LOGD("screen: %d, %d - relative: %f, %f",
-             x, y, (float) x / width, (float) y / height);
-
-        bina_animate_porc_to(to, elapsed);
+        bina_animate_porc_to(screen, elapsed);
     }
 }
 

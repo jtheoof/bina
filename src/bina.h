@@ -153,8 +153,6 @@ AAssetManager* asset_manager_g;
 /* Engine */
 #include "renderer.h"
 
-scene_t* scene;
-
 #ifdef DEBUG
 
 /**
@@ -197,14 +195,22 @@ scene_t* scene;
 typedef struct bina_t
 {
     /**
+     * Current camera of the game.
+     */
+    /* camera_t camera; */
+
+    /**
      * Current scene loaded and present on the screen.
      *
      * A scene, for now, is composed of the background image and an associated
      * scale map which serves to compute the scale of object depending on its
      * position on the image.
      */
-    scene_t* curScene;
+    scene_t* scene;
 } bina_t;
+
+
+bina_t game;
 
 /**
  * Initalization of program.

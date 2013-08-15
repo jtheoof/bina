@@ -64,11 +64,15 @@ scene_load(const char* name, const float minsize, const float maxsize)
 
     scene->background = bg_spr;
     scene->smap       = sm_tex;
-    scene->scale_min   = minsize;
-    scene->scale_max   = maxsize;
-    scene->scale_dif   = maxsize - minsize;
+    scene->scale_min  = minsize;
+    scene->scale_max  = maxsize;
+    scene->scale_dif  = maxsize - minsize;
     scene->bg_prog    = bg_prg;
     scene->character  = ch_spr;
+
+    if (scene->character) {
+        scene->character->scale = maxsize;
+    }
 
     return scene;
 }
@@ -127,17 +131,27 @@ scene_render(scene_t* scene)
 }
 
 void
-scene_move_character_to(scene_t* scene, vec2_t to, float speed)
+scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
 {
     float  size;
+    vec2_t proj, norm;
 
     if (!scene || !scene->character) {
         return;
     }
 
-    size = scene_compute_character_size(scene, to);
+    /* Convert screen point to model coordinate */
+    proj = camera_screen_to_proj(&screen);
 
+    /* Normalize screen point */
+    norm = camera_normalize_screen_coord(&screen);
+
+    /* Compute scaling of sprite */
+    size = scene_compute_character_size(scene, norm);
     sprite_set_scale(scene->character, size);
+
+    /* Update position of sprite */
+    sprite_set_position(scene->character, &proj);
 
     LOGD("character size: %f", size);
 }
@@ -153,7 +167,7 @@ scene_compute_character_size(scene_t* scene, const vec2_t norm)
     unsigned int  col;    /* column to look at */
     unsigned int  index;  /* actual index to study */
 
-    unsigned char r, g, b, a; /* final smap pixel color */
+    unsigned char r, g, b, a = 0; /* final smap pixel color */
 
     float ret = 0.0f;
 
@@ -209,8 +223,8 @@ scene_compute_character_size(scene_t* scene, const vec2_t norm)
 
     ret = (r + g + b) / (3.0f * 255);
 
-    LOGD("scale map pixel at: %d, %d (%d, %d, %d)",
-         (unsigned int) (norm.y * height), col, r, g, b);
+    LOGD("scale map pixel at: %d, %d (%d, %d, %d, %d)",
+         (unsigned int) (norm.y * height), col, r, g, b, a);
 
     return scene->scale_min + (scene->scale_dif * ret);
 }

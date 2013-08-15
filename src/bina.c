@@ -16,24 +16,27 @@ void
 bina_init(int width, int height)
 {
     camera_viewport_t viewport;
+    mat4_t projection;
 
     viewport.x = 0;
     viewport.y = 0;
     viewport.width = width;
     viewport.height = height;
 
-    renderer_init(&viewport);
+    projection = mat4_ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 
-    scene = scene_load("bedroomArtist", 0.5f, 0.75f);
+    renderer_init(&viewport, &projection);
+
+    game.scene = scene_load("bedroomArtist", 0.25f, 0.75f);
 }
 
 void
 bina_end()
 {
-    scene_unload(&scene);
+    scene_unload(&game.scene);
 }
 
 void bina_animate_porc_to(vec2_t to, float speed)
 {
-    scene_move_character_to(scene, to, speed);
+    scene_move_character_to(game.scene, to, speed);
 }

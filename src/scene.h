@@ -116,10 +116,11 @@ void scene_render(scene_t* scene);
  * Moves the character in the scene.
  *
  * @param scene The scene where the character is present.
- * @param to The destination where the character should go.
+ * @param screen The destination where the character should go in screen
+ * coordinates.
  * @param speed The speed we want to set it to.
  */
-void scene_move_character_to(scene_t* scene, vec2_t to, float speed);
+void scene_move_character_to(scene_t* scene, vec2_t screen, float speed);
 
 /**
  * Computes the size of the character based on its position thanks to the
