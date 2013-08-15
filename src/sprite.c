@@ -106,11 +106,33 @@ sprite_delete(sprite_t** sprite)
 }
 
 void
+sprite_set_scale(sprite_t* const sprite, const float scale)
+{
+    if (sprite) {
+        sprite->scale = scale;
+    }
+}
+
+void
 sprite_set_texture(sprite_t* sprite, texture_t* texture)
 {
     if (sprite && texture) {
         sprite->texture = texture;
     }
+}
+
+void
+sprite_compute_mvp(sprite_t* sprite)
+{
+    mat4_t matrix = mat4_identity();
+
+    if (!sprite) {
+        return;
+    }
+
+    matrix = mat4_scale_1f(&matrix, sprite->scale);
+
+    sprite->mvp = matrix;
 }
 
 void
@@ -155,6 +177,7 @@ sprite_render(sprite_t* sprite)
         GL_CHECK(glUniform1f, scau, sprite->scale);
     }
     if (mvpu >= 0) {
+        sprite_compute_mvp(sprite);
         GL_CHECK(glUniformMatrix4fv, mvpu, 1, 0, (float*) &sprite->mvp);
     }
 

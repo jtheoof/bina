@@ -203,6 +203,14 @@ sprite_t* sprite_create(texture_t* texture,
 void sprite_delete(sprite_t** sprite);
 
 /**
+ * Sets the scale factor of a sprite.
+ *
+ * @param srite The sprite to set the ratio.
+ * @param scale The scale of the sprite.
+ */
+void sprite_set_scale(sprite_t* const sprite, const float scale);
+
+/**
  * Updates a sprite with a new texture previously created.
  *
  * This method is useful when animating a sprite and updating its texture at
@@ -214,6 +222,15 @@ void sprite_delete(sprite_t** sprite);
  * @param texture The pointer to the new texture.
  */
 void sprite_set_texture(sprite_t* sprite, texture_t* texture);
+
+/*
+ * Computes the Model View Projection matrix of a sprite.
+ *
+ * This function will set the appropriate MVP matrix to the sprite.
+ *
+ * @param sprite The sprite.
+ */
+void sprite_compute_mvp(sprite_t* sprite);
 
 /**
  * Renders a sprite to the screen.

@@ -40,7 +40,7 @@ scene_load(const char* name, const float minsize, const float maxsize)
         return NULL;
     }
 
-    snprintf(bg_buf, MAX_PATH, "scenes/%s/background.png", name);
+    snprintf(bg_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
     snprintf(sm_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
     bg_tex = texture_create(bg_buf, 0);
     sm_tex = texture_create(sm_buf, 1);
@@ -52,8 +52,8 @@ scene_load(const char* name, const float minsize, const float maxsize)
     off.x = off.y = 0.0f;
     siz.x = siz.y = 1.0f;
 
-    /* bg_prg = shader_create_program(PROGRAM_BACKGROUND); */
-    /* bg_spr = sprite_create(bg_tex, bg_prg, pos, off, siz, 1.0f); */
+    bg_prg = shader_create_program(PROGRAM_BACKGROUND);
+    bg_spr = sprite_create(bg_tex, bg_prg, pos, off, siz, 1.0f);
 
     ch_prg = shader_create_program(PROGRAM_CHARACTER);
     /* pos.x =  0.3f; */
@@ -104,7 +104,7 @@ scene_render(scene_t* scene)
     static float angle = 0.0f;
 
     float  sin   = cosf(angle);
-    mat4_t ident = mat4_identity();
+    /* mat4_t ident = mat4_identity(); */
 
     if (sin < 0) {
         sin *= -1.0f;
@@ -119,7 +119,7 @@ scene_render(scene_t* scene)
     }
 
     if (scene->character) {
-        scene->character->mvp = mat4_scale_1f(&ident, sin);
+        /* scene->character->mvp = mat4_scale_1f(&ident, sin); */
         sprite_render(scene->character);
     }
 
@@ -136,6 +136,8 @@ scene_move_character_to(scene_t* scene, vec2_t to, float speed)
     }
 
     size = scene_compute_character_size(scene, to);
+
+    sprite_set_scale(scene->character, size);
 
     LOGD("character size: %f", size);
 }
