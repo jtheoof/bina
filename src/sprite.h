@@ -56,11 +56,11 @@ typedef struct sprite_t
     /**
      * Barycenter of the sprite.
      *
-     * A sprite can also optionally have an offset. This represents the center
+     * A sprite can also optionally have an center. This represents the center
      * of gravity of the sprite. Think of it as the center of the sprite
      * relative to the object size.
      */
-    vec2_t offset;
+    vec2_t center;
 
     /**
      * Scale of the sprite.
@@ -83,7 +83,7 @@ typedef struct sprite_t
      * Can vary from the texture itself because the sprite is represented in
      * the projection matrix system. (Default: -1,-1 -> +1,+1).
      *
-     * Default: 1.0f;
+     * Default: 2.0f;
      */
     float width;
 
@@ -93,7 +93,7 @@ typedef struct sprite_t
      * Can vary from the texture itself because the sprite is represented in
      * the projection matrix system. (Default: -1,-1 -> +1,+1).
      *
-     * Default: 1.0f;
+     * Default: 2.0f;
      */
     float height;
 
@@ -159,11 +159,17 @@ typedef struct sprite_animator_t
 /**
  * Creates a new sprite and allocates the necessary memory.
  *
+ * Note that a sprite does not have a size yet. This is because currently,
+ * Yaum renders every object at full resolution (same as background). This
+ * makes things easier for everyone but is a lot more heavy on resources as
+ * even a tiny sprite will be rendered at Full HD.
+ *
  * @param texture The texture associate with the sprite. Can be NULL.
  * @param position The original position of the sprite.
- * @param offset The offset that represents the actual center of the object.
+ * @param center The offset that represents the actual center of the object.
  * This is like the 0, 0 of the object in its coordinate system.
- * @param size The size in x (width) and y (height) of the sprite.
+ * @param size The size of the scene. Sprite will be full sized. See comment
+ * above.
  * @param scale The initial scale of the sprite. Can be altered later via
  * animation. This is what the scale map is for.
  * @return A new sprite object with the memory already allocated.

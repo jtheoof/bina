@@ -16,7 +16,7 @@
 /**
  * Initializes the render with viewport dimensions specified.
  */
-void renderer_init(const camera_viewport_t* viewport, const mat4_t* projection);
+void renderer_init();
 
 /**
  * Pre-rendering function.

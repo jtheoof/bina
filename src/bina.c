@@ -16,18 +16,19 @@ void
 bina_init(int width, int height)
 {
     camera_viewport_t viewport;
-    mat4_t projection;
 
     viewport.x = 0;
     viewport.y = 0;
     viewport.width = width;
     viewport.height = height;
 
-    projection = mat4_ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+    /* Set up the viewport */
+    camera_set_viewport(&viewport);
 
-    renderer_init(&viewport, &projection);
-
+    /* Loads the scene */
     game.scene = scene_load("bedroomArtist", 0.25f, 0.75f);
+
+    renderer_init();
 }
 
 void

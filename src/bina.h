@@ -153,6 +153,12 @@ AAssetManager* asset_manager_g;
 /* Engine */
 #include "renderer.h"
 
+/* TODO
+ *  - Reorganize headers to make the build faster.
+ *  - Have generic macro to check for null pointers at the beginning of a func.
+ *  - Improve logging of calls to OpenGL APIs.
+ */
+
 #ifdef DEBUG
 
 /**

@@ -34,7 +34,7 @@ typedef struct scene_t
      * too large for the camera).
      */
     sprite_t* background;
-    
+
     /**
      * The scale map.
      *
@@ -80,6 +80,20 @@ typedef struct scene_t
      */
     sprite_t* character;
 
+    /**
+     * The width of the scene.
+     *
+     * Used to render the viewport and the background for example.
+     */
+    unsigned int width;
+
+    /*
+     * The height of the scene.
+     *
+     * Used to render the viewport and the background for example.
+     */
+    unsigned int height;
+
 } scene_t;
 
 /**
@@ -88,6 +102,9 @@ typedef struct scene_t
  * The scene also specifies the minimum scale and maximum scale of the
  * character.
  *
+ * Later we can imagine having a real manifest for a scene. With all
+ * objects presents, their positions, sizes, scales, ...
+ *
  * @param name The name of the scene. Must be the name of the folder present
  * in 'scenes' assets. The folder must contain a 'background.png' and
  * 'scaleMap.png' file.
@@ -95,7 +112,8 @@ typedef struct scene_t
  * @param maxsize The maximum scaling ratio of the character.
  * @return The scene created.
  */
-scene_t* scene_load(const char* name, const float minsize, const float maxsize);
+scene_t* scene_load(const char* name,
+                    const float minsize, const float maxsize);
 
 /**
  * The scene is responsible for releasing memory of the texture object it has

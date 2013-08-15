@@ -19,15 +19,19 @@ static const float sprite_texices_g[] = {
 };
 
 sprite_t*
-sprite_create(texture_t* texture, const unsigned int program,
-              const vec2_t position, const vec2_t offset, const vec2_t size,
-              const float scale)
+sprite_create(texture_t* texture,
+              const unsigned int program, const vec2_t position,
+              const vec2_t center, const vec2_t size, const float scale)
 {
     sprite_t* sprite;
-    float width = size.x;
-    float height = size.y;
+    float width, height;
 
     sprite = (sprite_t*) malloc(sizeof(sprite_t));
+
+    if (!sprite) {
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        return NULL;
+    }
 
     sprite->program = program;
 
@@ -47,17 +51,20 @@ sprite_create(texture_t* texture, const unsigned int program,
              sprite->texture_uniform,  sprite->texture_attrib);
     }
 
-    sprite->vertices[0][0] = -1.0f;
-    sprite->vertices[0][1] = -1.0f + 2.0f * height;
-    sprite->vertices[1][0] = -1.0f;
-    sprite->vertices[1][1] = -1.0f;
-    sprite->vertices[2][0] = -1.0f + 2.0f * width;
-    sprite->vertices[2][1] = -1.0f + 2.0f * height;
-    sprite->vertices[3][0] = -1.0f + 2.0f * width;
-    sprite->vertices[3][1] = -1.0f;
+    width  = size.x;
+    height = size.y;
+
+    sprite->vertices[0][0] = -2.0f / width;
+    sprite->vertices[0][1] =  2.0f / height;
+    sprite->vertices[1][0] = -2.0f / width;
+    sprite->vertices[1][1] = -2.0f / height;
+    sprite->vertices[2][0] =  2.0f / width;
+    sprite->vertices[2][1] =  2.0f / height;
+    sprite->vertices[3][0] =  2.0f / width;
+    sprite->vertices[3][1] = -2.0f / height;
 
     sprite->position = position;
-    sprite->offset   = offset;
+    sprite->center   = center;
     sprite->scale    = scale;
     sprite->width    = width;
     sprite->height   = height;
@@ -111,12 +118,25 @@ sprite_compute_mvp(sprite_t* sprite)
 {
     mat4_t matrix;
     mat4_t proj = camera_get_projection();
+    vec2_t translation;
 
     if (!sprite) {
         return;
     }
 
-    matrix = mat4_translate_vec2(&proj, &sprite->position);
+    /* Firstly, we need to recompute the center of the sprite based on the
+     * current scaling of the object. If the object is half as big as its
+     * original state, its center is also half of what it used to be.
+     */
+    translation = vec2_mul_scal(sprite->center, sprite->scale);
+
+    /* Secondly, we move the sprite according to its current position in the
+     * world.
+     */
+    translation = vec2_add(sprite->position, translation);
+    matrix = mat4_translate_vec2(&proj, &translation);
+
+    /* Finally, we scale everything. */
     matrix = mat4_scale_1f(&matrix, sprite->scale);
 
     sprite->mvp = matrix;

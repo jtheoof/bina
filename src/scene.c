@@ -6,15 +6,37 @@
 
 #include "bina.h"
 
-scene_t*
-scene_load(const char* name, const float minsize, const float maxsize)
+static void
+load_scale_map(const char* name, const float minsize, const float maxsize,
+               scene_t* scene)
 {
-    scene_t* scene;
+    char       sm_buf[MAX_PATH];
+    texture_t* sm_tex = NULL;
 
-    vec2_t pos;
-    vec2_t off;
-    vec2_t siz;
+    snprintf(sm_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
+    sm_tex = texture_create(sm_buf, 1);
 
+    scene->smap       = sm_tex;
+    scene->scale_min  = minsize;
+    scene->scale_max  = maxsize;
+    scene->scale_dif  = maxsize - minsize;
+
+    /* If smap texture, upgrade the projection matrix */
+    /* FIXME */
+    if (0/*sm_tex*/) {
+        /* scene->width  = sm_tex->width; */
+        /* scene->height = sm_tex->height; */
+    } else {
+        scene->width  = 2.0f;
+        scene->height = 2.0f;
+    }
+
+}
+
+static void
+load_sprites(const char* name, scene_t* scene)
+{
+    vec2_t pos, off, dim;
 
     /* Background */
     char       bg_buf[MAX_PATH];
@@ -22,15 +44,48 @@ scene_load(const char* name, const float minsize, const float maxsize)
     sprite_t*  bg_spr = NULL;
     int        bg_prg = -1;
 
-    /* Scale map */
-    char       sm_buf[MAX_PATH];
-    texture_t* sm_tex = NULL;
-
     /* Character */
     char       ch_buf[MAX_PATH];
     texture_t* ch_tex = NULL;
     sprite_t*  ch_spr = NULL;
     int        ch_prg = -1;
+
+    snprintf(bg_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
+    snprintf(ch_buf, MAX_PATH, "animations/perso1_neutraPose_frontCam.png");
+
+    bg_tex = texture_create(bg_buf, 0);
+    ch_tex = texture_create(ch_buf, 0);
+
+    pos.x = pos.y = 0.0f;
+    off.x = off.y = 0.0f;
+
+    dim.x = scene->width;
+    dim.y = scene->height;
+
+    bg_prg = shader_create_program(PROGRAM_BACKGROUND);
+    ch_prg = shader_create_program(PROGRAM_CHARACTER);
+
+    bg_spr = sprite_create(bg_tex, bg_prg, pos, off, dim, 1.0f);
+
+    pos.x =  0.0f;
+    pos.y = -1.0f;
+    off.x =  0.0f;
+    off.y =  0.5f;
+    ch_spr = sprite_create(ch_tex, ch_prg, pos, off, dim, 1.0f);
+
+    scene->background = bg_spr;
+    scene->bg_prog    = bg_prg;
+    scene->character  = ch_spr;
+}
+
+scene_t*
+scene_load(const char* name, const float minsize, const float maxsize)
+{
+    scene_t* scene;
+    mat4_t   projection;
+
+    /* Updating projection matrix */
+    float left, right, bottom, top;
 
     LOGI("loading scene: %s", name);
 
@@ -40,39 +95,21 @@ scene_load(const char* name, const float minsize, const float maxsize)
         return NULL;
     }
 
-    snprintf(bg_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
-    snprintf(sm_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
-    bg_tex = texture_create(bg_buf, 0);
-    sm_tex = texture_create(sm_buf, 1);
-
-    snprintf(ch_buf, MAX_PATH, "animations/perso1_neutraPose_frontCam.png");
-    ch_tex = texture_create(ch_buf, 0);
-
-    pos.x = pos.y = 0.0f;
-    off.x = off.y = 0.0f;
-    siz.x = siz.y = 1.0f;
-
-    bg_prg = shader_create_program(PROGRAM_BACKGROUND);
-    bg_spr = sprite_create(bg_tex, bg_prg, pos, off, siz, 1.0f);
-
-    ch_prg = shader_create_program(PROGRAM_CHARACTER);
-    /* pos.x =  0.3f; */
-    /* pos.y = -1.7f; */
-    /* off.x = 958.0f / 1920.0f; */
-    /* off.y = 816.0f / 1080.0f; */
-    ch_spr = sprite_create(ch_tex, ch_prg, pos, off, siz, 1.0f);
-
-    scene->background = bg_spr;
-    scene->smap       = sm_tex;
-    scene->scale_min  = minsize;
-    scene->scale_max  = maxsize;
-    scene->scale_dif  = maxsize - minsize;
-    scene->bg_prog    = bg_prg;
-    scene->character  = ch_spr;
+    load_scale_map(name, minsize, maxsize, scene);
+    load_sprites(name, scene);
 
     if (scene->character) {
         scene->character->scale = maxsize;
     }
+
+    left   = -2.0f / scene->width;
+    right  =  2.0f / scene->width;
+    bottom = -2.0f / scene->height;
+    top    =  2.0f / scene->height;
+
+    /* Initialize the projection matrix */
+    projection = mat4_ortho(left, right, bottom, top, -1.0f, 1.0f);
+    camera_set_projection(&projection);
 
     return scene;
 }

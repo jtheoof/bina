@@ -28,6 +28,16 @@ vec2_add(const vec2_t a, const vec2_t b)
     return r;
 }
 
+vec2_t
+vec2_mul_scal(const vec2_t a, const float s)
+{
+    vec2_t r;
+
+    r.x = a.x * s;
+    r.y = a.y * s;
+
+    return r;
+}
 
 vec4_t
 vec4_scale(vec4_t v, float s)
@@ -63,7 +73,7 @@ mat4_ortho(const float left, const float right,
            const float near, const float far)
 {
     mat4_t r;
-    
+
     memset(&r, 0, sizeof(mat4_t));
 
     r.m[0].x = ( 2.0f / (right - left));

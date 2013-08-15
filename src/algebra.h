@@ -67,6 +67,11 @@ vec2_t vec2_add(const vec2_t a, const vec2_t b);
 vec2_t vec2_sub(const vec2_t a, const vec2_t b);
 
 /**
+ * Multiplies a vector by a scalar.
+ */
+vec2_t vec2_mul_scal(const vec2_t a, const float s);
+
+/**
  * Loads an 4x4 Identity matrix.
  *
  * @return The identity matrix.

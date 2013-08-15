@@ -7,7 +7,7 @@
 #include "bina.h"
 
 void
-renderer_init(const camera_viewport_t* viewport, const mat4_t* projection)
+renderer_init()
 {
     /* print_gl_string("Version", GL_VERSION); */
     /* print_gl_string("Vendor", GL_VENDOR); */
@@ -20,10 +20,6 @@ renderer_init(const camera_viewport_t* viewport, const mat4_t* projection)
 
     GL_CHECK(glDisable, GL_DEPTH_TEST);
     GL_CHECK(glDepthMask, GL_FALSE);
-
-    /* Set up the viewport */
-    camera_set_viewport(viewport);
-    camera_set_projection(projection);
 }
 
 static void
