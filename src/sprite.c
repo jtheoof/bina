@@ -78,6 +78,7 @@ void
 sprite_delete(sprite_t** sprite)
 {
     sprite_t* s = *sprite;
+
     /* XXX The sprite should not be responsible for deleting the texture.
      * The texture should be deleted by the object that created it.
      */
