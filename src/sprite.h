@@ -16,6 +16,44 @@
 
 #pragma once
 
+typedef enum sprite_cam_type_e
+{
+    /* SPRITE_CAM_TYPE_BACK, */
+    SPRITE_CAM_TYPE_FRONT,
+    /* SPRITE_CAM_TYPE_RIGHT, */
+    /* SPRITE_CAM_TYPE_LEFT, */
+    SPRITE_CAM_TYPE_COUNT   /* trick to get the number of elements */
+} sprite_cam_type_e;
+
+typedef enum sprite_anim_e
+{
+    SPRITE_ANIM_NEUTRALPOSE,
+    /* SPRITE_ANIM_STOPANIM1, */
+    /* SPRITE_ANIM_WALKCYCLE, */
+    SPRITE_ANIM_COUNT        /* trick to get the number of elements */
+} sprite_anim_e;
+
+typedef struct sprite_anim_t
+{
+    /**
+     * Total number of animations held by #list.
+     *
+     * This is the product: SPRITE_ANIM_COUNT * SPRITE_CAM_TYPE_COUNT
+     */
+    unsigned int size;
+
+    unsigned short nb_cam_types;
+
+    unsigned short nb_anims;
+
+    sprite_cam_type_e cur_cam_type;
+
+    sprite_anim_e cur_anim;
+
+    texture_list_t** list;
+
+} sprite_anim_t;
+
 typedef struct sprite_t
 {
     /**
@@ -36,11 +74,10 @@ typedef struct sprite_t
     int position_attrib;
 
     /* TODO Move all these OpenGL attributes into the texture structure or
-     * a specific program structure.
+     * a specific program structure in #shader.c.
      */
     int texture_attrib;
     int texture_uniform;
-
     int mvp_uniform;
 
     /**
@@ -104,6 +141,14 @@ typedef struct sprite_t
      * matrix = PROJECTION * VIEW * MODEL;
      */
     mat4_t mvp;
+
+    /**
+     * All the different animations of the sprite.
+     *
+     * This can probably be moved to a more specific type of sprites (like
+     * character).
+     */
+    sprite_anim_t* animations;
 
 } sprite_t;
 
@@ -181,6 +226,13 @@ sprite_t* sprite_create(texture_t* texture,
                         const vec2_t size,
                         const float  scale);
 
+sprite_t* sprite_load_character(const char* name,
+                                const unsigned int program,
+                                const vec2_t position,
+                                const vec2_t offset,
+                                const vec2_t size,
+                                const float  scale);
+
 /**
  * Frees the memory of a sprite.
  *
@@ -218,6 +270,24 @@ void sprite_set_scale(sprite_t* const sprite, const float scale);
  * @param texture The pointer to the new texture.
  */
 void sprite_set_texture(sprite_t* sprite, texture_t* texture);
+
+/**
+ * Sets the sprite to given camera type.
+ *
+ * @param sprite The sprite to set.
+ * @param cam The camera to set the sprite to.
+ */
+void sprite_set_cam_type(sprite_t* sprite, sprite_cam_type_e cam);
+
+/**
+ * Sets the animation of the sprite.
+ *
+ * This puts the animation at key: 0.
+ *
+ * @param sprite The sprite to set.
+ * @param anim The animation to set the sprite to.
+ */
+void sprite_set_animation(sprite_t* sprite, sprite_anim_e anim);
 
 /*
  * Computes the Model View Projection matrix of a sprite.

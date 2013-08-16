@@ -496,14 +496,14 @@ texture_delete(texture_t** texture)
 }
 
 texture_list_t*
-texture_create_list(const char* animation,
+texture_create_list(const char* folder,
+                    const char* animation,
                     const char* ext,
                     const unsigned short size)
 {
     texture_list_t* ret = NULL;
-    char tmp[MAX_PATH];
-    char* fmt = "%s/%s_%02d.%s";
-    int i;
+    char  tmp[MAX_PATH];
+    int   i;
 
     ret = (texture_list_t*) calloc(1, sizeof(texture_list_t));
     if (!ret) {
@@ -520,7 +520,8 @@ texture_create_list(const char* animation,
     }
 
     for (i = 0; i < size; i++) {
-        snprintf(tmp, MAX_PATH, fmt, "animations", animation, i, ext);
+        snprintf(tmp, MAX_PATH, "%s/%s/%s_%03d.%s",
+                 "animations", folder, animation, i, ext);
         ret->textures[i] = texture_create(tmp, 0);
     }
 

@@ -19,12 +19,6 @@
 #define BINA_NOT_IMPLEMENTED   "Not implemented"
 #define BINA_INVALID_PARAM     "Invalid parameter" /* Which one?! See todo */
 
-typedef struct token_string_t
-{
-   unsigned int token;
-   const char* string;
-} token_string_t;
-
 static const token_string_t gl_errors[] = {
 
     /* GL */

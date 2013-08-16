@@ -25,8 +25,6 @@
 
 #define APP_TITLE "This is Binaaaaaaaaaaaaaaa"
 
-/* types.h */
-
 #ifndef MAX_CHAR
 #define MAX_CHAR 64
 #endif
@@ -133,6 +131,50 @@ AAssetManager* asset_manager_g;
 #include <png.h>
 #endif
 
+/**
+ * Mapping between and id (or token, enum, ...) and a string.
+ */
+typedef struct token_string_t
+{
+    /**
+     * Token to map (could also be an enum for example).
+     */
+   unsigned int token;
+
+   /**
+    * The string to map the token to.
+    */
+   const char* string;
+
+} token_string_t;
+
+/**
+ * Same as #token_string_t, only adding a size to the description.
+ */
+typedef struct token_string_size_t
+{
+    /**
+     * Token to map (could also be an enum for example).
+     */
+   unsigned int token;
+
+   /**
+    * The string to map the token to.
+    */
+   const char* string;
+
+   /**
+    * Size associtated with the string
+    */
+   unsigned int  size;
+
+} token_string_size_t;
+
+/**
+ * Converts a token into a { TOKEN, "TOKEN" } object.
+ */
+#define TOKEN_TO_STRING(x) { x, #x }
+
 /* Utils */
 #include "error.h"
 #include "utils.h"
@@ -157,6 +199,8 @@ AAssetManager* asset_manager_g;
  *  - Reorganize headers to make the build faster.
  *  - Have generic macro to check for null pointers at the beginning of a func.
  *  - Improve logging of calls to OpenGL APIs.
+ *  - Reorganize the project with addition of perhaps animation.c and
+ *  character.c
  */
 
 #ifdef DEBUG

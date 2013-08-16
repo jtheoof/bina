@@ -202,14 +202,17 @@ void texture_delete(texture_t** texture);
  * all the perso1_walkCycle_cameraLeft files listed and their extension.
  * This way we would not have to pass #ext nor #size.
  *
+ * @param folder The root folder in 'animations' where the animation is to be
+ * loaded.
  * @param animation The name of the group of textures to load.
  * For example: perso1_walkCycle_cameraLeft
- * This will load perso1_walkCycle_cameraLeft_0.png, ...
+ * This will load perso1_walkCycle_cameraLeft_001.png, ...
  * @param ext The extension of the files to load.
  * @param size The number of files to load.
  * @return The list of texture_t* textures created.
  */
-texture_list_t* texture_create_list(const char* animation,
+texture_list_t* texture_create_list(const char* folder,
+                                    const char* filename,
                                     const char* ext,
                                     const unsigned short size);
 

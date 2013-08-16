@@ -6,6 +6,18 @@
 
 #include "bina.h"
 
+/* XXX This should actually be comming from some sort of scene/manifest
+ * loader.
+ * TODO remove me when proper scene management has been developped.
+ */
+static const token_string_t g_cam_type_names[] = {
+    { SPRITE_CAM_TYPE_FRONT, "frontCam" },
+};
+
+static const token_string_size_t g_anim_names_sizes[] = {
+    { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 30 },
+};
+
 /**
  * Constant holding default values for texices.
  *
@@ -17,6 +29,61 @@ static const float sprite_texices_g[] = {
      1.0f,  1.0f,
      1.0f,  0.0f
 };
+
+static sprite_anim_t*
+create_character_anim(const char* character)
+{
+    sprite_anim_t*   ret  = NULL;
+    texture_list_t** list = NULL;
+    int i, c, a, size;
+    char filename[MAX_PATH];
+
+    int cams  = SPRITE_CAM_TYPE_COUNT;
+    int anims = SPRITE_ANIM_COUNT;
+
+    ret = (sprite_anim_t*) malloc(sizeof(sprite_anim_t));
+
+    if (!ret) {
+        LOGE("BINA_NOT_ENOUGH_MEMORY");
+        goto error;
+    }
+
+    LOGD("number of camera types: %d", SPRITE_CAM_TYPE_COUNT);
+    LOGD("number of sprite animations: %d", SPRITE_ANIM_COUNT);
+
+    list = (texture_list_t**) calloc(cams * anims, sizeof(texture_list_t*));
+
+    if (!list) {
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        goto error;
+    }
+
+    /* Load the animation for each camera type and animation name */
+    for (c = 0; c < cams; c++) {
+        for (a = 0, i = c * cams + a; a < anims; a++) {
+            snprintf(filename, MAX_PATH, "%s_%s_camSetup_%s", character,
+                     g_anim_names_sizes[a].string, g_cam_type_names[c].string);
+            size = g_anim_names_sizes[a].size;
+            list[i] = texture_create_list(character, filename, "png", size);
+        }
+    }
+
+    ret->list = list;
+    ret->nb_cam_types = SPRITE_CAM_TYPE_COUNT;
+    ret->nb_anims = SPRITE_ANIM_COUNT;
+    ret->size = cams * anims;
+
+    return ret;
+
+error:
+    if (ret) {
+        free(ret);
+        ret = NULL;
+    }
+
+    LOGE("unable to create animations for: %s", character);
+    return NULL;
+}
 
 sprite_t*
 sprite_create(texture_t* texture,
@@ -63,13 +130,41 @@ sprite_create(texture_t* texture,
     sprite->vertices[3][0] =  2.0f / width;
     sprite->vertices[3][1] = -2.0f / height;
 
-    sprite->position = position;
-    sprite->center   = center;
-    sprite->scale    = scale;
-    sprite->width    = width;
-    sprite->height   = height;
-    sprite->texture  = texture;
-    sprite->mvp      = mat4_identity();
+    sprite->position   = position;
+    sprite->center     = center;
+    sprite->scale      = scale;
+    sprite->width      = width;
+    sprite->height     = height;
+    sprite->texture    = texture;
+    sprite->mvp        = mat4_identity();
+    sprite->animations = NULL;
+
+    return sprite;
+}
+
+sprite_t*
+sprite_load_character(const char* name,
+                      const unsigned int program, const vec2_t position,
+                      const vec2_t center, const vec2_t size,
+                      const float scale)
+{
+    sprite_t*      sprite = NULL;
+    sprite = sprite_create(NULL, program, position, center, size, scale);
+
+    if (!sprite) {
+        return NULL;
+    }
+
+    sprite->animations = create_character_anim(name);
+
+    if (sprite->animations) {
+        sprite->animations->cur_cam_type = SPRITE_CAM_TYPE_FRONT;
+        sprite->animations->cur_anim = SPRITE_ANIM_NEUTRALPOSE;
+
+        if (sprite->animations->list) {
+            sprite->texture = sprite->animations->list[0]->textures[0];
+        }
+    }
 
     return sprite;
 }
@@ -78,12 +173,31 @@ void
 sprite_delete(sprite_t** sprite)
 {
     sprite_t* s = *sprite;
+    sprite_anim_t* a;
+
+    int i ;
 
     /* XXX The sprite should not be responsible for deleting the texture.
      * The texture should be deleted by the object that created it.
      */
     if (s) {
         shader_delete_program(s->program);
+
+        if (s->animations) {
+            a = s->animations;
+
+            if (a->list) {
+                for (i = 0; i < a->size; i++) {
+                    /* Not sure I need the () around a->list[i] */
+                    texture_delete_list(&(a->list[i]));
+                }
+                free(a->list);
+                a->list = NULL;
+            }
+            free(a);
+            s->animations = NULL;
+        }
+
         free(s);
         s = NULL;
     }
@@ -112,6 +226,19 @@ sprite_set_texture(sprite_t* sprite, texture_t* texture)
     if (sprite && texture) {
         sprite->texture = texture;
     }
+}
+
+void
+sprite_set_cam_type(sprite_t* sprite, sprite_cam_type_e cam)
+{
+    if (sprite && sprite->animations) {
+        sprite->animations->cur_cam_type = cam;
+    }
+}
+
+void sprite_set_animation(sprite_t* sprite, sprite_anim_e anim)
+{
+
 }
 
 void

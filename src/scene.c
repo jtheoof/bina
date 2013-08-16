@@ -33,6 +33,12 @@ load_scale_map(const char* name, const float minsize, const float maxsize,
 
 }
 
+/* static void */
+/* load_sprites_animations(const char* name, scene_t* scene) */
+/* { */
+
+/* } */
+
 static void
 load_sprites(const char* name, scene_t* scene)
 {
@@ -46,7 +52,7 @@ load_sprites(const char* name, scene_t* scene)
 
     /* Character */
     char       ch_buf[MAX_PATH];
-    texture_t* ch_tex = NULL;
+    /* texture_t* ch_tex = NULL; */
     sprite_t*  ch_spr = NULL;
     int        ch_prg = -1;
 
@@ -54,7 +60,7 @@ load_sprites(const char* name, scene_t* scene)
     snprintf(ch_buf, MAX_PATH, "animations/perso1_neutraPose_frontCam.png");
 
     bg_tex = texture_create(bg_buf, 0);
-    ch_tex = texture_create(ch_buf, 0);
+    /* ch_tex = texture_create(ch_buf, 0); */
 
     pos.x = pos.y = 0.0f;
     off.x = off.y = 0.0f;
@@ -62,6 +68,7 @@ load_sprites(const char* name, scene_t* scene)
     dim.x = scene->width;
     dim.y = scene->height;
 
+    /* TODO Store these programes in a manager or in the scene. */
     bg_prg = shader_create_program(PROGRAM_BACKGROUND);
     ch_prg = shader_create_program(PROGRAM_CHARACTER);
 
@@ -71,7 +78,7 @@ load_sprites(const char* name, scene_t* scene)
     pos.y = -1.0f;
     off.x =  0.0f;
     off.y =  0.5f;
-    ch_spr = sprite_create(ch_tex, ch_prg, pos, off, dim, 1.0f);
+    ch_spr = sprite_load_character("perso1", ch_prg, pos, off, dim, 1.0f);
 
     scene->background = bg_spr;
     scene->bg_prog    = bg_prg;
@@ -128,7 +135,7 @@ scene_unload(scene_t** scene)
             texture_delete(&tmp->smap);
         }
         if (tmp->character) {
-            texture_delete(&tmp->character->texture);
+            /* texture_delete(&tmp->character->texture); */
             sprite_delete(&tmp->character);
         }
         shader_delete_program(tmp->bg_prog);
