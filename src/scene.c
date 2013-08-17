@@ -151,13 +151,19 @@ scene_unload(scene_t** scene)
 void
 scene_animate(scene_t* scene, float elapsed)
 {
+    vec2_t ndc;
+    float  size;
+
     if (!scene || !scene->character) {
         return;
     }
-    /* Compute scaling of sprite which depends on its position */
-    /* size = scene_compute_character_size(scene, norm); */
-    /* sprite_set_scale(scene->character, size); */
+
     scene->time_idle += elapsed;
+
+    /* Compute scaling of sprite which depends on its position */
+    ndc = camera_eye_coord_to_ndc(scene->character->position);
+    size = scene_compute_character_size(scene, ndc);
+    sprite_set_scale(scene->character, size);
 
     if (!scene->character->animator && scene->time_idle >= 2.0f) {
         sprite_animate_idle(scene->character);
@@ -201,9 +207,7 @@ scene_render(scene_t* scene)
 void
 scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
 {
-    float  size;
     vec2_t proj, norm;
-    /* float  elapsed = main_get_time_elapsed(); */
 
     if (!scene || !scene->character) {
         return;
@@ -217,10 +221,6 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
 
     /* Animate character to the given position */
     /* sprite_animate_char_to(scene->character, proj, speed, elapsed); */
-
-    /* Compute scaling of sprite */
-    size = scene_compute_character_size(scene, norm);
-    sprite_set_scale(scene->character, size);
 
     LOGD("[character] previous position: %f, %f - new position: %f, %f",
          scene->character->position.x, scene->character->position.y,

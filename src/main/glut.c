@@ -56,7 +56,7 @@ main_glut_timer_cb(int t)
 void
 main_glut_reshape_cb(int width, int height)
 {
-    camera_viewport_t viewport;
+    camera_win_info_t viewport;
 
     viewport.x = 0;
     viewport.y = 0;

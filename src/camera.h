@@ -14,7 +14,10 @@
 
 #pragma once
 
-typedef struct camera_viewport_t
+/**
+ * Basic info on the viewport used for the camera (window coordinates).
+ */
+typedef struct camera_win_info_t
 {
     /**
      * The x coordinate of the viewport.
@@ -35,11 +38,31 @@ typedef struct camera_viewport_t
      * The height of the viewport;
      */
     int height;
-} camera_viewport_t;
+
+} camera_win_info_t;
+
+/**
+ * Basic info on the projection matrix used for the camera (eye coordinates).
+ */
+typedef struct camera_eye_info_t
+{
+    /**
+     * Scaling vector present in the projection matrix.
+     */
+    vec3_t scale;
+
+    /**
+     * Translation vector present in the projection matrix.
+     */
+    vec3_t trans;
+
+} camera_eye_info_t;
 
 typedef struct camera_t
 {
-    camera_viewport_t viewport;
+    camera_win_info_t viewport;
+
+    camera_eye_info_t eye;
 
     mat4_t projection;
 } camera_t;
@@ -50,7 +73,7 @@ typedef struct camera_t
  * @param viewport The viewport to set by OpenGL.
  * Should be called when window that draws OpenGL changes size.
  */
-void camera_set_viewport(const camera_viewport_t* viewport);
+void camera_set_viewport(const camera_win_info_t* viewport);
 
 /**
  * Retrieves the current projection matrix.

@@ -15,7 +15,7 @@ print_gl_string(const char* name, GLenum s)
 void
 bina_init(int width, int height)
 {
-    camera_viewport_t viewport;
+    camera_win_info_t viewport;
 
     srand(time(0));
 

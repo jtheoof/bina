@@ -16,7 +16,7 @@ struct camera_module_info {
 static struct camera_module_info m;
 
 void
-camera_set_viewport(const camera_viewport_t* viewport)
+camera_set_viewport(const camera_win_info_t* viewport)
 {
     m.camera.viewport = *viewport;
 
@@ -33,6 +33,14 @@ camera_get_projection()
 void
 camera_set_projection(const mat4_t* projection)
 {
+    m.camera.eye.scale.x = projection->m[0].x;
+    m.camera.eye.scale.y = projection->m[1].y;
+    m.camera.eye.scale.z = projection->m[2].z;
+
+    m.camera.eye.trans.x = projection->m[3].x;
+    m.camera.eye.trans.y = projection->m[3].y;
+    m.camera.eye.trans.z = projection->m[3].z;
+
     m.camera.projection = *projection;
 }
 
@@ -50,17 +58,18 @@ camera_win_coord_to_ndc(const vec2_t* point)
     return r;
 }
 
+/* TODO Fix those two functions to make them generic accross any projection
+ * matrix.
+ */
+
 vec2_t
 camera_win_coord_to_eye(const vec2_t* point)
 {
     vec2_t r;
-    GLint  viewport[4];
+    camera_win_info_t viewport = m.camera.viewport;
 
-    glGetIntegerv(GL_VIEWPORT, viewport);
-
-    /* TODO Transform this transformation into a matrix. */
-    r.x = ( 2.0f * point->x / viewport[2]) - 1.0f;
-    r.y = (-2.0f * point->y / viewport[3]) + 1.0f;
+    r.x = ( 2.0f * point->x / (viewport.width  - viewport.x)) - 1.0f;
+    r.y = (-2.0f * point->y / (viewport.height - viewport.y)) + 1.0f;
 
     return r;
 }
