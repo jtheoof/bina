@@ -98,9 +98,3 @@ vec2_t camera_screen_to_proj(const vec2_t* point);
  * in normalized coordinates.
  */
 vec2_t camera_proj_to_absolute(const vec2_t point);
-/**
- * Retrieves OpenGL viewport object.
- *
- * @param viewport A GLint[4] array
- */
-void camera_get_viewport(int* viewport);

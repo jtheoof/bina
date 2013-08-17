@@ -226,4 +226,3 @@ shader_delete_program(unsigned int program)
 {
     GL_CHECK(glDeleteProgram, program);
 }
-

@@ -29,16 +29,6 @@ camera_set_projection(const mat4_t* projection)
     g_camera.projection = *projection;
 }
 
-/* void */
-/* camera_get_viewport(int* viewport) */
-/* { */
-/*     if (!viewport) { */
-/*         return; */
-/*     } */
-
-/*     glGetIntegerv(GL_VIEWPORT, viewport); */
-/* } */
-
 vec2_t
 camera_normalize_screen_coord(const vec2_t* point)
 {

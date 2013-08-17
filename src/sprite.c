@@ -202,7 +202,7 @@ void
 sprite_delete(sprite_t** sprite)
 {
     sprite_t* s = *sprite;
-    sprite_tex_anim_t* a;
+    sprite_tex_anim_t* texanims;
 
     int i ;
 
@@ -213,18 +213,26 @@ sprite_delete(sprite_t** sprite)
         shader_delete_program(s->program);
 
         if (s->tex_anims) {
-            a = s->tex_anims;
+            texanims = s->tex_anims;
 
-            if (a->list) {
-                for (i = 0; i < a->size; i++) {
-                    /* Not sure I need the () around a->list[i] */
-                    texture_delete_list(&(a->list[i]));
+            if (texanims->list) {
+                for (i = 0; i < texanims->size; i++) {
+                    /* Not sure I need the () around texanims->list[i] */
+                    texture_delete_list(&(texanims->list[i]));
                 }
-                free(a->list);
-                a->list = NULL;
+                free(texanims->list);
+                texanims->list = NULL;
             }
-            free(a);
+            free(texanims);
             s->tex_anims = NULL;
+        }
+
+        /* Delete any remaining animator still hooked to the sprite.
+         * This could happend if the program is exited while an animation is
+         * still running.
+         */
+        if (s->animator) {
+            sprite_animator_delete(&s->animator);
         }
 
         free(s);
@@ -432,7 +440,6 @@ sprite_animate(sprite_t* sprite, float elapsed)
 void
 sprite_render(sprite_t* sprite)
 {
-    /* vec2_t     off; */
     texture_t* texture;  /* texture of the sprite (optional) */
     int        mvpu;     /* model view projection uniform */
 
