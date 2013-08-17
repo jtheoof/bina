@@ -6,12 +6,19 @@
 
 #include "bina.h"
 
-static camera_t g_camera;
+struct camera_module_info {
+    camera_t camera;
+};
+
+/**
+ * Module scope variable.
+ */
+static struct camera_module_info m;
 
 void
 camera_set_viewport(const camera_viewport_t* viewport)
 {
-    g_camera.viewport = *viewport;
+    m.camera.viewport = *viewport;
 
     GL_CHECK(glViewport, viewport->x, viewport->y,
                          viewport->width, viewport->height);
@@ -20,13 +27,13 @@ camera_set_viewport(const camera_viewport_t* viewport)
 mat4_t
 camera_get_projection()
 {
-    return g_camera.projection;
+    return m.camera.projection;
 }
 
 void
 camera_set_projection(const mat4_t* projection)
 {
-    g_camera.projection = *projection;
+    m.camera.projection = *projection;
 }
 
 vec2_t
