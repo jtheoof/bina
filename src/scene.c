@@ -222,10 +222,12 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
     size = scene_compute_character_size(scene, norm);
     sprite_set_scale(scene->character, size);
 
+    LOGD("[character] previous position: %f, %f - new position: %f, %f",
+         scene->character->position.x, scene->character->position.y,
+         proj.x, proj.y);
+
     /* Update position of sprite */
     sprite_set_position(scene->character, &proj);
-
-    LOGD("character size: %f", size);
 }
 
 float
