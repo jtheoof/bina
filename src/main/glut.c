@@ -103,17 +103,17 @@ void
 main_glut_mouse_cb(int button, int state, int x, int y)
 {
     float  elapsed = main_get_time_elapsed();
-    vec2_t screen, norm, proj;
+    vec2_t screen, ndc, eye;
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         screen.x = x;
         screen.y = y;
 
-        norm = camera_normalize_screen_coord(&screen);
-        proj = camera_screen_to_proj(&screen);
+        ndc = camera_win_coord_to_ndc(&screen);
+        eye = camera_win_coord_to_eye(&screen);
 
-        LOGD("[point]: screen: %d, %d - norm: %f, %f - proj: %f, %f",
-             x, y, norm.x, norm.y, proj.x, proj.y)
+        LOGD("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
+             x, y, ndc.x, ndc.y, eye.x, eye.y)
 
         bina_animate_porc_to(screen, elapsed);
     }

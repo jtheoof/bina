@@ -68,19 +68,21 @@ void camera_set_projection(const mat4_t* projection);
 
 /**
  * Normalizes a point to the screen into a vector with a norm ranging from 0,
- * to 1.
+ * to 1 (Window Coordinates to Normalized Device Coordinates).
  *
  * For example if the viewport is Full HD and the point represents the bottom
  * right of the screen, this function will return a vector with coordinate:
  * [1, 1].
  */
-vec2_t camera_normalize_screen_coord(const vec2_t* point);
+vec2_t camera_win_coord_to_ndc(const vec2_t* point);
 
 /**
- * Converts screen coordinates to coordinates in the current projection
+ * Converts window coordinates to eye coordinates in the current projection
  * matrix.
  *
  * For now the project matrix is the default one.
+ * Example of window coordinates: 1920, 1080
+ * Example of corresponding eye coordinates: 1, -1 (default projection).
  *
  * In OpenGL, initially the object and camera frames are the same.
  * - Default model-view matrix is an identity The camera is located at origin
@@ -90,11 +92,13 @@ vec2_t camera_normalize_screen_coord(const vec2_t* point);
  * @param point The coordinates in current screen space.
  * @return The computed coordinates.
  */
-vec2_t camera_screen_to_proj(const vec2_t* point);
+vec2_t camera_win_coord_to_eye(const vec2_t* point);
 
 /**
  * Used to compute the absolute (normalized) point from a projection point.
  * For example in the default projection matrix the point (0, 0) is (1/2, 1/2)
  * in normalized coordinates.
+ *
+ * @param point The point in Eye coordinates.
  */
-vec2_t camera_proj_to_absolute(const vec2_t point);
+vec2_t camera_eye_coord_to_ndc(const vec2_t point);

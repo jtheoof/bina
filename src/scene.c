@@ -210,10 +210,10 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
     }
 
     /* Convert screen point to model coordinate */
-    proj = camera_screen_to_proj(&screen);
+    proj = camera_win_coord_to_eye(&screen);
 
     /* Normalized Screen Coordinates point */
-    norm = camera_normalize_screen_coord(&screen);
+    norm = camera_win_coord_to_ndc(&screen);
 
     /* Animate character to the given position */
     /* sprite_animate_char_to(scene->character, proj, speed, elapsed); */

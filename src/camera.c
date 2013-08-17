@@ -30,7 +30,7 @@ camera_set_projection(const mat4_t* projection)
 }
 
 vec2_t
-camera_normalize_screen_coord(const vec2_t* point)
+camera_win_coord_to_ndc(const vec2_t* point)
 {
     vec2_t r;
     GLint  viewport[4];
@@ -44,7 +44,7 @@ camera_normalize_screen_coord(const vec2_t* point)
 }
 
 vec2_t
-camera_screen_to_proj(const vec2_t* point)
+camera_win_coord_to_eye(const vec2_t* point)
 {
     vec2_t r;
     GLint  viewport[4];
@@ -59,7 +59,7 @@ camera_screen_to_proj(const vec2_t* point)
 }
 
 vec2_t
-camera_proj_to_absolute(const vec2_t point)
+camera_eye_coord_to_ndc(const vec2_t point)
 {
     vec2_t norm;
 
