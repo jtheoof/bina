@@ -6,6 +6,17 @@
 
 #include "bina.h"
 
+struct sprite_module_info {
+    unsigned long sprite_animator_id;
+};
+
+/**
+ * Module scope variable.
+ */
+static struct sprite_module_info m = {
+    0
+};
+
 /* XXX This should actually be comming from some sort of scene/manifest
  * loader.
  * TODO remove me when proper scene management has been developped.
@@ -16,6 +27,7 @@ static const token_string_t g_cam_type_names[] = {
 
 static const token_string_size_t g_anim_names_sizes[] = {
     { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 30 },
+    { SPRITE_ANIM_STOPACTION1, "stopAction1", 30 },
 };
 
 /**
@@ -30,18 +42,18 @@ static const float sprite_texices_g[] = {
      1.0f,  0.0f
 };
 
-static sprite_anim_t*
+static sprite_tex_anim_t*
 create_character_anim(const char* character)
 {
-    sprite_anim_t*   ret  = NULL;
-    texture_list_t** list = NULL;
+    sprite_tex_anim_t* ret  = NULL;
+    texture_list_t**   list = NULL;
     int i, c, a, size;
     char filename[MAX_PATH];
 
     int cams  = SPRITE_CAM_TYPE_COUNT;
     int anims = SPRITE_ANIM_COUNT;
 
-    ret = (sprite_anim_t*) malloc(sizeof(sprite_anim_t));
+    ret = (sprite_tex_anim_t*) malloc(sizeof(sprite_tex_anim_t));
 
     if (!ret) {
         LOGE("BINA_NOT_ENOUGH_MEMORY");
@@ -60,7 +72,8 @@ create_character_anim(const char* character)
 
     /* Load the animation for each camera type and animation name */
     for (c = 0; c < cams; c++) {
-        for (a = 0, i = c * cams + a; a < anims; a++) {
+        for (a = 0; a < anims; a++) {
+            i = c * cams + a;
             snprintf(filename, MAX_PATH, "%s_%s_camSetup_%s", character,
                      g_anim_names_sizes[a].string, g_cam_type_names[c].string);
             size = g_anim_names_sizes[a].size;
@@ -83,6 +96,21 @@ error:
 
     LOGE("unable to create animations for: %s", character);
     return NULL;
+}
+
+static texture_list_t*
+get_character_anim(sprite_t* sprite)
+{
+    sprite_tex_anim_t* a;
+
+    if (!sprite || !sprite->tex_anims) {
+        return NULL;
+    }
+
+    a = sprite->tex_anims;
+
+    /* Return the proper id in the list, see the construction for more info */
+    return a->list[a->cur_cam_type * a->nb_cam_types + a->cur_anim];
 }
 
 sprite_t*
@@ -137,7 +165,8 @@ sprite_create(texture_t* texture,
     sprite->height     = height;
     sprite->texture    = texture;
     sprite->mvp        = mat4_identity();
-    sprite->animations = NULL;
+    sprite->tex_anims  = NULL;
+    sprite->animator   = NULL;
 
     return sprite;
 }
@@ -155,14 +184,14 @@ sprite_load_character(const char* name,
         return NULL;
     }
 
-    sprite->animations = create_character_anim(name);
+    sprite->tex_anims = create_character_anim(name);
 
-    if (sprite->animations) {
-        sprite->animations->cur_cam_type = SPRITE_CAM_TYPE_FRONT;
-        sprite->animations->cur_anim = SPRITE_ANIM_NEUTRALPOSE;
+    if (sprite->tex_anims) {
+        sprite->tex_anims->cur_cam_type = SPRITE_CAM_TYPE_FRONT;
+        sprite->tex_anims->cur_anim = SPRITE_ANIM_STOPACTION1;
 
-        if (sprite->animations->list) {
-            sprite->texture = sprite->animations->list[0]->textures[0];
+        if (sprite->tex_anims->list) {
+            sprite->texture = sprite->tex_anims->list[0]->textures[0];
         }
     }
 
@@ -173,7 +202,7 @@ void
 sprite_delete(sprite_t** sprite)
 {
     sprite_t* s = *sprite;
-    sprite_anim_t* a;
+    sprite_tex_anim_t* a;
 
     int i ;
 
@@ -183,8 +212,8 @@ sprite_delete(sprite_t** sprite)
     if (s) {
         shader_delete_program(s->program);
 
-        if (s->animations) {
-            a = s->animations;
+        if (s->tex_anims) {
+            a = s->tex_anims;
 
             if (a->list) {
                 for (i = 0; i < a->size; i++) {
@@ -195,7 +224,7 @@ sprite_delete(sprite_t** sprite)
                 a->list = NULL;
             }
             free(a);
-            s->animations = NULL;
+            s->tex_anims = NULL;
         }
 
         free(s);
@@ -231,14 +260,16 @@ sprite_set_texture(sprite_t* sprite, texture_t* texture)
 void
 sprite_set_cam_type(sprite_t* sprite, sprite_cam_type_e cam)
 {
-    if (sprite && sprite->animations) {
-        sprite->animations->cur_cam_type = cam;
+    if (sprite && sprite->tex_anims) {
+        sprite->tex_anims->cur_cam_type = cam;
     }
 }
 
 void sprite_set_animation(sprite_t* sprite, sprite_anim_e anim)
 {
-
+    if (sprite && sprite->tex_anims) {
+        sprite->tex_anims->cur_anim = anim;
+    }
 }
 
 void
@@ -268,6 +299,134 @@ sprite_compute_mvp(sprite_t* sprite)
     matrix = mat4_scale_1f(&matrix, sprite->scale);
 
     sprite->mvp = matrix;
+}
+
+void
+sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed, float elapsed)
+{
+    vec2_t pos;
+
+    lin_vec2_anim_t*   linanim;
+    texture_list_t*    texanims;
+
+    if (!sprite) {
+        return;
+    }
+
+    /* If there is an animation currently in place, delete it first */
+    if (sprite->animator) {
+        sprite_animator_delete(&sprite->animator);
+    }
+
+    linanim = (lin_vec2_anim_t*) malloc(sizeof(lin_vec2_anim_t));
+
+    if (!linanim) {
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
+    }
+
+    pos = sprite->position;
+    *linanim = lin_vec2_anim_create(pos, to, speed, elapsed);
+    texanims = get_character_anim(sprite);
+    sprite_animator_create(sprite, linanim, texanims);
+}
+
+void
+sprite_animate_idle(sprite_t* sprite)
+{
+    if (!sprite || !sprite->tex_anims) {
+        return;
+    }
+
+    sprite_set_animation(sprite, rand() % SPRITE_ANIM_COUNT);
+
+    texture_list_t*    texanims = get_character_anim(sprite);
+    lin_vec2_anim_t*   linanim = NULL;
+
+    sprite_animator_create(sprite, linanim, texanims);
+}
+
+sprite_anim_status_e
+sprite_animate(sprite_t* sprite, float elapsed)
+{
+    sprite_animator_t* animator;
+    texture_list_t*    texanims;
+    lin_vec2_anim_t*   linanim;
+
+    unsigned int steps; /* number of steps in the animation. */
+    unsigned int cur;   /* current step in the animation */
+    unsigned int rem;   /* steps remaining in animation */
+    unsigned int tid;   /* current index in textures (if any) */
+    unsigned int size;  /* number of textures (if any) */
+    unsigned int ret;   /* flag to return at the end */
+
+    vec2_t pos;         /* sprite current position */
+    vec2_t off;         /* sprite offset in linear animation */
+    float  ielap;
+    float  fix;
+
+    if (!sprite || !sprite->animator) {
+        return SPRITE_ANIM_STATUS_INVALID;
+    }
+
+    animator = sprite->animator;
+    linanim  = animator->animation;
+    texanims = animator->textures;
+
+    /* Increase elapsed time since start of animation. */
+    animator->elapsed += elapsed;
+
+    ret = SPRITE_ANIM_STATUS_PLAYING;
+
+    if (linanim) {
+        steps = linanim->steps;
+        cur   = linanim->step;
+        rem   = steps - cur;
+        ielap = animator->ielapsed;
+        pos   = sprite->position;
+        off   = linanim->offset;
+
+        if (ielap <= 0.0f) {
+            return ret;
+        }
+
+        fix = elapsed / ielap;  /* fix offset by elapsed time */
+
+        if (cur < steps) {
+            sprite->position.x = pos.x + off.x * fix;
+            sprite->position.y = pos.y + off.y * fix;
+            linanim->step++;
+        } else {
+            ret |= SPRITE_ANIM_STATUS_LINEAR_FINISHED;
+        }
+    }
+
+    if (texanims) {
+        size = texanims->size;
+        tid = (unsigned int) (animator->elapsed * 24.0f);
+
+        if (tid >= size) {
+            ret |= SPRITE_ANIM_STATUS_TEXTURE_FINISHED;
+            tid = tid % size;
+        }
+
+        sprite->texture = texanims->textures[tid];
+        texanims->tid = tid;
+    }
+
+    if (linanim && texanims) {
+        if (rem == 0) { /* no more remaining steps, anim is done */
+            sprite->texture = texanims->textures[0]; /* back to first tex */
+            ret = SPRITE_ANIM_STATUS_DONE;
+        }
+    }
+
+    if (!linanim && texanims) {
+        if (ret & SPRITE_ANIM_STATUS_TEXTURE_FINISHED) {
+            ret = SPRITE_ANIM_STATUS_DONE;
+        }
+    }
+
+    return ret;
 }
 
 void
@@ -318,14 +477,10 @@ sprite_render(sprite_t* sprite)
 }
 
 sprite_animator_t*
-sprite_animator_create(sprite_t* sprite, texture_list_t* textures,
-                       vec2_t to, float speed, float elapsed)
+sprite_animator_create(sprite_t* sprite, lin_vec2_anim_t* animation,
+                       texture_list_t* textures)
 {
      sprite_animator_t* animator;    /* Animator object returned */
-     unsigned int steps = 1;         /* Number of steps */
-     vec2_t from = sprite->position; /* Initial sprite position */
-     float  norm = 0.0f;             /* || to - from || */
-
      animator = (sprite_animator_t*) malloc(sizeof(sprite_animator_t));
 
      if (!animator) {
@@ -333,25 +488,16 @@ sprite_animator_create(sprite_t* sprite, texture_list_t* textures,
          goto error;
      }
 
-     if (elapsed <= 0) {
-         LOGE(BINA_INVALID_PARAM);
-         goto error;
-     }
+     animator->id        = m.sprite_animator_id++;
+     animator->animation = animation;
+     animator->textures  = textures;
 
-     norm  = sqrtf(powf(to.x - from.x, 2.0f) + powf(to.y - from.y, 2.0f));
-     steps = (int) (norm * speed * 1.0f / elapsed);
+     /* LOGD("Sprite animator was created from: (%f,%f) to: (%f, %f) " */
+     /*      "in %d steps at speed: %f with elapsed time: %f", */
+     /*      from.x, from.y, to.x, to.y, steps, speed, elapsed); */
 
-     animator->steps    = steps;
-     animator->step     = 0;
-     animator->ielapsed = elapsed;
-     animator->elapsed  = 0.0f;
-     animator->offset.x = (to.x - from.x) / steps;
-     animator->offset.y = (to.y - from.y) / steps;
-     animator->textures = textures;
-
-     LOGD("Sprite animator was created from: (%f,%f) to: (%f, %f) "
-          "in %d steps at speed: %f with elapsed time: %f",
-          from.x, from.y, to.x, to.y, steps, speed, elapsed);
+     /* Directly assign the animator to the sprite */
+     sprite->animator = animator;
 
      return animator;
 
@@ -369,51 +515,12 @@ sprite_animator_delete(sprite_animator_t** animator)
     sprite_animator_t* head = *animator;
 
     if (head) {
+        if (head->animation) {
+            /* DO NOT free head->textures */
+            free(head->animation);
+            head->animation = NULL;
+        }
         free(head);
         *animator = NULL;
     }
-}
-
-int
-sprite_animator_animate(sprite_t* sprite, sprite_animator_t* animator,
-                        float elapsed)
-{
-    unsigned int steps = animator->steps;
-    unsigned int cur   = animator->step;
-    unsigned int anim  = 0; /* Current index in texturs (if any) */
-    unsigned int size  = 0; /* Number of textures (if any) */
-
-    int ret = steps - cur;
-
-    float  ielap = animator->ielapsed;
-    float  fix;
-    vec2_t pos = sprite->position;
-    vec2_t off = animator->offset;
-
-    animator->elapsed += elapsed;
-
-    if (ielap <= 0.0f) {
-        return ret; /* wait a bit */
-    }
-
-    fix = elapsed / ielap;  /* Fix offset by elapsed time */
-
-    if (cur < steps) {
-        sprite->position.x = pos.x + off.x * fix;
-        sprite->position.y = pos.y + off.y * fix;
-        animator->step++;
-    }
-
-    if (animator->textures) {
-        size = animator->textures->size;
-        anim = (unsigned int) (animator->elapsed * 24.0f) % size;
-        sprite->texture = animator->textures->textures[anim];
-
-        /* We have reached the end of the animation */
-        if (ret == 0) {
-            sprite->texture = animator->textures->textures[0];
-        }
-    }
-
-    return ret;
 }

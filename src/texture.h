@@ -164,7 +164,12 @@ typedef struct texture_list_t
     /**
      * The number of textures.
      */
-    unsigned short size;
+    unsigned int size;
+
+    /**
+     * Current texture id in #textures.
+     */
+    unsigned int tid;
 
     /**
      * The array of textures that will be loaded for the animation.

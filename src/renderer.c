@@ -22,38 +22,14 @@ renderer_init()
     GL_CHECK(glDepthMask, GL_FALSE);
 }
 
-static void
-update_porc_animation(float elapsed)
-{
-    /* static float time = 0.0f; */
-    /* static int id = 0; */
-
-    /* time += elapsed; */
-
-    /* Increase texture id for Real time rendering at 24 fps */
-    /* if (time >= 0.042f) { */
-    /*     id++; */
-    /*     if (porc_r_tex && id >= porc_r_tex->size) { */
-    /*         id = 0; */
-    /*     } */
-    /*     time = 0.0f; */
-    /* } */
-}
-
 void
 render_bina()
 {
-    /* main_get_time_elapsed is defined in main_[platform].c */
     float elapsed = main_get_time_elapsed();
 
+    scene_animate(game.scene, elapsed);
     renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f);
-
-    update_porc_animation(elapsed);
-
     scene_render(game.scene);
-
-    /* sprite_render(back); */
-    /* sprite_render(porc); */
 }
 
 void

@@ -17,6 +17,8 @@ bina_init(int width, int height)
 {
     camera_viewport_t viewport;
 
+    srand(time(0));
+
     viewport.x = 0;
     viewport.y = 0;
     viewport.width = width;

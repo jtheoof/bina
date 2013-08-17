@@ -56,6 +56,39 @@ typedef struct mat4_t
     vec4_t m[4];
 } mat4_t;
 
+
+/**
+ * Linear 2D vector animation.
+ */
+typedef struct lin_vec2_anim_t
+{
+    /**
+     * How many steps are required in the animation.
+     */
+    unsigned int steps;
+
+    /**
+     * The current step we are in.
+     */
+    unsigned int step;
+
+    /**
+     * The initial starting position of the animation.
+     */
+    vec2_t from;
+
+    /**
+     * The final position of the animation.
+     */
+    vec2_t to;
+
+    /**
+     * The offset we need to add to current position on each update.
+     */
+    vec2_t offset;
+
+} lin_vec2_anim_t;
+
 /**
  * Adds two vectors.
  */
@@ -116,3 +149,18 @@ mat4_t mat4_translate_vec3(const mat4_t* m, const vec3_t* v);
  * @return The scaling matrix.
  */
 mat4_t mat4_scale_1f(const mat4_t* m, const float s);
+
+/**
+ * Creates a linear animation based on 2D vectors.
+ *
+ * TODO Get rid of elapsed in this function.
+ *
+ * @param from The initial position of the object.
+ * @param to The destination of the object.
+ * @param speed The speed at which the object is travelling.
+ * @param elapsed The time elapsed since last frame. This is BAD! It should be
+ * computed by the animation manager itself probably. To check with Jo.
+ * @return A linear animation object return from the stack.
+ */
+lin_vec2_anim_t lin_vec2_anim_create(vec2_t from, vec2_t to, float speed,
+                                     float elapsed);

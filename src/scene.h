@@ -94,6 +94,11 @@ typedef struct scene_t
      */
     unsigned int height;
 
+    /**
+     * Time since the character has been idle (no animation applied to it).
+     */
+    float time_idle;
+
 } scene_t;
 
 /**
@@ -122,6 +127,14 @@ scene_t* scene_load(const char* name,
  * @param scene The scene to delete.
  */
 void scene_unload(scene_t** scene);
+
+/**
+ * Animates the scene.
+ *
+ * @param scene The scene to animate.
+ * @param elapsed Time elapsed since last frame.
+ */
+void scene_animate(scene_t* scene, float elapsed);
 
 /**
  * Renders the scene.

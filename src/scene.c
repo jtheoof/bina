@@ -118,6 +118,8 @@ scene_load(const char* name, const float minsize, const float maxsize)
     projection = mat4_ortho(left, right, bottom, top, -1.0f, 1.0f);
     camera_set_projection(&projection);
 
+    scene->time_idle = 0.0f;
+
     return scene;
 }
 
@@ -144,6 +146,28 @@ scene_unload(scene_t** scene)
     }
 
     *scene = tmp;
+}
+
+void
+scene_animate(scene_t* scene, float elapsed)
+{
+    if (!scene || !scene->character) {
+        return;
+    }
+    /* Compute scaling of sprite which depends on its position */
+    /* size = scene_compute_character_size(scene, norm); */
+    /* sprite_set_scale(scene->character, size); */
+    scene->time_idle += elapsed;
+
+    if (!scene->character->animator && scene->time_idle >= 2.0f) {
+        sprite_animate_idle(scene->character);
+    }
+
+    /* If animation is over, delete the animator */
+    if (sprite_animate(scene->character, elapsed) == SPRITE_ANIM_STATUS_DONE) {
+        sprite_animator_delete(&scene->character->animator);
+        scene->time_idle = 0.0f; /* reset timer */
+    }
 }
 
 void
@@ -179,6 +203,7 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
 {
     float  size;
     vec2_t proj, norm;
+    /* float  elapsed = main_get_time_elapsed(); */
 
     if (!scene || !scene->character) {
         return;
@@ -187,8 +212,11 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
     /* Convert screen point to model coordinate */
     proj = camera_screen_to_proj(&screen);
 
-    /* Normalize screen point */
+    /* Normalized Screen Coordinates point */
     norm = camera_normalize_screen_coord(&screen);
+
+    /* Animate character to the given position */
+    /* sprite_animate_char_to(scene->character, proj, speed, elapsed); */
 
     /* Compute scaling of sprite */
     size = scene_compute_character_size(scene, norm);

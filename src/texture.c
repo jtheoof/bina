@@ -512,6 +512,7 @@ texture_create_list(const char* folder,
     }
 
     ret->size = size;
+    ret->tid  = 0;
     ret->textures = (texture_t**) calloc(size, sizeof(texture_t*));
 
     if (!ret->textures) {

@@ -28,12 +28,21 @@ typedef enum sprite_cam_type_e
 typedef enum sprite_anim_e
 {
     SPRITE_ANIM_NEUTRALPOSE,
-    /* SPRITE_ANIM_STOPANIM1, */
+    SPRITE_ANIM_STOPACTION1,
     /* SPRITE_ANIM_WALKCYCLE, */
     SPRITE_ANIM_COUNT        /* trick to get the number of elements */
 } sprite_anim_e;
 
-typedef struct sprite_anim_t
+typedef enum sprite_anim_status_e
+{
+    SPRITE_ANIM_STATUS_PLAYING = 0,
+    SPRITE_ANIM_STATUS_LINEAR_FINISHED = 1,
+    SPRITE_ANIM_STATUS_TEXTURE_FINISHED = 2,
+    SPRITE_ANIM_STATUS_DONE = 4,
+    SPRITE_ANIM_STATUS_INVALID = -1
+} sprite_anim_status_e;
+
+typedef struct sprite_tex_anim_t
 {
     /**
      * Total number of animations held by #list.
@@ -52,7 +61,54 @@ typedef struct sprite_anim_t
 
     texture_list_t** list;
 
-} sprite_anim_t;
+} sprite_tex_anim_t;
+
+/**
+ * A simple animator for sprites.
+ *
+ * Right now it only allows to update positions based on linear updates.
+ * This could be improved a lot by adding rotations, scaling, ...
+ */
+typedef struct sprite_animator_t
+{
+    /**
+     * Animations have ids to be managed later by real animators.
+     */
+    unsigned long id;
+
+    /**
+     * Initial elapsed time.
+     *
+     * Right now, animators are created with the current elapsed time when
+     * call executes the code. This is done to compute the number of steps
+     * required to make the move from point A to point B. There is for sure
+     * a much better way to do it. But for now it works.
+     * This is used when animating the sprite later so that the offset can be
+     * multplied by the right amont. ielapsed stands for initial_elapsed.
+     */
+    float ielapsed;
+
+    /**
+     * Time elapsed in seconds since the animation has started.
+     */
+    float elapsed;
+
+    /**
+     * Linear animation (optional).
+     *
+     * Can be set to NULL if there is only animation in the textures, no
+     * movement implied.
+     */
+    lin_vec2_anim_t* animation;
+
+    /**
+     * The list of textures to use during sprite animation (optional).
+     *
+     * Can be set to NULL if there is no switching between textures.
+     */
+    texture_list_t* textures;
+
+} sprite_animator_t;
 
 typedef struct sprite_t
 {
@@ -143,63 +199,26 @@ typedef struct sprite_t
     mat4_t mvp;
 
     /**
-     * All the different animations of the sprite.
+     * All the different texture animations of the sprite.
      *
+     * For example: camRight -> neutralPose, ...
      * This can probably be moved to a more specific type of sprites (like
      * character).
      */
-    sprite_anim_t* animations;
+    sprite_tex_anim_t* tex_anims;
+
+    /**
+     * Current animator of the sprite.
+     *
+     * Can be NULL if there is no animation on the sprite.
+     * Can be used to:
+     *  - Animate the sprite accross space (linear animation).
+     *  - Animate the textures of the sprite (make it live!).
+     *  - Do both at the same time.
+     */
+    sprite_animator_t* animator;
 
 } sprite_t;
-
-/**
- * A simple animator for sprites.
- *
- * Right now it only allows to update positions based on linear updates.
- * This could be improved a lot by adding rotations, scaling, ...
- */
-typedef struct sprite_animator_t
-{
-    /**
-     * How many steps are required in the animation.
-     */
-    unsigned int steps;
-
-    /**
-     * The current step we are in while animating the sprite.
-     */
-    unsigned int step;
-
-    /**
-     * Initial elapsed time.
-     *
-     * Right now, animators are created with the current elapsed time when
-     * call executes the code. This is done to compute the number of steps
-     * required to make the move from point A to point B. There is for sure
-     * a much better way to do it. But for now it works.
-     * This is used when animating the sprite later so that the offset can be
-     * multplied by the right amont. ielapsed stands for initial_elapsed.
-     */
-    float ielapsed;
-
-    /**
-     * Time elapsed in seconds since the animation has started.
-     */
-    float elapsed;
-
-    /**
-     * The offset we need to add to current position on each update.
-     */
-    vec2_t offset;
-
-    /**
-     * The list of textures to use during sprite animation.
-     *
-     * Can be set to NULL if there is no switching between textures.
-     */
-    texture_list_t* textures;
-
-} sprite_animator_t;
 
 /**
  * Creates a new sprite and allocates the necessary memory.
@@ -299,6 +318,33 @@ void sprite_set_animation(sprite_t* sprite, sprite_anim_e anim);
 void sprite_compute_mvp(sprite_t* sprite);
 
 /**
+ * Animates the character to a given position.
+ *
+ * @param sprite The sprite to animate (which holds its current position).
+ * @param to The destination of the sprite.
+ * @param speed The speed of the sprite.
+ * @param elapsed Time elapsed since last frame. TODO Get rid of me.
+ */
+void sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed,
+                            float elapsed);
+
+/**
+ * Animates the sprite into 'idle' mode.
+ *
+ * Randomly selects an idle animation and sets the sprite to it.
+ *
+ * @param sprite The sprite to animate.
+ */
+void sprite_animate_idle(sprite_t* sprite);
+
+/**
+ * Animates the sprite if there is an animator linked to it.
+ *
+ * @param sprite The sprite to animate.
+ * @param elapsed The time elapsed since last frame.
+ */
+sprite_anim_status_e sprite_animate(sprite_t* sprite, float elapsed);
+/**
  * Renders a sprite to the screen.
  *
  * Proper calls to #sprite_create should have been made.
@@ -315,23 +361,24 @@ void sprite_render(sprite_t* sprite);
  *
  * @param sprite The original sprite we want to animate. It contains the
  * original position.
- * @param tex The texture list to use during animation. Can be NULL if there
- * is no switching.
- * @param to The end position. Where the sprite should end up.
- * @param speed The speed at which the sprite should be moving.
- * The speed is taken into account when computing the steps.
- * @elap The time elapsed since last frame. It used to get an idea of how
- * far the renderer is going. Right now the implementation if too basic, for
- * example if last frame was very slow for some reason then the number of
- * steps will be very short even if GPU rendering comes back up right after.
+ * @param animation The linear animation that will be used to animate the
+ * sprite. Can be NULL if we are only switching textures.
+ * @param textures The texture list to use during animation. Can be NULL if
+ * there is no switching.
  * @return The animator with proper memory allocated. You need to call
  * #sprite_animator_delete to clean up the memory used by the structure.
  */
-sprite_animator_t* sprite_animator_create(sprite_t* sprite, texture_list_t* tex,
-                                          vec2_t to, float speed, float elap);
+sprite_animator_t* sprite_animator_create(sprite_t* sprite,
+                                          lin_vec2_anim_t* animation,
+                                          texture_list_t* textures);
 
 /**
  * Frees memory allocated by #sprite_animator_create.
+ *
+ * The function is responsible for deleting the linear animation because it
+ * will not be used anymore. On the contrary, it should not remove the texture
+ * list object because it has been somewhere else and will be reused.
+ *
  * @param animator The animator to free.
  */
 void sprite_animator_delete(sprite_animator_t** animator);
