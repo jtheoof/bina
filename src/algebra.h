@@ -100,6 +100,16 @@ vec2_t vec2_add(const vec2_t a, const vec2_t b);
 vec2_t vec2_sub(const vec2_t a, const vec2_t b);
 
 /**
+ * Computes the norm of a 2D vector.
+ */
+float vec2_norm(const vec2_t a);
+
+/**
+ * Normalizes a vector.
+ */
+vec2_t vec2_normalize(const vec2_t a);
+
+/**
  * Multiplies a vector by a scalar.
  */
 vec2_t vec2_mul_scal(const vec2_t a, const float s);

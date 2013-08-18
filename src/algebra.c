@@ -7,6 +7,17 @@
 #include "bina.h"
 
 vec2_t
+vec2_add(const vec2_t a, const vec2_t b)
+{
+    vec2_t r;
+
+    r.x = a.x + b.x;
+    r.y = a.y + b.y;
+
+    return r;
+}
+
+vec2_t
 vec2_sub(const vec2_t a, const vec2_t b)
 {
     vec2_t r;
@@ -17,13 +28,20 @@ vec2_sub(const vec2_t a, const vec2_t b)
     return r;
 }
 
+float
+vec2_norm(const vec2_t a)
+{
+    return sqrt(a.x * a.x + a.y * a.y);
+}
+
 vec2_t
-vec2_add(const vec2_t a, const vec2_t b)
+vec2_normalize(const vec2_t a)
 {
     vec2_t r;
+    float  n = vec2_norm(a);
 
-    r.x = a.x + b.x;
-    r.y = a.y + b.y;
+    r.x = a.x / n;
+    r.y = a.y / n;
 
     return r;
 }

@@ -146,7 +146,7 @@ sprite_update_current_animation(sprite_t* sprite)
 
     /* Set the proper id in the list, see the construction for more info */
     a = sprite->tex_anims;
-    a->current = a->list[a->cur_cam_type * a->nb_cam_types + a->cur_anim];
+    a->current = a->list[a->cur_cam_type * a->nb_anims + a->cur_anim];
 }
 
 sprite_t*
@@ -350,10 +350,13 @@ sprite_compute_mvp(sprite_t* sprite)
 void
 sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed, float elapsed)
 {
-    vec2_t pos;
+    vec2_t pos, norm, cam;
 
     lin_vec2_anim_t*   linanim;
     texture_list_t*    texanims;
+    sprite_cam_type_e  cam_type;
+
+    int c; /* sprite camera */
 
     if (!sprite) {
         return;
@@ -372,8 +375,50 @@ sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed, float elapsed)
 
     pos = sprite->position;
 
+    if (sprite->tex_anims) {
+        cam_type = sprite->tex_anims->cur_cam_type;
+    } else {
+        cam_type = 0;
+    }
+
+    norm = vec2_sub(to, pos);
+    norm = vec2_normalize(norm);
+
+    LOGD("normalized vector: %f, %f", norm.x, norm.y);
+    /* Approximating normalized direction vector to its nearest integer */
+    norm.x = round(norm.x);
+    norm.y = round(norm.y);
+    LOGD("camera vector: %f, %f", norm.x, norm.y);
+
+    /* XXX Since we only have 4 cameras, we are missing the possibilities
+     * where: |norm.x| = 1 && |norm.x| = 1
+     * In other words we are missing the diagonals camera.
+     * So if the user generates such a vector, we just use the left, right
+     * cameras.
+     */
+    if (fabsf(norm.y) == 1.0f && fabs(norm.x) == 1.0f) {
+        norm.y = 0.0f;
+    }
+
+    for (c = 0; c < SPRITE_CAM_TYPE_COUNT; c++) {
+        cam = m.cam_names[c].direction;
+
+        /* Finding the closest camera that fits that direction. */
+        if (norm.x == cam.x && norm.y == cam.y) {
+            cam_type = c;
+            break;
+        }
+    }
+
+    /* Sets the right animations for camera and texture */
+    sprite_set_cam_type(sprite, cam_type);
+    sprite_set_animation(sprite, SPRITE_ANIM_WALKCYCLE);
+
+    /* Init the animation pointers */
     *linanim = lin_vec2_anim_create(pos, to, speed, elapsed);
     texanims = get_character_anim(sprite);
+
+    /* Create the animation */
     sprite_animator_create(sprite, linanim, texanims);
 
     if (sprite->animator) {

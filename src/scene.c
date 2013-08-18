@@ -56,7 +56,7 @@ load_sprites(const char* name, scene_t* scene)
     sprite_t*  ch_spr = NULL;
     int        ch_prg = -1;
 
-    snprintf(bg_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
+    snprintf(bg_buf, MAX_PATH, "scenes/%s/backgroundColor.png", name);
     snprintf(ch_buf, MAX_PATH, "animations/perso1_neutraPose_frontCam.png");
 
     bg_tex = texture_create(bg_buf, 0);
