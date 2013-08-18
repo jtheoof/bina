@@ -18,10 +18,10 @@
 
 typedef enum sprite_cam_type_e
 {
-    /* SPRITE_CAM_TYPE_BACK, */
+    SPRITE_CAM_TYPE_BACK,
     SPRITE_CAM_TYPE_FRONT,
-    /* SPRITE_CAM_TYPE_RIGHT, */
-    /* SPRITE_CAM_TYPE_LEFT, */
+    SPRITE_CAM_TYPE_RIGHT,
+    SPRITE_CAM_TYPE_LEFT,
     SPRITE_CAM_TYPE_COUNT   /* trick to get the number of elements */
 } sprite_cam_type_e;
 
@@ -29,7 +29,7 @@ typedef enum sprite_anim_e
 {
     SPRITE_ANIM_NEUTRALPOSE,
     SPRITE_ANIM_STOPACTION1,
-    /* SPRITE_ANIM_WALKCYCLE, */
+    SPRITE_ANIM_WALKCYCLE,
     SPRITE_ANIM_COUNT        /* trick to get the number of elements */
 } sprite_anim_e;
 

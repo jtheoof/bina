@@ -136,9 +136,9 @@ AAssetManager* asset_manager_g;
  */
 typedef struct token_string_t
 {
-    /**
-     * Token to map (could also be an enum for example).
-     */
+   /**
+    * Token to map (could also be an enum for example).
+    */
    unsigned int token;
 
    /**
@@ -153,9 +153,9 @@ typedef struct token_string_t
  */
 typedef struct token_string_size_t
 {
-    /**
-     * Token to map (could also be an enum for example).
-     */
+   /**
+    * Token to map (could also be an enum for example).
+    */
    unsigned int token;
 
    /**

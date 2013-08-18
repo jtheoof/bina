@@ -99,6 +99,12 @@ typedef struct scene_t
      */
     float time_idle;
 
+    /**
+     * A simple flag to indicate that the scene has been loaded and is ready
+     * to be rendered.
+     */
+    short is_ready;
+
 } scene_t;
 
 /**

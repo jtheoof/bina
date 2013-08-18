@@ -6,28 +6,53 @@
 
 #include "bina.h"
 
+/**
+ * Represents the information of a sprite camera.
+ */
+typedef struct sprite_cam_info_t
+{
+
+   /**
+    * Token to map (could also be an enum for example).
+    */
+   unsigned int token;
+
+   /**
+    * The name of the camera.
+    */
+   const char* name;
+
+   /**
+    * Direction of the camera.
+    *
+    * For example: SPRITE_CAM_TYPE_FRONT: (0, -1)
+    */
+   vec2_t direction;
+
+} sprite_cam_info_t;
+
 struct sprite_module_info {
     unsigned long sprite_animator_id;
+    sprite_cam_info_t cam_names[SPRITE_CAM_TYPE_COUNT];
+    token_string_size_t anim_names[SPRITE_ANIM_COUNT];
 };
 
 /**
  * Module scope variable.
  */
 static struct sprite_module_info m = {
-    0
-};
-
-/* XXX This should actually be comming from some sort of scene/manifest
- * loader.
- * TODO remove me when proper scene management has been developped.
- */
-static const token_string_t g_cam_type_names[] = {
-    { SPRITE_CAM_TYPE_FRONT, "frontCam" },
-};
-
-static const token_string_size_t g_anim_names_sizes[] = {
-    { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 1 },
-    { SPRITE_ANIM_STOPACTION1, "stopAction1", 1 },
+    0,
+    {
+        { SPRITE_CAM_TYPE_BACK,  "backCam",  {  0.0f,  1.0f } },
+        { SPRITE_CAM_TYPE_FRONT, "frontCam", {  0.0f, -1.0f } },
+        { SPRITE_CAM_TYPE_RIGHT, "rightCam", {  1.0f,  0.0f } },
+        { SPRITE_CAM_TYPE_LEFT,  "leftCam",  { -1.0f,  0.0f } },
+    },
+    {
+        { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 1 },
+        { SPRITE_ANIM_STOPACTION1, "stopAction1", 1 },
+        { SPRITE_ANIM_WALKCYCLE,   "WalkCycle",   1 },
+    },
 };
 
 /**
@@ -73,10 +98,10 @@ create_character_anim(const char* character)
     /* Load the animation for each camera type and animation name */
     for (c = 0; c < cams; c++) {
         for (a = 0; a < anims; a++) {
-            i = c * cams + a;
+            i = c * anims + a;
             snprintf(filename, MAX_PATH, "%s_%s_camSetup_%s", character,
-                     g_anim_names_sizes[a].string, g_cam_type_names[c].string);
-            size = g_anim_names_sizes[a].size;
+                     m.anim_names[a].string, m.cam_names[c].name);
+            size = m.anim_names[a].size;
             list[i] = texture_create_list(character, filename, "png", size);
         }
     }
@@ -346,9 +371,14 @@ sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed, float elapsed)
     }
 
     pos = sprite->position;
+
     *linanim = lin_vec2_anim_create(pos, to, speed, elapsed);
     texanims = get_character_anim(sprite);
     sprite_animator_create(sprite, linanim, texanims);
+
+    if (sprite->animator) {
+        sprite->animator->ielapsed = elapsed;
+    }
 }
 
 void

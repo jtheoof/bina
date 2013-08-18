@@ -35,6 +35,11 @@ main_glut_display_cb(void)
     static int prev_time = 0;
     static int curr_time = 0;
 
+    /* Wait for scene to be ready to render it. */
+    if (!game.scene || !game.scene->is_ready) {
+        return;
+    }
+
     curr_time = glutGet(GLUT_ELAPSED_TIME);
 
     elap_time_g = curr_time - prev_time;

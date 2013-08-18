@@ -102,6 +102,8 @@ scene_load(const char* name, const float minsize, const float maxsize)
         return NULL;
     }
 
+    scene->is_ready = 0;
+
     load_scale_map(name, minsize, maxsize, scene);
     load_sprites(name, scene);
 
@@ -119,6 +121,7 @@ scene_load(const char* name, const float minsize, const float maxsize)
     camera_set_projection(&projection);
 
     scene->time_idle = 0.0f;
+    scene->is_ready  = 1;
 
     return scene;
 }
@@ -212,6 +215,7 @@ scene_render(scene_t* scene)
 void
 scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
 {
+    float elapsed = main_get_time_elapsed();
     vec2_t proj, norm;
 
     if (!scene || !scene->character) {
@@ -232,7 +236,8 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
          proj.x, proj.y);
 
     /* Update position of sprite */
-    sprite_set_position(scene->character, &proj);
+    sprite_animate_char_to(scene->character, proj, 1.0f, elapsed);
+    /* sprite_set_position(scene->character, &proj); */
 }
 
 float
@@ -302,8 +307,8 @@ scene_compute_character_size(scene_t* scene, const vec2_t norm)
 
     ret = (r + g + b) / (3.0f * 255);
 
-    LOGD("scale map pixel at: %d, %d (%d, %d, %d, %d)",
-         (unsigned int) (norm.y * height), col, r, g, b, a);
+    /* LOGD("scale map pixel at: %d, %d (%d, %d, %d, %d)", */
+    /*      (unsigned int) (norm.y * height), col, r, g, b, a); */
 
     return scene->scale_min + (scene->scale_dif * ret);
 }
