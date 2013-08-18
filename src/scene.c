@@ -215,7 +215,7 @@ scene_render(scene_t* scene)
 void
 scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
 {
-    float elapsed = main_get_time_elapsed();
+    float elapsed = main_get_time_elapsed(), alpha;
     vec2_t proj, norm;
 
     if (!scene || !scene->character) {
@@ -228,18 +228,23 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
     /* Normalized Screen Coordinates point */
     norm = camera_win_coord_to_ndc(&screen);
 
-    /* Animate character to the given position */
-    /* sprite_animate_char_to(scene->character, proj, speed, elapsed); */
-
     LOGD("[character] previous position: %f, %f - new position: %f, %f",
          scene->character->position.x, scene->character->position.y,
          proj.x, proj.y);
 
-    /* Update position of sprite */
-    sprite_animate_char_to(scene->character, proj, 1.0f, elapsed);
-    /* sprite_set_position(scene->character, &proj); */
+    /* TODO Do this in a more clever way (see todo in next function). */
+    alpha = scene_compute_character_size(scene, norm);
+
+    if (alpha > 0) {
+        /* Update position of sprite */
+        sprite_animate_char_to(scene->character, proj, 1.0f, elapsed);
+    }
 }
 
+/* TODO Refactor this function so that it does not return 0 if alpha color is
+ * found in the end pixel. Right now this feature is used as a way to prevent
+ * the user to click on that area. This should be refactored.
+ */
 float
 scene_compute_character_size(scene_t* scene, const vec2_t norm)
 {
@@ -251,7 +256,7 @@ scene_compute_character_size(scene_t* scene, const vec2_t norm)
     unsigned int  col;    /* column to look at */
     unsigned int  index;  /* actual index to study */
 
-    unsigned char r, g, b, a = 0; /* final smap pixel color */
+    unsigned char r, g, b, a = 255; /* final smap pixel color */
 
     float ret = 0.0f;
 
@@ -303,6 +308,10 @@ scene_compute_character_size(scene_t* scene, const vec2_t norm)
 
     if (byte == 4) {
         a = scene->smap->pixels[index + 3];
+
+        if (a == 0) {
+            return 0.0f;
+        }
     }
 
     ret = (r + g + b) / (3.0f * 255);
