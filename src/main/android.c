@@ -42,7 +42,7 @@ Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
     eye = camera_win_coord_to_eye(&screen);
 
     LOGD("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
-         x, y, ndc.x, ndc.y, eye.x, eye.y)
+         x, y, ndc.x, ndc.y, eye.x, eye.y);
 
     bina_animate_porc_to(screen, elapsed);
 

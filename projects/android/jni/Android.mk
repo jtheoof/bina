@@ -42,13 +42,13 @@ LOCAL_SRC_FILES  := \
     main/android.c \
     algebra.c      \
     bina.c         \
-    shader.c       \
-    utils.c        \
-    memory.c       \
-    texture.c      \
-    sprite.c       \
     camera.c       \
+    memory.c       \
     renderer.c     \
-    scene.c
+    scene.c        \
+    shader.c       \
+    sprite.c       \
+    texture.c      \
+    utils.c
 
 include $(BUILD_SHARED_LIBRARY)
