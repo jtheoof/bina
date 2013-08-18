@@ -18,8 +18,8 @@
 
 typedef enum sprite_cam_type_e
 {
-    SPRITE_CAM_TYPE_BACK,
-    SPRITE_CAM_TYPE_FRONT,
+    /* SPRITE_CAM_TYPE_BACK, */
+    /* SPRITE_CAM_TYPE_FRONT, */
     SPRITE_CAM_TYPE_RIGHT,
     SPRITE_CAM_TYPE_LEFT,
     SPRITE_CAM_TYPE_COUNT   /* trick to get the number of elements */

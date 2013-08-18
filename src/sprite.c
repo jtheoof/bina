@@ -43,14 +43,14 @@ struct sprite_module_info {
 static struct sprite_module_info m = {
     0,
     {
-        { SPRITE_CAM_TYPE_BACK,  "backCam",  {  0.0f,  1.0f } },
-        { SPRITE_CAM_TYPE_FRONT, "frontCam", {  0.0f, -1.0f } },
+        /* { SPRITE_CAM_TYPE_BACK,  "backCam",  {  0.0f,  1.0f } }, */
+        /* { SPRITE_CAM_TYPE_FRONT, "frontCam", {  0.0f, -1.0f } }, */
         { SPRITE_CAM_TYPE_RIGHT, "rightCam", {  1.0f,  0.0f } },
         { SPRITE_CAM_TYPE_LEFT,  "leftCam",  { -1.0f,  0.0f } },
     },
     {
-        { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 30 },
-        { SPRITE_ANIM_STOPACTION1, "stopAction1", 30 },
+        { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 1 },
+        { SPRITE_ANIM_STOPACTION1, "stopAction1", 1 },
         { SPRITE_ANIM_WALKCYCLE,   "WalkCycle",   21 },
     },
 };
@@ -223,8 +223,8 @@ sprite_load_character(const char* name,
     sprite->tex_anims = create_character_anim(name);
 
     if (sprite->tex_anims) {
-        sprite->tex_anims->cur_cam_type = SPRITE_CAM_TYPE_FRONT;
-        sprite->tex_anims->cur_anim = SPRITE_ANIM_STOPACTION1;
+        sprite->tex_anims->cur_cam_type = SPRITE_CAM_TYPE_RIGHT;
+        sprite->tex_anims->cur_anim = SPRITE_ANIM_NEUTRALPOSE;
 
         if (sprite->tex_anims->list) {
             sprite->texture = sprite->tex_anims->list[0]->textures[0];
