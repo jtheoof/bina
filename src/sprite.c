@@ -26,8 +26,8 @@ static const token_string_t g_cam_type_names[] = {
 };
 
 static const token_string_size_t g_anim_names_sizes[] = {
-    { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 30 },
-    { SPRITE_ANIM_STOPACTION1, "stopAction1", 30 },
+    { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 1 },
+    { SPRITE_ANIM_STOPACTION1, "stopAction1", 1 },
 };
 
 /**
@@ -81,10 +81,16 @@ create_character_anim(const char* character)
         }
     }
 
-    ret->list = list;
+    ret->size = cams * anims;
     ret->nb_cam_types = SPRITE_CAM_TYPE_COUNT;
     ret->nb_anims = SPRITE_ANIM_COUNT;
-    ret->size = cams * anims;
+    ret->list = list;
+
+    if (ret->size) {
+        ret->current = list[0];
+    } else {
+        ret->current = NULL;
+    }
 
     return ret;
 
@@ -101,16 +107,21 @@ error:
 static texture_list_t*
 get_character_anim(sprite_t* sprite)
 {
-    sprite_tex_anim_t* a;
-
     if (!sprite || !sprite->tex_anims) {
         return NULL;
     }
 
-    a = sprite->tex_anims;
+    return sprite->tex_anims->current;
+}
 
-    /* Return the proper id in the list, see the construction for more info */
-    return a->list[a->cur_cam_type * a->nb_cam_types + a->cur_anim];
+static void
+sprite_update_current_animation(sprite_t* sprite)
+{
+    sprite_tex_anim_t* a;
+
+    /* Set the proper id in the list, see the construction for more info */
+    a = sprite->tex_anims;
+    a->current = a->list[a->cur_cam_type * a->nb_cam_types + a->cur_anim];
 }
 
 sprite_t*
@@ -270,6 +281,7 @@ sprite_set_cam_type(sprite_t* sprite, sprite_cam_type_e cam)
 {
     if (sprite && sprite->tex_anims) {
         sprite->tex_anims->cur_cam_type = cam;
+        sprite_update_current_animation(sprite);
     }
 }
 
@@ -277,6 +289,7 @@ void sprite_set_animation(sprite_t* sprite, sprite_anim_e anim)
 {
     if (sprite && sprite->tex_anims) {
         sprite->tex_anims->cur_anim = anim;
+        sprite_update_current_animation(sprite);
     }
 }
 
@@ -339,13 +352,13 @@ sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed, float elapsed)
 }
 
 void
-sprite_animate_idle(sprite_t* sprite)
+sprite_animate_idle(sprite_t* sprite, sprite_anim_e anim)
 {
     if (!sprite || !sprite->tex_anims) {
         return;
     }
 
-    sprite_set_animation(sprite, rand() % SPRITE_ANIM_COUNT);
+    sprite_set_animation(sprite, anim);
 
     texture_list_t*    texanims = get_character_anim(sprite);
     lin_vec2_anim_t*   linanim = NULL;
@@ -372,8 +385,12 @@ sprite_animate(sprite_t* sprite, float elapsed)
     float  ielap;
     float  fix;
 
-    if (!sprite || !sprite->animator) {
+    if (!sprite) {
         return SPRITE_ANIM_STATUS_INVALID;
+    }
+
+    if (!sprite->animator) {
+        return SPRITE_ANIM_STATUS_NO_ANIMATOR;
     }
 
     animator = sprite->animator;
@@ -523,10 +540,16 @@ sprite_animator_delete(sprite_animator_t** animator)
 
     if (head) {
         if (head->animation) {
-            /* DO NOT free head->textures */
             free(head->animation);
             head->animation = NULL;
         }
+
+        /* XXX It's not the job of the animator to free the textures.
+         * They will be reused later on.
+         * Only point to NULL.
+         */
+        head->textures = NULL;
+
         free(head);
         *animator = NULL;
     }

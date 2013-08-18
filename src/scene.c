@@ -151,6 +151,10 @@ scene_unload(scene_t** scene)
 void
 scene_animate(scene_t* scene, float elapsed)
 {
+    sprite_t* character;
+    sprite_animator_t* animator;
+    sprite_tex_anim_t* texanims;
+    sprite_anim_status_e status;
     vec2_t ndc;
     float  size;
 
@@ -159,35 +163,39 @@ scene_animate(scene_t* scene, float elapsed)
     }
 
     scene->time_idle += elapsed;
+    character = scene->character;
+    animator  = character->animator;
+    texanims  = character->tex_anims;
 
     /* Compute scaling of sprite which depends on its position */
-    ndc = camera_eye_coord_to_ndc(scene->character->position);
+    ndc = camera_eye_coord_to_ndc(character->position);
     size = scene_compute_character_size(scene, ndc);
-    sprite_set_scale(scene->character, size);
+    sprite_set_scale(character, size);
 
-    if (!scene->character->animator && scene->time_idle >= 2.0f) {
-        sprite_animate_idle(scene->character);
-    }
+    status = sprite_animate(character, elapsed);
 
     /* If animation is over, delete the animator */
-    if (sprite_animate(scene->character, elapsed) == SPRITE_ANIM_STATUS_DONE) {
-        sprite_animator_delete(&scene->character->animator);
-        scene->time_idle = 0.0f; /* reset timer */
+    if (status == SPRITE_ANIM_STATUS_DONE) {
+        sprite_animator_delete(&character->animator);
+
+        if (texanims && texanims->cur_anim == SPRITE_ANIM_STOPACTION1) {
+            scene->time_idle = 0.0f; /* reset timer */
+        }
     }
+
+    if (!animator) {
+        if (scene->time_idle >= 2.0f) {
+            sprite_animate_idle(character, SPRITE_ANIM_STOPACTION1);
+        } else {
+            sprite_animate_idle(character, SPRITE_ANIM_NEUTRALPOSE);
+        }
+    }
+
 }
 
 void
 scene_render(scene_t* scene)
 {
-    static float angle = 0.0f;
-
-    float  sin   = cosf(angle);
-    /* mat4_t ident = mat4_identity(); */
-
-    if (sin < 0) {
-        sin *= -1.0f;
-    }
-
     if (!scene) {
         return;
     }
@@ -197,11 +205,8 @@ scene_render(scene_t* scene)
     }
 
     if (scene->character) {
-        /* scene->character->mvp = mat4_scale_1f(&ident, sin); */
         sprite_render(scene->character);
     }
-
-    angle += PI / 100.0f;
 }
 
 void

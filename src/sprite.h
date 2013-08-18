@@ -39,7 +39,8 @@ typedef enum sprite_anim_status_e
     SPRITE_ANIM_STATUS_LINEAR_FINISHED = 1,
     SPRITE_ANIM_STATUS_TEXTURE_FINISHED = 2,
     SPRITE_ANIM_STATUS_DONE = 4,
-    SPRITE_ANIM_STATUS_INVALID = -1
+    SPRITE_ANIM_STATUS_INVALID = -2,
+    SPRITE_ANIM_STATUS_NO_ANIMATOR
 } sprite_anim_status_e;
 
 typedef struct sprite_tex_anim_t
@@ -60,6 +61,11 @@ typedef struct sprite_tex_anim_t
     sprite_anim_e cur_anim;
 
     texture_list_t** list;
+
+    /**
+     * Pointer to the current animation in #list.
+     */
+    texture_list_t* current;
 
 } sprite_tex_anim_t;
 
@@ -331,11 +337,12 @@ void sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed,
 /**
  * Animates the sprite into 'idle' mode.
  *
- * Randomly selects an idle animation and sets the sprite to it.
+ * Loads an idle animation and sets the sprite to it.
  *
  * @param sprite The sprite to animate.
+ * @param anim The type of animation to set.
  */
-void sprite_animate_idle(sprite_t* sprite);
+void sprite_animate_idle(sprite_t* sprite, sprite_anim_e anim);
 
 /**
  * Animates the sprite if there is an animator linked to it.
