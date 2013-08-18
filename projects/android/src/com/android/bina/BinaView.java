@@ -38,6 +38,7 @@ import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
@@ -347,6 +348,18 @@ class BinaView extends GLSurfaceView {
     private static class Renderer implements GLSurfaceView.Renderer {
         private static AssetManager assetManager;
 
+        private class InitTask extends AsyncTask<Integer, Void, Void> {
+
+            protected Void doInBackground(Integer... params) {
+
+                Log.d(TAG, "Loading bina");
+                BinaLib.init(assetManager, params[0], params[1]);
+
+                return null;
+            }
+        }
+
+
         public Renderer(AssetManager manager)
         {
             assetManager = manager;
@@ -358,6 +371,7 @@ class BinaView extends GLSurfaceView {
 
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             BinaLib.init(assetManager, width, height);
+            // new InitTask().execute(width, height);
         }
 
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {

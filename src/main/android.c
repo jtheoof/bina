@@ -41,7 +41,7 @@ Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
     ndc = camera_win_coord_to_ndc(&screen);
     eye = camera_win_coord_to_eye(&screen);
 
-    LOGD("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
+    LOGD("[point]: screen: %f, %f - ndc: %f, %f - eye: %f, %f",
          x, y, ndc.x, ndc.y, eye.x, eye.y);
 
     bina_animate_porc_to(screen, elapsed);
@@ -71,7 +71,9 @@ Java_com_android_bina_BinaLib_step(JNIEnv * env, jobject obj)
 
     elap_time_g = curr_time - prev_time;
 
-    renderer_render();
+    if (game.scene && game.scene->is_ready) {
+        renderer_render();
+    }
 }
 
 JNIEXPORT void JNICALL

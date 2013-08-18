@@ -48,12 +48,14 @@ vec2_t
 camera_win_coord_to_ndc(const vec2_t* point)
 {
     vec2_t r;
-    GLint  viewport[4];
+    camera_win_info_t viewport = m.camera.viewport;
 
-    glGetIntegerv(GL_VIEWPORT, viewport);
-
-    r.x = point->x / viewport[2];
-    r.y = point->y / viewport[3];
+    /* XXX Do not use: glGetIntegerv(GL_VIEWPORT, viewport);
+     * It seems to not be working properly Android.
+     * Instead, use the structure initialized thanks to: camera_set_viewport
+     */
+    r.x = point->x / viewport.width;
+    r.y = point->y / viewport.height;
 
     return r;
 }
