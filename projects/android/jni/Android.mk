@@ -40,7 +40,7 @@ LOCAL_C_INCLUDES := \
     $(TOP_PATH)/lib/libpng
 LOCAL_SRC_FILES  := \
     main/android.c \
-    vector.c       \
+    algebra.c      \
     bina.c         \
     shader.c       \
     utils.c        \

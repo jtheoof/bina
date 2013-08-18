@@ -32,16 +32,25 @@ JNIEXPORT void JNICALL
 Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
                                     jfloat x, jfloat y)
 {
-    vec2_t coord;
-    GLint  viewport[4];
+    float  elapsed = main_get_time_elapsed();
+    vec2_t screen, ndc, eye;
 
-    glGetIntegerv(GL_VIEWPORT, viewport);
+    screen.x = x;
+    screen.y = y;
 
-    coord.x = 2.0f * x / viewport[2];
-    coord.y = 2.0f - (2.0f * y / viewport[3]);
+    ndc = camera_win_coord_to_ndc(&screen);
+    eye = camera_win_coord_to_eye(&screen);
 
-    LOGD("Screen: %f,%f", x, y);
-    LOGD("Viewport: %f,%f", coord.x, coord.y);
+    LOGD("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
+         x, y, ndc.x, ndc.y, eye.x, eye.y)
+
+    bina_animate_porc_to(screen, elapsed);
+
+    /* coord.x = 2.0f * x / viewport[2]; */
+    /* coord.y = 2.0f - (2.0f * y / viewport[3]); */
+
+    /* LOGD("Screen: %f,%f", x, y); */
+    /* LOGD("Viewport: %f,%f", coord.x, coord.y); */
 }
 
 JNIEXPORT void JNICALL
