@@ -32,7 +32,6 @@ LOCAL_CFLAGS           := \
     -DHAVE_MATH_H   \
     -DHAVE_TIME_H   \
     -DHAVE_PNG_H    \
-    -DDEBUG         \
     -DANDROID
 
 LOCAL_LDLIBS     := -landroid -llog -lGLESv2 -lz
