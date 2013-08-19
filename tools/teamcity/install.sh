@@ -4,25 +4,18 @@
 
 # Variables
 WORK_PATH=$( cd $(dirname .) ; pwd -P )
-
+WORK_TMP_FOLDER="/var/tmp/teamcity-setup"
+#WORK_TMP_FOLDER="/var/tmp/teamcity-`date "+%y%m%d-%H%M%S"`"
 BINA_PASSWORD=""
 BINA_USER=""
 
-TEAMCITY_PATH_WORK=/Volumes/Storage/Projects/tmp/teamcity/teamcity
-TEAMCITY_PATH_DATA=$TEAMCITY_PATH_WORK/data
-TEAMCITY_PATH_BACKUP=$TEAMCITY_PATH_WORK/backup
+TEAMCITY_PATH_WORK=
+TEAMCITY_PATH_DATA=$TEAMCITY_DATA_PATH
 TEAMCITY_URL_BACKUP="https://dl.dropboxusercontent.com/u/2624170/TeamCity_Backup_20130811_233740.zip"
 TEAMCITY_URL="http://download-ln.jetbrains.com/teamcity/TeamCity-8.0.2.tar.gz"
 
 MYSQL_CONNECTOR_URL="http://mirror.cogentco.com/pub/mysql/Connector-J/mysql-connector-java-5.1.26.tar.gz"
-
-
-
-## DESCRIPTION: 
-##  Prints an error message into the screen and exits 
-##  with non zero status
-## PARAMETERS:                                                           
-##  > $1  : text to pring as error                                  
+                               
 function print_error() {
   echo "${fg_rd}✗ Error : $1"
   exit 1
@@ -34,14 +27,9 @@ function print_title() {
 }
 
 function print_ok() {
-  echo -e "${fg_gy}\r\r\r\r✔ $1\r"
+  echo -e "${fg_gy}✔ $1"
 }
-
-## DESCRIPTION: 
-##  Ask a question and read output from /dev/tty
-## PARAMETERS:                                                           
-##  > $1  : question text                                                   
-##  > $2  : default answer                                               
+                                              
 function ask()
 {
    if [ -z "$2" ]; then
@@ -57,12 +45,7 @@ function ask()
    fi
    unset answer
 }
- 
-## DESCRIPTION: 
-##  Ask a question and read output from /dev/tty
-## PARAMETERS:                                                           
-##  > $1  : question text                                                   
-##  > $2  : default answer  
+  
 function show_usage() {
   echo "$fg_cl" 
   echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
@@ -77,12 +60,16 @@ function show_usage() {
 function ask_questions() {
   print_title "Asking Parameters..." 
 
-  echo "Which username whould like for the teamcity db ?"
+  echo "Which path will do you want teamcity to be installed to ?"
+  read TEAMCITY_PATH_WORK < /dev/tty
+ 
+  echo "Which username whould you like for the teamcity db ?"
   read BINA_USER < /dev/tty
 
   echo "Which password whould you like to use for this user ?"
   read -s BINA_PASSWORD
 
+  TEAMCITY_PATH_BACKUP=$TEAMCITY_PATH_WORK/backup
 }
 
 function check_requirements() {
@@ -99,6 +86,16 @@ function check_requirements() {
   fi
 }
 
+function create_tmp_folder() {
+  print_title "Creating temporary working folder: ${WORK_TMP_FOLDER}"
+  mkdir -p ${WORK_TMP_FOLDER}
+  cd ${WORK_TMP_FOLDER}
+ }
+
+function erase_tmp_folder() {
+  print_title "Cleaning up temporary working folder: ${WORK_TMP_FOLDER}"
+ }
+
 function setup_database() {
   print_title "Setting up Database..."
   echo "${fg_cl}You will be prompted for your mysql root password"
@@ -109,26 +106,40 @@ function setup_database() {
   IDENTIFIED BY \'${BINA_PASSWORD}\'; "|\
   xargs -I {} mysql -u root -p -e {}
 
+  if [[ $? != 0 ]]; then
+    print_error "last command failed..."
+  fi
 
 }
 
 function download_teamcity() {
   print_title "Downloading TeamCity..."
 
-  # Warning the TEAMCITY_PATH_DATA is used by team city and needs to be in the
-  # environment variable otherwise the default ~/.BuildServer will be taken.
-  # I suggest you put it in the path/to/teamcity/data
-  cd $WORK_PATH
-  mkdir -p ${TEAMCITY_PATH_WORK}
-  #curl -O "$TEAMCITY_URL"
+  if [[ -f `echo $TEAMCITY_URL|grep -oE "[^/]+$"` ]]; then
+    echo "TeamCity already downloaded, skipping download"
+  else
+    # Warning the TEAMCITY_PATH_DATA is used by team city and needs to be in
+    # the environment variable,
+    # otherwise the default ~/.BuildServer will be used
+    # I suggest you put it in the path/to/teamcity/data
+    cd $WORK_TMP_FOLDER
+    mkdir -p ${TEAMCITY_PATH_WORK}
+    curl -O "$TEAMCITY_URL"
+  fi
+
   tar -xf `echo $TEAMCITY_URL|grep -oE "[^/]+$"`
-  mv TeamCity $TEAMCITY_PATH_WORK
+
+  # check untar
+  if [[ $? != 0 ]]; then print_error "last command failed..."; fi
+
+  # move to teamcity work path
+  mv TeamCity $TEAMCITY_PATH_WORK 
 }
 
 function download_teamcity_backup() {
   print_title "Downloading TeamCity Backup File..."
 
-  cd $WORK_PATH
+  cd $WORK_TMP_FOLDER
   mkdir -p $TEAMCITY_PATH_BACKUP
   cd $TEAMCITY_PATH_BACKUP
   curl -O "${TEAMCITY_URL_BACKUP}"
@@ -138,28 +149,49 @@ function download_teamcity_backup() {
 function download_mysql_connector() {
   print_title "Downloading mysql JAVA Connector..."
 
-  cd $WORK_PATH
-  mkdir -p ${TEAMCITY_PATH_DATA}/lib/jdbc
-  mysql_connector_file=`echo $MYSQL_CONNECTOR_URL|grep -oE "[^/]+$"`
-  #curl -O "$MYSQL_CONNECTOR_URL"
+  cd $WORK_TMP_FOLDER
+  if [[ -f `echo $MYSQL_CONNECTOR_URL|grep -oE "[^/]+$"` ]]; then
+    echo "mysql JAVA Connector already downloaded, skipping download"
+  else
+    cd $WORK_TMP_FOLDER
+    mkdir -p ${TEAMCITY_PATH_DATA}/lib/jdbc
+    mysql_connector_file=`echo $MYSQL_CONNECTOR_URL|grep -oE "[^/]+$"`
+    curl -O "$MYSQL_CONNECTOR_URL"
+  fi
+
   tar -xf `echo $MYSQL_CONNECTOR_URL|grep -oE "[^/]+$"`
+
+  #check untar
+  if [[ $? != 0 ]]; then print_error "last command failed..." ; fi
+
+  # copy jar file to lib/jdbc
   find .            \
     -type f         \
     -maxdepth 2     \
     -name "*.jar"   \
     -exec cp -f {} "${TEAMCITY_PATH_DATA}/lib/jdbc" \;
+
+  # check copy was fine
+  if [[ $? != 0 ]]; then print_error "last command failed..." ; fi
 }
 
 function setup_teamcity() {
   print_title "TeamCity Setup..."
 
   cd $TEAMCITY_PATH_WORK
+
+  # dump database.properties file
   echo "connectionUrl=jdbc:mysql://localhost:3306/teamcity
     connectionProperties.user=jjbrothers
     connectionProperties.password=$BINA_PASSWORD" >database.properties
+
+  # restore db
   bin/maintainDB.sh restore                   \
     -F $TEAMCITY_PATH_BACKUP/$backup_zip_file \
     -T ../database.properties
+
+  #check restore
+  if [[ $? != 0 ]]; then print_error "last command failed..." ; fi
 }
 
 function setup_colors() {
@@ -180,11 +212,13 @@ function __main__() {
   show_usage
   check_requirements
   ask_questions
+  create_tmp_folder
   setup_database
   download_teamcity
   download_teamcity_backup
   download_mysql_connector
   setup_teamcity
+  erase_tmp_folder
   print_ok "Done"
 }
 
