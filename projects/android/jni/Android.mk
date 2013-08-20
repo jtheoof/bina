@@ -41,8 +41,8 @@ LOCAL_C_INCLUDES := \
 LOCAL_SRC_FILES  := \
     main/android.c \
     algebra.c      \
-    bina.c         \
     camera.c       \
+    game.c         \
     memory.c       \
     renderer.c     \
     scene.c        \

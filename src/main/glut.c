@@ -11,17 +11,22 @@
  */
 
 /**
- * @file main_glut.c
+ * @file glut.c
  * @author Jeremy Attali, Johan Attali
  * @date July 23, 2013
  */
 
 #include "bina.h"
+#include "game.h"
+#include "renderer.h"
+#include "camera.h"
 
 static int window_id_g = 0;
 
 /** Number of miliseconds since last frame was drawn. */
 static int elap_time_g = 0;
+
+game_t game_g;
 
 float
 main_get_time_elapsed()
@@ -30,13 +35,13 @@ main_get_time_elapsed()
 }
 
 void
-main_glut_display_cb(void)
+glut_display_cb(void)
 {
     static int prev_time = 0;
     static int curr_time = 0;
 
     /* Wait for scene to be ready to render it. */
-    if (!game.scene || !game.scene->is_ready) {
+    if (!game_g.scene || !game_g.scene->is_ready) {
         return;
     }
 
@@ -45,21 +50,21 @@ main_glut_display_cb(void)
     elap_time_g = curr_time - prev_time;
     prev_time = curr_time;
 
-    renderer_render();
+    game_render(game_g.scene);
     glutSwapBuffers();
 }
 
 void
-main_glut_timer_cb(int t)
+glut_timer_cb(int t)
 {
     if (window_id_g) {
         glutPostRedisplay();
-        glutTimerFunc(GAME_REFRESH_RATE, main_glut_timer_cb, 0);
+        glutTimerFunc(GAME_REFRESH_RATE, glut_timer_cb, 0);
     }
 }
 
 void
-main_glut_reshape_cb(int width, int height)
+glut_reshape_cb(int width, int height)
 {
     camera_win_info_t viewport;
 
@@ -73,7 +78,7 @@ main_glut_reshape_cb(int width, int height)
 }
 
 void
-main_glut_normal_keys_cb(unsigned char key, int x, int y)
+glut_normal_keys_cb(unsigned char key, int x, int y)
 {
     switch (key) {
         case 27: /* Escape key */
@@ -84,7 +89,7 @@ main_glut_normal_keys_cb(unsigned char key, int x, int y)
 }
 
 void
-main_glut_special_keys_cb(int key, int x, int y) {
+glut_special_keys_cb(int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_UP:
             break;
@@ -105,7 +110,7 @@ main_glut_special_keys_cb(int key, int x, int y) {
 }
 
 void
-main_glut_mouse_cb(int button, int state, int x, int y)
+glut_mouse_cb(int button, int state, int x, int y)
 {
     float  elapsed = main_get_time_elapsed();
     vec2_t screen, ndc, eye;
@@ -120,19 +125,19 @@ main_glut_mouse_cb(int button, int state, int x, int y)
         LOGD("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
              x, y, ndc.x, ndc.y, eye.x, eye.y)
 
-        bina_animate_porc_to(screen, elapsed);
+        game_animate_porc_to(game_g.scene, screen, elapsed);
     }
 }
 
 void
-main_glut_idle_cb(void)
+glut_idle_cb(void)
 {
 }
 
 void
-main_glut_exit(void)
+glut_exit(void)
 {
-    bina_end();
+    game_end(&game_g);
 }
 
 int
@@ -169,16 +174,16 @@ main(int argc, char** argv)
 #endif
 
     /* Setting up callbacks */
-    glutKeyboardFunc(main_glut_normal_keys_cb);
-    glutSpecialFunc(main_glut_special_keys_cb);
-    glutMouseFunc(main_glut_mouse_cb);
-    glutReshapeFunc(main_glut_reshape_cb);
-    glutDisplayFunc(main_glut_display_cb);
-    glutTimerFunc(GAME_REFRESH_RATE, main_glut_timer_cb, 0);
+    glutKeyboardFunc(glut_normal_keys_cb);
+    glutSpecialFunc(glut_special_keys_cb);
+    glutMouseFunc(glut_mouse_cb);
+    glutReshapeFunc(glut_reshape_cb);
+    glutDisplayFunc(glut_display_cb);
+    glutTimerFunc(GAME_REFRESH_RATE, glut_timer_cb, 0);
 
-    bina_init(GAME_WIDTH, GAME_HEIGHT);
+    game_init(&game_g, GAME_WIDTH, GAME_HEIGHT);
 
-    atexit(main_glut_exit);
+    atexit(glut_exit);
 
     glutMainLoop();
 

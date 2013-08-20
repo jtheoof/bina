@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "sprite.h"
+
 /* TODO Remove this if unsused. */
 typedef struct scene_char_t
 {
@@ -51,6 +53,13 @@ typedef struct scene_t
      * Obtained via #shader_create_program.
      */
     unsigned int bg_prog;
+
+    /**
+     * Character program id.
+     *
+     * Obtained via #shader_create_program.
+     */
+    unsigned int ch_prog;
 
     /**
      * Minimum scale of the character.

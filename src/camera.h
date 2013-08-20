@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "algebra.h"
+
 /**
  * Basic info on the viewport used for the camera (window coordinates).
  */

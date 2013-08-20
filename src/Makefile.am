@@ -3,8 +3,8 @@ bin_PROGRAMS = bina
 bina_SOURCES = \
     main/glut.c \
     algebra.c   \
-    bina.c      \
     camera.c    \
+    game.c      \
     memory.c    \
     renderer.c  \
     scene.c     \

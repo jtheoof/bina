@@ -5,6 +5,9 @@
  */
 
 #include "bina.h"
+#include "renderer.h"
+/* TODO Perhaps remove dependency of scene.h */
+#include "scene.h"
 
 void
 renderer_init()
@@ -23,16 +26,6 @@ renderer_init()
 }
 
 void
-render_bina()
-{
-    float elapsed = main_get_time_elapsed();
-
-    scene_animate(game.scene, elapsed);
-    renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f);
-    scene_render(game.scene);
-}
-
-void
 renderer_pre_render(float r, float g, float b, float a)
 {
     GL_CHECK(glClearColor, r, g, b, a);
@@ -40,10 +33,12 @@ renderer_pre_render(float r, float g, float b, float a)
 }
 
 void
-renderer_render()
+renderer_render(scene_t* scene)
 {
     static float time = 0;
     static int   frames = 0;
+
+    float elapsed = main_get_time_elapsed(); /* time since last frame */
 
     time += main_get_time_elapsed();
     frames++;
@@ -54,5 +49,8 @@ renderer_render()
         frames = 0;
     }
 
-    render_bina();
+    scene_animate(scene, elapsed);
+
+    renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f);
+    scene_render(scene);
 }

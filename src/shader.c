@@ -5,6 +5,7 @@
  */
 
 #include "bina.h"
+#include "shader.h"
 
 /* TODO Maybe move these shaders to their file once file access is made easy on
  * devices. But the problem will be that those files can be accessed by

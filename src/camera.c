@@ -5,6 +5,7 @@
  */
 
 #include "bina.h"
+#include "camera.h"
 
 struct camera_module_info {
     camera_t camera;

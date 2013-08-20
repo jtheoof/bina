@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include "algebra.h"
+#include "texture.h"
+
 typedef enum sprite_cam_type_e
 {
     SPRITE_CAM_TYPE_BACK,
@@ -320,8 +323,9 @@ void sprite_set_animation(sprite_t* sprite, sprite_anim_e anim);
  * This function will set the appropriate MVP matrix to the sprite.
  *
  * @param sprite The sprite.
+ * @param proj The current projection matrix.
  */
-void sprite_compute_mvp(sprite_t* sprite);
+void sprite_compute_mvp(sprite_t* sprite, mat4_t* proj);
 
 /**
  * Animates the character to a given position.

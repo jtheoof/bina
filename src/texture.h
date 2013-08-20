@@ -12,6 +12,12 @@
 
 #pragma once
 
+#ifdef HAVE_PNG_H
+#include <png.h>
+#endif
+
+#include "memory.h"
+
 /* TODO Scale maps should have their own loading process perhaps */
 
 /**

@@ -5,6 +5,8 @@
  */
 
 #include "bina.h"
+#include "sprite.h"
+#include "texture.h"
 
 /**
  * Represents the information of a sprite camera.
@@ -246,8 +248,6 @@ sprite_delete(sprite_t** sprite)
      * The texture should be deleted by the object that created it.
      */
     if (s) {
-        shader_delete_program(s->program);
-
         if (s->tex_anims) {
             texanims = s->tex_anims;
 
@@ -319,10 +319,9 @@ void sprite_set_animation(sprite_t* sprite, sprite_anim_e anim)
 }
 
 void
-sprite_compute_mvp(sprite_t* sprite)
+sprite_compute_mvp(sprite_t* sprite, mat4_t* proj)
 {
     mat4_t matrix;
-    mat4_t proj = camera_get_projection();
     vec2_t translation;
 
     if (!sprite) {
@@ -339,7 +338,7 @@ sprite_compute_mvp(sprite_t* sprite)
      * world.
      */
     translation = vec2_add(sprite->position, translation);
-    matrix = mat4_translate_vec2(&proj, &translation);
+    matrix = mat4_translate_vec2(proj, &translation);
 
     /* Finally, we scale everything. */
     matrix = mat4_scale_1f(&matrix, sprite->scale);
@@ -554,7 +553,6 @@ sprite_render(sprite_t* sprite)
                           sprite_texices_g);
 
     if (mvpu >= 0) {
-        sprite_compute_mvp(sprite);
         GL_CHECK(glUniformMatrix4fv, mvpu, 1, 0, (float*) &sprite->mvp);
     }
 

@@ -5,6 +5,9 @@
  */
 
 #include "bina.h"
+#include "scene.h"
+#include "shader.h"
+#include "camera.h"
 
 static void
 load_scale_map(const char* name, const float minsize, const float maxsize,
@@ -30,14 +33,7 @@ load_scale_map(const char* name, const float minsize, const float maxsize,
         scene->width  = 2.0f;
         scene->height = 2.0f;
     }
-
 }
-
-/* static void */
-/* load_sprites_animations(const char* name, scene_t* scene) */
-/* { */
-
-/* } */
 
 static void
 load_sprites(const char* name, scene_t* scene)
@@ -52,7 +48,6 @@ load_sprites(const char* name, scene_t* scene)
 
     /* Character */
     char       ch_buf[MAX_PATH];
-    /* texture_t* ch_tex = NULL; */
     sprite_t*  ch_spr = NULL;
     int        ch_prg = -1;
 
@@ -60,7 +55,6 @@ load_sprites(const char* name, scene_t* scene)
     snprintf(ch_buf, MAX_PATH, "animations/perso1_neutraPose_frontCam.png");
 
     bg_tex = texture_create(bg_buf, 0);
-    /* ch_tex = texture_create(ch_buf, 0); */
 
     pos.x = pos.y = 0.0f;
     off.x = off.y = 0.0f;
@@ -82,6 +76,7 @@ load_sprites(const char* name, scene_t* scene)
 
     scene->background = bg_spr;
     scene->bg_prog    = bg_prg;
+    scene->ch_prog    = ch_prg;
     scene->character  = ch_spr;
 }
 
@@ -144,6 +139,7 @@ scene_unload(scene_t** scene)
             sprite_delete(&tmp->character);
         }
         shader_delete_program(tmp->bg_prog);
+        shader_delete_program(tmp->ch_prog);
         free(tmp);
         tmp = NULL;
     }
@@ -199,15 +195,19 @@ scene_animate(scene_t* scene, float elapsed)
 void
 scene_render(scene_t* scene)
 {
+    mat4_t proj = camera_get_projection();
+
     if (!scene) {
         return;
     }
 
     if (scene->background) {
+        sprite_compute_mvp(scene->background, &proj);
         sprite_render(scene->background);
     }
 
     if (scene->character) {
+        sprite_compute_mvp(scene->character, &proj);
         sprite_render(scene->character);
     }
 }

@@ -5,6 +5,7 @@
  */
 
 #include "bina.h"
+#include "memory.h"
 
 memory_t*
 memory_create(const char* filepath)

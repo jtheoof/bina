@@ -1,5 +1,5 @@
 /**
- * Precompiled header that must be included in every c file.
+ * Main header that must be included in every c file.
  *
  * Bina a project that came true after a few too many beers.
  * A project that will change the world and ruin Pendulo Studios.
@@ -18,10 +18,6 @@
 #include "targetver.h"
 #pragma warning(disable : 4996)
 #endif
-
-#define GAME_WIDTH        960
-#define GAME_HEIGHT       540
-#define GAME_REFRESH_RATE 16  /* 60 times per second */
 
 #define APP_TITLE "This is Binaaaaaaaaaaaaaaa"
 
@@ -127,10 +123,6 @@ AAssetManager* asset_manager_g;
 #include "GL/gl.h"
 #endif
 
-#ifdef HAVE_PNG_H
-#include <png.h>
-#endif
-
 /**
  * Mapping between and id (or token, enum, ...) and a string.
  */
@@ -175,25 +167,7 @@ typedef struct token_string_size_t
  */
 #define TOKEN_TO_STRING(x) { x, #x }
 
-/* Utils */
 #include "error.h"
-#include "utils.h"
-
-/* Math */
-#include "algebra.h"
-#include "camera.h"
-
-/* Memory */
-#include "memory.h"
-#include "texture.h"
-#include "shader.h"
-
-/* Objects */
-#include "sprite.h"
-#include "scene.h"
-
-/* Engine */
-#include "renderer.h"
 
 /* TODO
  *  - Reorganize headers to make the build faster.
@@ -241,53 +215,6 @@ typedef struct token_string_size_t
 #define GL_CHECK(gl, ...) \
     gl(__VA_ARGS__);
 #endif
-
-typedef struct bina_t
-{
-    /**
-     * Current camera of the game.
-     */
-    /* camera_t camera; */
-
-    /**
-     * Current scene loaded and present on the screen.
-     *
-     * A scene, for now, is composed of the background image and an associated
-     * scale map which serves to compute the scale of object depending on its
-     * position on the image.
-     */
-    scene_t* scene;
-} bina_t;
-
-
-bina_t game;
-
-/**
- * Initalization of program.
- *
- * Loads assets from disk or memory and prepares the rendering engine.
- * @param width The width of the viewport.
- * @param height The height of the viewport.
- */
-void bina_init(int width, int height);
-
-/**
- * Frees objects.
- *
- * Should be called when program exits.
- * Perhaps code or callback can vary depending on devices.
- */
-void bina_end();
-
-/**
- * Animate porc on the screen when clicking or tapping.
- *
- * This is just a testing function. The goal is to make it work on every
- * device.
- * @param to The destination where porc should go.
- * @param speed The speed we want to set porc to.
- */
-void bina_animate_porc_to(vec2_t to, float speed);
 
 /* TODO Move this to its own main.h ? */
 

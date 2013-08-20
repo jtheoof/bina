@@ -1,10 +1,14 @@
 /**
- * @file bina.c
+ * @file game.c
  * @author Jeremy Attali, Johan Attali
  * @date July 23, 2013
  */
 
 #include "bina.h"
+#include "game.h"
+#include "renderer.h"
+#include "camera.h"
+#include "scene.h"
 
 void
 print_gl_string(const char* name, GLenum s)
@@ -13,7 +17,7 @@ print_gl_string(const char* name, GLenum s)
 }
 
 void
-bina_init(int width, int height)
+game_init(game_t* game, int width, int height)
 {
     camera_win_info_t viewport;
 
@@ -28,18 +32,24 @@ bina_init(int width, int height)
     camera_set_viewport(&viewport);
 
     /* Loads the scene */
-    game.scene = scene_load("bedroomArtist", 0.25f, 0.75f);
+    game->scene = scene_load("bedroomArtist", 0.25f, 0.75f);
 
     renderer_init();
 }
 
 void
-bina_end()
+game_end(game_t* game)
 {
-    scene_unload(&game.scene);
+    scene_unload(&game->scene);
 }
 
-void bina_animate_porc_to(vec2_t to, float speed)
+void
+game_render(scene_t* scene)
 {
-    scene_move_character_to(game.scene, to, speed);
+    renderer_render(scene);
+}
+
+void game_animate_porc_to(scene_t* scene, vec2_t to, float speed)
+{
+    scene_move_character_to(scene, to, speed);
 }

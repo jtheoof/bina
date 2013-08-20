@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-// OpenGL ES 2.0 code
-
 #include "bina.h"
+#include "game.h"
+#include "renderer.h"
+#include "camera.h"
+
+game_t game_g;
 
 /**
  * Number of nanoseconds since last frame was drawn. */
@@ -44,13 +47,7 @@ Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
     LOGD("[point]: screen: %f, %f - ndc: %f, %f - eye: %f, %f",
          x, y, ndc.x, ndc.y, eye.x, eye.y);
 
-    bina_animate_porc_to(screen, elapsed);
-
-    /* coord.x = 2.0f * x / viewport[2]; */
-    /* coord.y = 2.0f - (2.0f * y / viewport[3]); */
-
-    /* LOGD("Screen: %f,%f", x, y); */
-    /* LOGD("Viewport: %f,%f", coord.x, coord.y); */
+    game_animate_porc_to(game_g.scene, screen, elapsed);
 }
 
 JNIEXPORT void JNICALL
@@ -71,8 +68,8 @@ Java_com_android_bina_BinaLib_step(JNIEnv * env, jobject obj)
 
     elap_time_g = curr_time - prev_time;
 
-    if (game.scene && game.scene->is_ready) {
-        renderer_render();
+    if (game_g.scene && game_g.scene->is_ready) {
+        renderer_render(game_g.scene);
     }
 }
 
@@ -88,5 +85,5 @@ Java_com_android_bina_BinaLib_init(JNIEnv * env, jobject obj,
         LOGE("Could not load Android Asset Manager");
     }
 
-    bina_init(width, height);
+    game_init(&game_g, width, height);
 }
