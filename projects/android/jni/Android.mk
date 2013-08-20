@@ -32,8 +32,7 @@ LOCAL_CFLAGS           := \
     -DHAVE_MATH_H   \
     -DHAVE_TIME_H   \
     -DHAVE_PNG_H    \
-    -DANDROID       \
-    -DUNIX
+    -DANDROID
 
 LOCAL_LDLIBS     := -landroid -llog -lGLESv2 -lz
 LOCAL_C_INCLUDES := \
@@ -41,14 +40,15 @@ LOCAL_C_INCLUDES := \
     $(TOP_PATH)/lib/libpng
 LOCAL_SRC_FILES  := \
     main/android.c \
-    vector.c       \
+    algebra.c      \
     bina.c         \
-    shader.c       \
-    utils.c        \
-    memory.c       \
-    texture.c      \
-    sprite.c       \
     camera.c       \
-    renderer.c
+    memory.c       \
+    renderer.c     \
+    scene.c        \
+    shader.c       \
+    sprite.c       \
+    texture.c      \
+    utils.c
 
 include $(BUILD_SHARED_LIBRARY)

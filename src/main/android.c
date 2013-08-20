@@ -32,14 +32,25 @@ JNIEXPORT void JNICALL
 Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
                                     jfloat x, jfloat y)
 {
-    vec2_t coord;
-    coord.x = 2.0f * x / viewport.width;
-    coord.y = 2.0f - (2.0f * y / viewport.height);
+    float  elapsed = main_get_time_elapsed();
+    vec2_t screen, ndc, eye;
 
-    LOGD("Screen: %d,%d", x, y);
-    LOGD("Viewport: %f,%f", coord.x, coord.y);
+    screen.x = x;
+    screen.y = y;
 
-    bina_animate_porc_to(coord, 1.0f);
+    ndc = camera_win_coord_to_ndc(&screen);
+    eye = camera_win_coord_to_eye(&screen);
+
+    LOGD("[point]: screen: %f, %f - ndc: %f, %f - eye: %f, %f",
+         x, y, ndc.x, ndc.y, eye.x, eye.y);
+
+    bina_animate_porc_to(screen, elapsed);
+
+    /* coord.x = 2.0f * x / viewport[2]; */
+    /* coord.y = 2.0f - (2.0f * y / viewport[3]); */
+
+    /* LOGD("Screen: %f,%f", x, y); */
+    /* LOGD("Viewport: %f,%f", coord.x, coord.y); */
 }
 
 JNIEXPORT void JNICALL
@@ -60,7 +71,9 @@ Java_com_android_bina_BinaLib_step(JNIEnv * env, jobject obj)
 
     elap_time_g = curr_time - prev_time;
 
-    renderer_render();
+    if (game.scene && game.scene->is_ready) {
+        renderer_render();
+    }
 }
 
 JNIEXPORT void JNICALL
@@ -68,7 +81,12 @@ Java_com_android_bina_BinaLib_init(JNIEnv * env, jobject obj,
                                    jobject asset_manager,
                                    jint width, jint height)
 {
-    asset_manager_g = AAssetManager_fromJava(env, asset_manager);
     LOGI("Initializing bina with viewport: %dx%d", width, height);
+
+    asset_manager_g = AAssetManager_fromJava(env, asset_manager);
+    if (!asset_manager_g) {
+        LOGE("Could not load Android Asset Manager");
+    }
+
     bina_init(width, height);
 }

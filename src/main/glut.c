@@ -35,6 +35,11 @@ main_glut_display_cb(void)
     static int prev_time = 0;
     static int curr_time = 0;
 
+    /* Wait for scene to be ready to render it. */
+    if (!game.scene || !game.scene->is_ready) {
+        return;
+    }
+
     curr_time = glutGet(GLUT_ELAPSED_TIME);
 
     elap_time_g = curr_time - prev_time;
@@ -56,6 +61,10 @@ main_glut_timer_cb(int t)
 void
 main_glut_reshape_cb(int width, int height)
 {
+    camera_win_info_t viewport;
+
+    viewport.x = 0;
+    viewport.y = 0;
     viewport.width = width;
     viewport.height = height;
 
@@ -98,19 +107,21 @@ main_glut_special_keys_cb(int key, int x, int y) {
 void
 main_glut_mouse_cb(int button, int state, int x, int y)
 {
-    vec2_t coord;
+    float  elapsed = main_get_time_elapsed();
+    vec2_t screen, ndc, eye;
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        coord.x = 2.0f * x / viewport.width;
-        coord.y = 2.0f - (2.0f * y / viewport.height);
+        screen.x = x;
+        screen.y = y;
 
-        LOGD("Screen: %d,%d", x, y);
-        LOGD("Viewport: %f,%f", coord.x, coord.y);
+        ndc = camera_win_coord_to_ndc(&screen);
+        eye = camera_win_coord_to_eye(&screen);
 
-        bina_animate_porc_to(coord, 2.0f);
+        LOGD("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
+             x, y, ndc.x, ndc.y, eye.x, eye.y)
+
+        bina_animate_porc_to(screen, elapsed);
     }
-
-    glutPostRedisplay();
 }
 
 void

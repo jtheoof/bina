@@ -2,15 +2,16 @@ bin_PROGRAMS = bina
 
 bina_SOURCES = \
     main/glut.c \
-    vector.c    \
+    algebra.c   \
     bina.c      \
-    shader.c    \
-    utils.c     \
-    memory.c    \
-    texture.c   \
-    sprite.c    \
     camera.c    \
-    renderer.c
+    memory.c    \
+    renderer.c  \
+    scene.c     \
+    shader.c    \
+    sprite.c    \
+    texture.c   \
+    utils.c
 
 bina_LDADD = \
     $(GL_LIBS)   \

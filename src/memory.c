@@ -20,15 +20,15 @@ memory_create(const char* filepath)
         goto error;
     }
 
-    /* Copying filepath */
-    strncpy(memory->filepath, filepath, MAX_PATH);
-
 #ifdef ANDROID
     AAsset* asset = NULL;
     /* char buf[BUFSIZ]; */
     /* int nb_read = 0; */
     off_t asset_length = 0;
     const void* buffer = NULL;
+
+    /* Copying filepath */
+    strncpy(memory->filepath, filepath, MAX_PATH);
 
     if (!asset_manager_g) {
         LOGE("Cannot load: %s, AssetManager is not loaded", filepath);
@@ -70,7 +70,10 @@ android_error:
 
     goto error;
 #else
-    if ((fd = fopen(filepath, "rb")) == NULL) {
+    /* Copying filepath */
+    snprintf(memory->filepath, MAX_PATH, "assets/%s", filepath);
+
+    if ((fd = fopen(memory->filepath, "rb")) == NULL) {
         LOGE("Unable to open: %s for reading", filepath);
         goto else_error;
     }
@@ -128,13 +131,13 @@ memory_delete(memory_t** memory)
 unsigned int
 memory_read(memory_t* memory, void* dest, unsigned int size)
 {
-	if ((memory->position + size) > memory->size) {
+    if ((memory->position + size) > memory->size) {
         size = memory->size - memory->position;
     }
 
-	memcpy(dest, &memory->buffer[memory->position], size);
+    memcpy(dest, &memory->buffer[memory->position], size);
 
-	memory->position += size;
+    memory->position += size;
 
-	return size;
+    return size;
 }

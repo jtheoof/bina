@@ -16,7 +16,6 @@
 		0477462617B2C98C00AE1DCB /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 0477461617B2C98C00AE1DCB /* sprite.c */; };
 		0477462717B2C98C00AE1DCB /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = 0477461817B2C98C00AE1DCB /* texture.c */; };
 		0477462817B2C98C00AE1DCB /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 0477461A17B2C98C00AE1DCB /* utils.c */; };
-		0477462917B2C98C00AE1DCB /* vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 0477461C17B2C98C00AE1DCB /* vector.c */; };
 		04A9C09317B0269000B33816 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9C09217B0269000B33816 /* Cocoa.framework */; };
 		04A9C09D17B0269000B33816 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C09B17B0269000B33816 /* InfoPlist.strings */; };
 		04A9C09F17B0269000B33816 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A9C09E17B0269000B33816 /* main.m */; };
@@ -26,6 +25,8 @@
 		04A9C0B517B02CCE00B33816 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A9C0B417B02CCE00B33816 /* MainWindow.xib */; };
 		04A9C1F917B02F8A00B33816 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9C1F817B02F8A00B33816 /* OpenGL.framework */; };
 		04A9C1FB17B0374000B33816 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9C1FA17B0373F00B33816 /* GLUT.framework */; };
+		04C0132317C26D7A006F0253 /* algebra.c in Sources */ = {isa = PBXBuildFile; fileRef = 04C0132117C26D7A006F0253 /* algebra.c */; };
+		04C0132617C26D91006F0253 /* scene.c in Sources */ = {isa = PBXBuildFile; fileRef = 04C0132417C26D91006F0253 /* scene.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +48,6 @@
 		0477461917B2C98C00AE1DCB /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = texture.h; path = src/texture.h; sourceTree = "<group>"; };
 		0477461A17B2C98C00AE1DCB /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utils.c; path = src/utils.c; sourceTree = "<group>"; };
 		0477461B17B2C98C00AE1DCB /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = src/utils.h; sourceTree = "<group>"; };
-		0477461C17B2C98C00AE1DCB /* vector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vector.c; path = src/vector.c; sourceTree = "<group>"; };
-		0477461D17B2C98C00AE1DCB /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vector.h; path = src/vector.h; sourceTree = "<group>"; };
 		0477470717B2DCE800AE1DCB /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		0477470817B2DD3000AE1DCB /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../assets; sourceTree = "<group>"; };
 		04A9C08F17B0269000B33816 /* Bina.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bina.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +67,10 @@
 		04A9C0B417B02CCE00B33816 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		04A9C1F817B02F8A00B33816 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		04A9C1FA17B0373F00B33816 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		04C0132117C26D7A006F0253 /* algebra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = algebra.c; path = src/algebra.c; sourceTree = "<group>"; };
+		04C0132217C26D7A006F0253 /* algebra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = algebra.h; path = src/algebra.h; sourceTree = "<group>"; };
+		04C0132417C26D91006F0253 /* scene.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = scene.c; path = src/scene.c; sourceTree = "<group>"; };
+		04C0132517C26D91006F0253 /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = scene.h; path = src/scene.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +99,6 @@
 		04A9C08617B0269000B33816 = {
 			isa = PBXGroup;
 			children = (
-				04A9C1FA17B0373F00B33816 /* GLUT.framework */,
 				04A9C09817B0269000B33816 /* Bina */,
 				04A9C09117B0269000B33816 /* Frameworks */,
 				04A9C09017B0269000B33816 /* Products */,
@@ -114,6 +116,7 @@
 		04A9C09117B0269000B33816 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04A9C1FA17B0373F00B33816 /* GLUT.framework */,
 				04A9C1F817B02F8A00B33816 /* OpenGL.framework */,
 				04A9C09217B0269000B33816 /* Cocoa.framework */,
 				04A9C09417B0269000B33816 /* Other Frameworks */,
@@ -179,6 +182,10 @@
 			isa = PBXGroup;
 			children = (
 				0477460717B2C98C00AE1DCB /* main */,
+				04C0132417C26D91006F0253 /* scene.c */,
+				04C0132517C26D91006F0253 /* scene.h */,
+				04C0132117C26D7A006F0253 /* algebra.c */,
+				04C0132217C26D7A006F0253 /* algebra.h */,
 				0477460A17B2C98C00AE1DCB /* bina.c */,
 				0477460B17B2C98C00AE1DCB /* bina.h */,
 				0477460C17B2C98C00AE1DCB /* camera.c */,
@@ -196,8 +203,6 @@
 				0477461917B2C98C00AE1DCB /* texture.h */,
 				0477461A17B2C98C00AE1DCB /* utils.c */,
 				0477461B17B2C98C00AE1DCB /* utils.h */,
-				0477461C17B2C98C00AE1DCB /* vector.c */,
-				0477461D17B2C98C00AE1DCB /* vector.h */,
 			);
 			name = src;
 			path = ../../..;
@@ -297,7 +302,8 @@
 				0477462617B2C98C00AE1DCB /* sprite.c in Sources */,
 				0477462717B2C98C00AE1DCB /* texture.c in Sources */,
 				0477462817B2C98C00AE1DCB /* utils.c in Sources */,
-				0477462917B2C98C00AE1DCB /* vector.c in Sources */,
+				04C0132317C26D7A006F0253 /* algebra.c in Sources */,
+				04C0132617C26D91006F0253 /* scene.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,7 +42,13 @@ typedef struct memory_t
  * Creates a new memory object.
  *
  * @param filepath The filepath where the object is stored. This should be
- * generic enough so that it works in any device.
+ * generic enough so that it works in any device. Because some devices must
+ * have their assets in a directory called 'assets', this function will
+ * automatically add 'assets/' to devices that do not have this functionality.
+ * Therefore on Linux for example, it will set:
+ * <code>
+ *  snprintf(memory->filepath, MAX_PATH, 'assets/%s', filepath);
+ * </code>
  * @return The new memory object allocated.
  */
 memory_t* memory_create(const char* filepath);

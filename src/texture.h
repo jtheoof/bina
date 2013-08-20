@@ -12,6 +12,8 @@
 
 #pragma once
 
+/* TODO Scale maps should have their own loading process perhaps */
+
 /**
  * The texture structure used to control a texture behaviors and
  * properties.
@@ -54,7 +56,10 @@ typedef struct texture_t
 
     /**
      * The texture byte.
-     * TODO Find out what that is used for.
+     *
+     * This represents the number of bytes used for each pixel.
+     * For example and RGBA PNG file requires 4 bytes per pixel when a simple
+     * GRAY only requires 1 byte.
      */
     unsigned char byte;
 
@@ -130,7 +135,7 @@ typedef struct texture_t
      * been put to GPU through GlTexImage2d. This needs to be checked, it
      * would free some memory.
      */
-    void* pixels;
+    unsigned char* pixels;
 
     /**
      * The number of mipmaps (PVRTC only).
@@ -159,7 +164,12 @@ typedef struct texture_list_t
     /**
      * The number of textures.
      */
-    unsigned short size;
+    unsigned int size;
+
+    /**
+     * Current texture id in #textures.
+     */
+    unsigned int tid;
 
     /**
      * The array of textures that will be loaded for the animation.
@@ -174,9 +184,12 @@ typedef struct texture_list_t
  * It will automatically load the texture from file or memory,
  * create a new OpenGL texture object and fill the pixels.
  * @param name The name of the texture to load.
+ * @param keep A flag to indicate wether or not we want to retain the texture
+ * loaded into memory or just send it to the GPU and release the memory.
+ * For example in the case of scale maps, we want to keep the object in memory.
  * @return The fresh new allocated texture.
  */
-texture_t* texture_create(const char* name);
+texture_t* texture_create(const char* name, const short keep);
 
 /**
  * Removes the texture from memory.
@@ -194,14 +207,17 @@ void texture_delete(texture_t** texture);
  * all the perso1_walkCycle_cameraLeft files listed and their extension.
  * This way we would not have to pass #ext nor #size.
  *
+ * @param folder The root folder in 'animations' where the animation is to be
+ * loaded.
  * @param animation The name of the group of textures to load.
  * For example: perso1_walkCycle_cameraLeft
- * This will load perso1_walkCycle_cameraLeft_0.png, ...
+ * This will load perso1_walkCycle_cameraLeft_001.png, ...
  * @param ext The extension of the files to load.
  * @param size The number of files to load.
  * @return The list of texture_t* textures created.
  */
-texture_list_t* texture_create_list(const char* animation,
+texture_list_t* texture_create_list(const char* folder,
+                                    const char* filename,
                                     const char* ext,
                                     const unsigned short size);
 
@@ -219,10 +235,11 @@ void texture_delete_list(texture_list_t** list);
  * extension handler.
  *
  * @param name The name of the asset to load.
+ * @param keep A flag to either keep the texture in memory or not.
  * @param texture The texture object created.
  * @return 0 if call is successful, an error code otherwise.
  */
-int texture_load(const char* name, texture_t* texture);
+int texture_load(const char* name, const short keep, texture_t* texture);
 
 /**
  * Loads a PNG file (based on libpng).

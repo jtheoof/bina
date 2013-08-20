@@ -25,8 +25,6 @@
 
 #define APP_TITLE "This is Binaaaaaaaaaaaaaaa"
 
-/* types.h */
-
 #ifndef MAX_CHAR
 #define MAX_CHAR 64
 #endif
@@ -77,7 +75,7 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-#define LOG_TAG   "gl2jni"
+#define LOG_TAG   "bina"
 
 /* TODO make it more pretty from config.h */
 # ifdef DEBUG
@@ -133,28 +131,77 @@ AAssetManager* asset_manager_g;
 #include <png.h>
 #endif
 
+/**
+ * Mapping between and id (or token, enum, ...) and a string.
+ */
+typedef struct token_string_t
+{
+   /**
+    * Token to map (could also be an enum for example).
+    */
+   unsigned int token;
+
+   /**
+    * The string to map the token to.
+    */
+   const char* string;
+
+} token_string_t;
+
+/**
+ * Same as #token_string_t, only adding a size to the description.
+ */
+typedef struct token_string_size_t
+{
+   /**
+    * Token to map (could also be an enum for example).
+    */
+   unsigned int token;
+
+   /**
+    * The string to map the token to.
+    */
+   const char* string;
+
+   /**
+    * Size associtated with the string
+    */
+   unsigned int  size;
+
+} token_string_size_t;
+
+/**
+ * Converts a token into a { TOKEN, "TOKEN" } object.
+ */
+#define TOKEN_TO_STRING(x) { x, #x }
+
+/* Utils */
 #include "error.h"
 #include "utils.h"
-#include "vector.h"
+
+/* Math */
+#include "algebra.h"
+#include "camera.h"
+
+/* Memory */
 #include "memory.h"
 #include "texture.h"
-#include "sprite.h"
 #include "shader.h"
-#include "camera.h"
+
+/* Objects */
+#include "sprite.h"
+#include "scene.h"
+
+/* Engine */
 #include "renderer.h"
 
-camera_viewport_t viewport;
-
-sprite_t* back;
-sprite_t* porc;
-
-texture_t* back_tex;
-texture_list_t* porc_r_tex;
-texture_list_t* porc_l_tex;
-
-#define SPRITES_DEMO 0 /* Slow at 998 */
-
-sprite_animator_t* ani_porc;
+/* TODO
+ *  - Reorganize headers to make the build faster.
+ *  - Have generic macro to check for null pointers at the beginning of a func.
+ *  - Improve logging of calls to OpenGL APIs.
+ *  - Reorganize the project with addition of perhaps animation.c and
+ *  character.c
+ */
 
 #ifdef DEBUG
 
@@ -195,6 +242,26 @@ sprite_animator_t* ani_porc;
     gl(__VA_ARGS__);
 #endif
 
+typedef struct bina_t
+{
+    /**
+     * Current camera of the game.
+     */
+    /* camera_t camera; */
+
+    /**
+     * Current scene loaded and present on the screen.
+     *
+     * A scene, for now, is composed of the background image and an associated
+     * scale map which serves to compute the scale of object depending on its
+     * position on the image.
+     */
+    scene_t* scene;
+} bina_t;
+
+
+bina_t game;
+
 /**
  * Initalization of program.
  *
@@ -211,22 +278,6 @@ void bina_init(int width, int height);
  * Perhaps code or callback can vary depending on devices.
  */
 void bina_end();
-
-/**
- * Loads the background into the game.
- *
- * The background in pretty important because it defines the size of the
- * biggest element that will be drawn to the viewport.
- * This will set the default size for smaller sprites.
- *
- * @param filepath The file path of the background to load.
- */
-void bina_load_background(const char* filepath);
-
-/**
- * Loads Porc Gerard into the scene.
- */
-void bina_load_porc();
 
 /**
  * Animate porc on the screen when clicking or tapping.
@@ -264,9 +315,3 @@ float main_get_time_elapsed();
  * @param s An OpenGL enum we want to print. For example GL_EXTENSIONS.
  */
 void print_gl_string(const char* name, GLenum s);
-
-/**
- * Temporary animation function to move random sprites.
- */
-void bina_animate_demo_sprite(sprite_t* sprite, sprite_animator_t** animator,
-                              float elapsed);

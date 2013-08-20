@@ -16,7 +16,7 @@
 /**
  * Initializes the render with viewport dimensions specified.
  */
-void renderer_init(camera_viewport_t* viewport);
+void renderer_init();
 
 /**
  * Pre-rendering function.
