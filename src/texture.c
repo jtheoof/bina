@@ -18,7 +18,7 @@ le_short(unsigned char *bytes)
 }
 
 void
-texture_read_png_memory(png_structp pngp, png_bytep bytep, png_size_t size)
+texture_png_read_memory(png_structp pngp, png_bytep bytep, png_size_t size)
 {
 
     memory_t* m = (memory_t*) png_get_io_ptr(pngp);
@@ -27,7 +27,7 @@ texture_read_png_memory(png_structp pngp, png_bytep bytep, png_size_t size)
 }
 
 int
-texture_load_png(memory_t* memory, texture_t* texture)
+texture_png_load(memory_t* memory, texture_t* texture)
 {
     png_structp png_ptr = NULL;
     png_infop info_ptr = NULL;
@@ -77,7 +77,7 @@ texture_load_png(memory_t* memory, texture_t* texture)
     }
 
     /* Set up our custom reading function useful for multi device loading. */
-    png_set_read_fn(png_ptr, (void*) memory, texture_read_png_memory);
+    png_set_read_fn(png_ptr, (void*) memory, texture_png_read_memory);
 
     /* If we have already
      * read some of the signature */
@@ -87,31 +87,31 @@ texture_load_png(memory_t* memory, texture_t* texture)
     png_read_info(png_ptr, info_ptr);
 
     /* Get PNG bit_depth */
-	bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+    bit_depth = png_get_bit_depth(png_ptr, info_ptr);
 
     /* Get PNG color type */
-	color_type = png_get_color_type(png_ptr, info_ptr);
+    color_type = png_get_color_type(png_ptr, info_ptr);
 
     /* Now that we know more about the PNG we can set a few attributes. */
-	if (color_type == PNG_COLOR_TYPE_PALETTE
+    if (color_type == PNG_COLOR_TYPE_PALETTE
     ||  png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)
     ||  (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8))
     {
         png_set_expand(png_ptr);
     }
 
-	if (bit_depth == 16) {
+    if (bit_depth == 16) {
         png_set_strip_16(png_ptr);
     }
 
-	if (color_type == PNG_COLOR_TYPE_GRAY
+    if (color_type == PNG_COLOR_TYPE_GRAY
     ||  color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
     {
         png_set_gray_to_rgb(png_ptr);
     }
 
     /* Update that info to the struct and info pointers. */
-	png_read_update_info(png_ptr, info_ptr);
+    png_read_update_info(png_ptr, info_ptr);
 
     /* Get header info (width, height, bit depth, color type and interlace) */
     png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
@@ -134,21 +134,21 @@ texture_load_png(memory_t* memory, texture_t* texture)
       case PNG_COLOR_TYPE_GRAY_ALPHA:
         texture->byte    = 2;
         texture->iformat = GL_LUMINANCE_ALPHA;
-        texture->format	 = GL_LUMINANCE_ALPHA;
+        texture->format     = GL_LUMINANCE_ALPHA;
         texture->alpha   = 1;
         break;
 
       case PNG_COLOR_TYPE_RGB:
-        texture->byte	 = 3;
+        texture->byte     = 3;
         texture->iformat = GL_RGB;
-        texture->format	 = GL_RGB;
+        texture->format     = GL_RGB;
         texture->alpha   = 0;
         break;
 
       case PNG_COLOR_TYPE_RGB_ALPHA:
         texture->byte    = 4;
         texture->iformat = GL_RGBA;
-        texture->format	 = GL_RGBA;
+        texture->format     = GL_RGBA;
         texture->alpha   = 1;
         break;
     }
@@ -294,7 +294,7 @@ texture_load_tga(const char *filename,
         return 1;
     }
 
-    LOGD("Loaded: %s width: %d height: %d", filename, *width, *height);
+    LOGD("tga: %s loaded - width: %d height: %d", filename, *width, *height);
 
     return 0;
 }
@@ -307,7 +307,7 @@ texture_create(const char* name, const short keep)
     texture = (texture_t*) malloc(sizeof(texture_t));
 
     if (!texture) {
-        LOGE("Not enough memory to create texture: %s", name);
+        LOGE("not enough memory to create texture: %s", name);
         goto error;
     }
 
@@ -317,7 +317,7 @@ texture_create(const char* name, const short keep)
     texture->pixels = NULL;
 
     if (texture_load(name, keep, texture)) {
-        LOGE("An error occured while loading the texture");
+        LOGE("an error occured while loading the texture");
         goto error;
     }
 
@@ -439,7 +439,7 @@ texture_load(const char* name, const short keep, texture_t* texture)
 
     if (!strcmp(ext, "png")) {
         memory = memory_create(name); /* Load texture into memory */
-        err = texture_load_png(memory, texture);
+        err = texture_png_load(memory, texture);
     } else if (!strcmp(ext, "tga")) {
         LOGE("Extension tga need some work with texture");
     } else {
@@ -477,15 +477,15 @@ texture_gl_create(texture_t* texture)
 
     GL_CHECK(glBindTexture, texture->target, texture->id);
 
-	switch (texture->byte) {
-		case 1:
+    switch (texture->byte) {
+        case 1:
             glPixelStorei(GL_PACK_ALIGNMENT, 1);
             break;
-		case 2:
+        case 2:
             glPixelStorei(GL_PACK_ALIGNMENT, 2);
             break;
-		case 3:
-		case 4:
+        case 3:
+        case 4:
             glPixelStorei(GL_PACK_ALIGNMENT, 4);
             break;
     }

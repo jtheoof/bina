@@ -256,7 +256,7 @@ int texture_load(const char* name, const short keep, texture_t* texture);
  * OpenGL.
  * @return 0 if call is successful, an error code otherwise.
  */
-int texture_load_png(memory_t* memory, texture_t* texture);
+int texture_png_load(memory_t* memory, texture_t* texture);
 
 /**
  * Reads a PNG file from memory.
@@ -268,7 +268,7 @@ int texture_load_png(memory_t* memory, texture_t* texture);
  * read.
  * @param size The number of bytes to read.
  */
-void texture_read_png_memory(png_structp pngp, png_bytep bytep,
+void texture_png_read_memory(png_structp pngp, png_bytep bytep,
                              png_size_t size);
 
 /**
