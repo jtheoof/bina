@@ -13,6 +13,10 @@ bina_SOURCES = \
     texture.c   \
     utils.c
 
+if ENABLE_S3TC
+    bina_SOURCES += tc_s3tc.c
+endif
+
 bina_LDADD = \
     $(GL_LIBS)   \
     $(GLU_LIBS)  \

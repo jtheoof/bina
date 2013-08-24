@@ -259,6 +259,16 @@ int texture_load(const char* name, const short keep, texture_t* texture);
 int texture_png_load(memory_t* memory, texture_t* texture);
 
 /**
+ * Loads a DDS file (S3TC must be enabled).
+ *
+ * @param memory The original object loaded from assets in its original
+ * format.
+ * @param texture The texture object that will contain the RAW data used by
+ * OpenGL.
+ */
+void texture_dds_load(memory_t* memory, texture_t* texture);
+
+/**
  * Reads a PNG file from memory.
  *
  * This is the callback from png_set_read_fn and used to read the PNG image.

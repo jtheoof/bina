@@ -212,6 +212,17 @@ error:
 
 #endif /* HAVE_PNG_H */
 
+void
+texture_dds_load(memory_t* memory, texture_t* texture)
+{
+#ifdef ENABLE_S3TC
+#include "tc_s3tc.h"
+    s3tc_dds_load(memory->buffer, memory->size, texture);
+#else
+    LOGE("s3tc support must be enabled to load dds files");
+#endif
+}
+
 /* TODO OpenGL external format must be: GL_BGR
  *      OpenGL internal format must be: GL_RGB8
  */
@@ -437,13 +448,25 @@ texture_load(const char* name, const short keep, texture_t* texture)
 
     get_file_extension(name, ext);
 
+    /* Load asset in memory */
+    memory = memory_create(name);
+    if (!memory) {
+        LOGE("object: %s was not loaded into memory", name);
+        return -1;
+    }
+
     if (!strcmp(ext, "png")) {
-        memory = memory_create(name); /* Load texture into memory */
         err = texture_png_load(memory, texture);
     } else if (!strcmp(ext, "tga")) {
         LOGE("Extension tga need some work with texture");
+        memory_delete(&memory);
+    } else if (!strcmp(ext, "dds")) {
+#ifdef ENABLE_S3TC
+        texture_dds_load(memory, texture);
+#endif
     } else {
         LOGE("Extension: %s not implemented for texturing", ext);
+        memory_delete(&memory);
     }
 
     /* The object has been loaded in memory and put into texture->pixels so
