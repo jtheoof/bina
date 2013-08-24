@@ -116,26 +116,28 @@ static void
 load_dds(scene_t* scene)
 {
     vec2_t pos, off, dim;
-    texture_t* dds_tex;
-    sprite_t*  dds_spr;
+    /* texture_t* dds_tex; */
+    /* sprite_t*  dds_spr; */
     int        dds_prg;
 
     pos.x = pos.y = 0.0f;
     off.x = off.y = 0.0f;
 
-    scene->width  = 2.0f;
-    scene->height = 2.0f;
-
     dim.x = scene->width;
     dim.y = scene->height;
 
-    dds_tex = texture_create("scenes/testDDS/dxt1.background.rgb.dds", 0);
-    /* dds_tex = texture_create("scenes/testDDS/earth.dds", 0); */
     dds_prg = shader_create_program(PROGRAM_BACKGROUND);
-    dds_spr = sprite_create(dds_tex, dds_prg, pos, off, dim, 1.0f);
 
-    scene->background = dds_spr;
-    scene->bg_prog    = dds_prg;
+    scene->demo_sprites  = (sprite_t**)  calloc(DEMO_SPRITES, sizeof(sprite_t*));
+    scene->demo_textures = (texture_t**) calloc(DEMO_SPRITES, sizeof(texture_t*));
+
+    for (int i = 0; i < DEMO_SPRITES; i++) {
+        scene->demo_textures[i] = texture_create("animations/perso1/perso1_stopAction1_camSetup_backCam_019.dds", 0, TEXTURE_FILTER_1X);
+        scene->demo_sprites[i]  = sprite_create(scene->demo_textures[i], dds_prg, pos, off, dim, 1.0f);
+    }
+
+    scene->background = NULL;
+    scene->bg_prog    = 0;
     scene->ch_prog    = 0;
     scene->character  = NULL;
     scene->smap       = NULL;
@@ -163,9 +165,16 @@ scene_load(const char* name, const float minsize, const float maxsize)
     if (0) {
         load_scale_map(name, minsize, maxsize, scene);
         load_sprites(name, scene);
+        load_dds(scene);
     }
 
-    load_dds(scene);
+    /* TODO
+     * For demo purposes, scene is dimensions should come from scale map.
+     */
+    scene->width  = 2.0f;
+    scene->height = 2.0f;
+
+    load_background(name, scene);
 
     if (scene->character) {
         scene->character->scale = maxsize;
@@ -203,6 +212,13 @@ scene_unload(scene_t** scene)
             /* texture_delete(&tmp->character->texture); */
             sprite_delete(&tmp->character);
         }
+        for (int i = 0; i < DEMO_SPRITES; i++) {
+            texture_delete(&tmp->demo_textures[i]);
+            sprite_delete(&tmp->demo_sprites[i]);
+        }
+        free(tmp->demo_sprites);
+        free(tmp->demo_textures);
+
         shader_delete_program(tmp->bg_prog);
         shader_delete_program(tmp->ch_prog);
         free(tmp);
@@ -275,6 +291,12 @@ scene_render(scene_t* scene)
         sprite_compute_mvp(scene->character, &proj);
         sprite_render(scene->character);
     }
+
+    for (int i = 0; i < DEMO_SPRITES; i++) {
+        /* sprite_compute_mvp(scene->demo_sprites[i], &proj); */
+        /* sprite_render(scene->demo_sprites[i]); */
+    }
+
 }
 
 void

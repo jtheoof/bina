@@ -114,6 +114,11 @@ typedef struct scene_t
      */
     short is_ready;
 
+#define DEMO_SPRITES 0
+
+    sprite_t**  demo_sprites;
+    texture_t** demo_textures;
+
 } scene_t;
 
 /**

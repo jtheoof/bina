@@ -11,31 +11,26 @@
 #include "scene.h"
 
 void
-print_gl_string(const char* name, GLenum s)
-{
-    LOGI("GL %s = %s\n", name, glGetString(s));
-}
-
-void
 game_init(game_t* game, int width, int height)
 {
     camera_win_info_t viewport;
 
+    /* Init randomizer. */
     srand(time(0));
 
+    /* Set up the viewport. */
     viewport.x = 0;
     viewport.y = 0;
     viewport.width = width;
     viewport.height = height;
 
-    /* Set up the viewport. */
     camera_set_viewport(&viewport);
 
     /* Initialize renderer to get OpenGL extensions. */
     renderer_init();
 
-    /* Loads the scene */
-    game->scene = scene_load("testDDS", 0.25f, 0.75f);
+    /* Load the scene. */
+    game->scene = scene_load("bedroomArtist", 0.25f, 0.75f);
 }
 
 void

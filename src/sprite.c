@@ -52,9 +52,9 @@ static struct sprite_module_info m = {
         { SPRITE_CAM_TYPE_LEFT,  "leftCam",  { -1.0f,  0.0f } },
     },
     {
-        { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 30 },
-        { SPRITE_ANIM_STOPACTION1, "stopAction1", 30 },
-        { SPRITE_ANIM_WALKCYCLE,   "WalkCycle",   21 },
+        { SPRITE_ANIM_NEUTRALPOSE, "neutralPose", 1 },
+        { SPRITE_ANIM_STOPACTION1, "stopAction1", 1 },
+        { SPRITE_ANIM_WALKCYCLE,   "WalkCycle",   1 },
     },
 };
 
