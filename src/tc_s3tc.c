@@ -189,7 +189,7 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
     LOGD("loading dds buffer with size: %d", size);
 
     unsigned short alpha = 0;
-    unsigned int   nmipmap, bufsize, bsize, i;
+    unsigned int   nmipmap, bufsize, blksize, i;
     unsigned long  width, height;
 
     unsigned int       offset;
@@ -212,21 +212,21 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
             } else {
                 texture->ogl.iformat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
             }
-            bsize = 8;
+            blksize = 8;
             break;
           case '3':
             texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
             if (!alpha) {
                 LOGE("watch out!! alpha should be 1!!!");
             }
-            bsize = 16;
+            blksize = 16;
             break;
           case '5':
             texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
             if (!alpha) {
                 LOGE("watch out!! alpha should be 1!!!");
             }
-            bsize = 16;
+            blksize = 16;
             break;
           default:
             break;
@@ -244,7 +244,7 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
     }
 
     for (i = 0; (i < nmipmap) && ((width != 0) || (height != 0)); i++) {
-        bufsize += ((width + 3) / 4) * ((height + 3) / 4) * bsize;
+        bufsize += ((width + 3) / 4) * ((height + 3) / 4) * blksize;
 
         if ((i == 0) && (bufsize != header->pitch_or_linear_size)) {
             LOGE("buffer size in invalid for first mipmap");
@@ -270,12 +270,12 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
     texture->ogl.type   = 0;             /* do not care about texel type */
     texture->ogl.unit   = 0;
 
-    texture->width             = width;
-    texture->height            = height;
-    texture->size              = size;
+    texture->width             = header->width;
+    texture->height            = header->height;
+    texture->size              = bufsize;
     texture->alpha             = alpha;
     texture->compression       = 1;       /* DDS is a compressed format */
-    texture->compression_bsize = bsize;   /* compression block size */
+    texture->compression_bsize = blksize; /* compression block size */
     texture->nmipmap           = nmipmap;
 
     return;
