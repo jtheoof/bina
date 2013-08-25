@@ -557,9 +557,9 @@ sprite_render(sprite_t* sprite)
     }
 
     if (texture) {
-        glActiveTexture(GL_TEXTURE0 + texture->unit);
-        glBindTexture(texture->target, texture->id);
-        glUniform1i(sprite->texture_uniform, texture->unit);
+        glActiveTexture(GL_TEXTURE0 + texture->ogl.unit);
+        glBindTexture(texture->ogl.target, texture->ogl.tid);
+        glUniform1i(sprite->texture_uniform, texture->ogl.unit);
     }
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -569,7 +569,7 @@ sprite_render(sprite_t* sprite)
     glUseProgram(0);
 
     if (texture) {
-        glBindTexture(texture->target, 0);
+        glBindTexture(texture->ogl.target, 0);
     }
 }
 

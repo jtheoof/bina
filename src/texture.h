@@ -18,6 +18,80 @@
 
 #include "memory.h"
 
+typedef struct texture_ogl_t {
+    /**
+     * The OpenGL (ES) texture id.
+     */
+    unsigned int tid;
+
+    /**
+     * The target of the texture.
+     *
+     * Can be:
+     *   - GL_TEXTURE_2D
+     *   - GL_TEXTURE_CUBE_MAP
+     * Default: GL_TEXTURE_2D
+     */
+    unsigned int target;
+
+    /**
+     * Specifies which texture unit to make active.
+     *
+     * The number of texture units is implementation dependent, but must be at
+     * least 8. texture must be one of GL_TEXTUREi, where i ranges from 0 to
+     * (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS - 1). The initial value is
+     * GL_TEXTURE0.
+     */
+    unsigned int unit;
+
+    /**
+     * The internal format of the texture.
+     *
+     * Can be:
+     *   - GL_RGB
+     *   - GL_RGBA
+     *   - GL_LUMINANCE
+     *   - GL_ALPHA
+     *   - GL_LUMINANCE_ALPHA
+     *
+     * Or one of the multiple compressed data value, for example:
+     *  - GL_COMPRESSED_RGB_S3TC_DXT1_EXT
+     *  - GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
+     *  - GL_COMPRESSED_RGBA_S3TC_DXT3_EXT
+     *
+     * The texture loader is responsible for setting this internal format
+     * correcly. For example see how it's done in S3TC texture compression
+     * loader.
+     */
+    unsigned int iformat;
+
+    /**
+     * The format of the texture.
+     *
+     * Can be:
+     *   - GL_RGB
+     *   - GL_RGBA
+     *   - GL_LUMINANCE
+     *   - GL_ALPHA
+     *   - GL_LUMINANCE_ALPHA
+     */
+    unsigned int format;
+
+    /**
+     * The type of texel to use for this texture.
+     *
+     * Can be:
+     *   - GL_UNSIGNED_BYTE
+     *   - GL_UNSIGNED_SHORT_5_6_5
+     *   - GL_UNSIGNED_SHORT_4_4_4_4
+     *   - GL_UNSIGNED_SHORT_5_5_5_1
+     * <br>
+     * Default: GL_UNSIGNED_BYTE
+     */
+    unsigned int type;
+
+} texture_ogl_t;
+
 /* TODO Scale maps should have their own loading process perhaps */
 
 /**
@@ -39,11 +113,6 @@ typedef struct texture_t
      * but perhaps later this object can be useful.
      */
     memory_t* image;
-
-    /**
-     * The OpenGL (ES) texture id.
-     */
-    unsigned int id;
 
     /**
      * The texture width.
@@ -75,71 +144,11 @@ typedef struct texture_t
     unsigned int size;
 
     /**
-     * The target of the texture.
-     *
-     * Can be:
-     *   - GL_TEXTURE_2D
-     *   - GL_TEXTURE_CUBE_MAP
-     * Default: GL_TEXTURE_2D
-     */
-    unsigned int target;
-
-    /**
-     * Specifies which texture unit to make active.
-     *
-     * The number of texture units is implementation dependent, but must be at
-     * least 8. texture must be one of GL_TEXTUREi, where i ranges from 0 to
-     * (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS - 1). The initial value is
-     * GL_TEXTURE0.
-     */
-    unsigned int unit;
-
-    /**
-     * The internal format of the texture.
-     *
-     * Can be:
-     *   - GL_RGB
-     *   - GL_RGBA
-     *   - GL_LUMINANCE
-     *   - GL_ALPHA
-     *   - GL_LUMINANCE_ALPHA
-     */
-    unsigned int iformat;
-
-    /**
-     * The format of the texture.
-     *
-     * Can be:
-     *   - GL_RGB
-     *   - GL_RGBA
-     *   - GL_LUMINANCE
-     *   - GL_ALPHA
-     *   - GL_LUMINANCE_ALPHA
-     */
-    unsigned int format;
-
-    /**
-     * The type of texel to use for this texture.
-     *
-     * Can be:
-     *   - GL_UNSIGNED_BYTE
-     *   - GL_UNSIGNED_SHORT_5_6_5
-     *   - GL_UNSIGNED_SHORT_4_4_4_4
-     *   - GL_UNSIGNED_SHORT_5_5_5_1
-     * <br>
-     * Default: GL_UNSIGNED_BYTE
-     */
-    unsigned int type;
-
-    /**
      * The raw texel array.
      *
      * This is what #format member describes.
      * It is used by OpenGL to properly read the array of data.
      * For example in TGA format it will be pure raw RGB data.
-     * TODO Perphaps it's possible to free the memory after the data has
-     * been put to GPU through GlTexImage2d. This needs to be checked, it
-     * would free some memory.
      */
     unsigned char* pixels;
 
@@ -156,6 +165,11 @@ typedef struct texture_t
      * <em>Not sure if it will be used at all.</em>
      */
     unsigned int compression;
+
+    /**
+     * OpenGL specifics.
+     */
+    texture_ogl_t ogl;
 
 } texture_t;
 

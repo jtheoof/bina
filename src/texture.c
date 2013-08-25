@@ -125,35 +125,35 @@ texture_png_load(memory_t* memory, texture_t* texture)
 
     switch (color_type) {
       case PNG_COLOR_TYPE_GRAY:
-        texture->byte    = 1;
-        texture->iformat = GL_LUMINANCE;
-        texture->format  = GL_LUMINANCE;
-        texture->alpha   = 0;
+        texture->byte        = 1;
+        texture->alpha       = 0;
+        texture->ogl.iformat = GL_LUMINANCE;
+        texture->ogl.format  = GL_LUMINANCE;
         break;
 
       case PNG_COLOR_TYPE_GRAY_ALPHA:
-        texture->byte    = 2;
-        texture->iformat = GL_LUMINANCE_ALPHA;
-        texture->format     = GL_LUMINANCE_ALPHA;
-        texture->alpha   = 1;
+        texture->byte        = 2;
+        texture->alpha       = 1;
+        texture->ogl.iformat = GL_LUMINANCE_ALPHA;
+        texture->ogl.format  = GL_LUMINANCE_ALPHA;
         break;
 
       case PNG_COLOR_TYPE_RGB:
-        texture->byte     = 3;
-        texture->iformat = GL_RGB;
-        texture->format     = GL_RGB;
-        texture->alpha   = 0;
+        texture->byte        = 3;
+        texture->alpha       = 0;
+        texture->ogl.iformat = GL_RGB;
+        texture->ogl.format  = GL_RGB;
         break;
 
       case PNG_COLOR_TYPE_RGB_ALPHA:
-        texture->byte    = 4;
-        texture->iformat = GL_RGBA;
-        texture->format     = GL_RGBA;
-        texture->alpha   = 1;
+        texture->byte        = 4;
+        texture->alpha       = 1;
+        texture->ogl.iformat = GL_RGBA;
+        texture->ogl.format  = GL_RGBA;
         break;
     }
 
-    texture->type = GL_UNSIGNED_BYTE;
+    texture->ogl.type = GL_UNSIGNED_BYTE;
 
     texture->size   = row_bytes * height;
     texture->pixels = (unsigned char*) malloc(texture->size *
@@ -324,19 +324,18 @@ texture_create(const char* name, const short keep)
 
     strncpy(texture->name, name, MAX_CHAR);
 
-    texture->id     = 0;
-    texture->pixels = NULL;
+    texture->pixels  = NULL;
 
     if (texture_load(name, keep, texture)) {
         LOGE("an error occured while loading the texture");
         goto error;
     }
 
-    /* TODO Make this more flexible */
-    texture->target  = GL_TEXTURE_2D;
-    texture->iformat = texture->alpha ? GL_RGBA : GL_RGB;
-    texture->format  = texture->iformat;
-    texture->unit    = 0;
+    texture->ogl.tid     = 0;
+    texture->ogl.target  = GL_TEXTURE_2D;
+    texture->ogl.unit    = 0;
+    texture->ogl.iformat = texture->alpha ? GL_RGBA : GL_RGB;
+    texture->ogl.format  = texture->ogl.iformat;
 
     texture_gl_create(texture);
 
@@ -488,17 +487,17 @@ texture_gl_create(texture_t* texture)
 {
     int err;
 
-    if (texture->id) {
+    if (texture->ogl.tid) {
         err = texture_gl_delete(texture);
         if (err) {
             return err;
         }
     }
 
-    GL_CHECK(glGenTextures, 1, &texture->id);
-    LOGD("Texture has id: %d", texture->id);
+    GL_CHECK(glGenTextures, 1, &texture->ogl.tid);
+    LOGD("Texture has id: %d", texture->ogl.tid);
 
-    GL_CHECK(glBindTexture, texture->target, texture->id);
+    GL_CHECK(glBindTexture, texture->ogl.target, texture->ogl.tid);
 
     switch (texture->byte) {
         case 1:
@@ -513,22 +512,22 @@ texture_gl_create(texture_t* texture)
             break;
     }
 
-    GL_CHECK(glTexParameteri, texture->target,
+    GL_CHECK(glTexParameteri, texture->ogl.target,
              GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    GL_CHECK(glTexParameteri, texture->target,
+    GL_CHECK(glTexParameteri, texture->ogl.target,
              GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    GL_CHECK(glTexParameteri, texture->target,
+    GL_CHECK(glTexParameteri, texture->ogl.target,
              GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    GL_CHECK(glTexParameteri, texture->target,
+    GL_CHECK(glTexParameteri, texture->ogl.target,
              GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    GL_CHECK(glTexImage2D, texture->target, 0,
-             texture->iformat,
+    GL_CHECK(glTexImage2D, texture->ogl.target, 0,
+             texture->ogl.iformat,
              texture->width, texture->height, 0,
-             texture->format, texture->type,
+             texture->ogl.format, texture->ogl.type,
              texture->pixels);
 
-    GL_CHECK(glBindTexture, texture->target, 0);
+    GL_CHECK(glBindTexture, texture->ogl.target, 0);
 
     return 0;
 }
@@ -536,8 +535,8 @@ texture_gl_create(texture_t* texture)
 int
 texture_gl_delete(texture_t* texture)
 {
-    if (texture->id) {
-        GL_CHECK(glDeleteTextures, 1, &texture->id);
+    if (texture->ogl.tid) {
+        GL_CHECK(glDeleteTextures, 1, &texture->ogl.tid);
     }
 
     return 0;
