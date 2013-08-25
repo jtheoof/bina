@@ -153,11 +153,18 @@ texture_png_load(memory_t* memory, texture_t* texture)
         break;
     }
 
-    texture->ogl.type = GL_UNSIGNED_BYTE;
+    /* Default OpenGL properties for PNG texture. */
+    texture->ogl.tid    = 0;
+    texture->ogl.target = GL_TEXTURE_2D;
+    texture->ogl.type   = GL_UNSIGNED_BYTE;
+    texture->ogl.unit   = 0;
 
-    texture->size   = row_bytes * height;
-    texture->pixels = (unsigned char*) malloc(texture->size *
-                                              sizeof(unsigned char));
+    texture->nmipmap     = 0; /* PNG does not have mipmaps */
+    texture->compression = 0; /* PNG is loaded as RAW pixels */
+
+    texture->size        = row_bytes * height;
+    texture->pixels      = (unsigned char*) malloc(texture->size *
+                                                   sizeof(unsigned char));
     if (!texture->pixels) {
         LOGE("Not enough memory to create pixels for texture");
         goto error;
@@ -217,7 +224,19 @@ texture_dds_load(memory_t* memory, texture_t* texture)
 {
 #ifdef ENABLE_S3TC
 #include "tc_s3tc.h"
-    s3tc_dds_load(memory->buffer, memory->size, texture);
+    static short s3tc_check = -1;
+
+    if (s3tc_check == -1) {
+        s3tc_check = s3tc_check_extension();
+
+        if (!s3tc_check) {
+            LOGE("s3tc is not supported on this hardware");
+        }
+    }
+
+    if (s3tc_check) {
+        s3tc_dds_load(memory->buffer, memory->size, texture);
+    }
 #else
     LOGE("s3tc support must be enabled to load dds files");
 #endif
@@ -315,7 +334,7 @@ texture_create(const char* name, const short keep)
 {
     texture_t* texture;
 
-    texture = (texture_t*) malloc(sizeof(texture_t));
+    texture = (texture_t*) calloc(1, sizeof(texture_t));
 
     if (!texture) {
         LOGE("not enough memory to create texture: %s", name);
@@ -330,12 +349,6 @@ texture_create(const char* name, const short keep)
         LOGE("an error occured while loading the texture");
         goto error;
     }
-
-    texture->ogl.tid     = 0;
-    texture->ogl.target  = GL_TEXTURE_2D;
-    texture->ogl.unit    = 0;
-    texture->ogl.iformat = texture->alpha ? GL_RGBA : GL_RGB;
-    texture->ogl.format  = texture->ogl.iformat;
 
     texture_gl_create(texture);
 
@@ -451,6 +464,7 @@ texture_load(const char* name, const short keep, texture_t* texture)
     memory = memory_create(name);
     if (!memory) {
         LOGE("object: %s was not loaded into memory", name);
+        texture->image = NULL;
         return -1;
     }
 
@@ -460,9 +474,7 @@ texture_load(const char* name, const short keep, texture_t* texture)
         LOGE("Extension tga need some work with texture");
         memory_delete(&memory);
     } else if (!strcmp(ext, "dds")) {
-#ifdef ENABLE_S3TC
         texture_dds_load(memory, texture);
-#endif
     } else {
         LOGE("Extension: %s not implemented for texturing", ext);
         memory_delete(&memory);
@@ -482,6 +494,7 @@ texture_load(const char* name, const short keep, texture_t* texture)
     return err;
 }
 
+/* TODO Add custom flags and filters like it's done in gfx */
 int
 texture_gl_create(texture_t* texture)
 {
@@ -499,17 +512,19 @@ texture_gl_create(texture_t* texture)
 
     GL_CHECK(glBindTexture, texture->ogl.target, texture->ogl.tid);
 
-    switch (texture->byte) {
-        case 1:
+    if (!texture->compression) {
+        switch (texture->byte) {
+          case 1:
             glPixelStorei(GL_PACK_ALIGNMENT, 1);
             break;
-        case 2:
+          case 2:
             glPixelStorei(GL_PACK_ALIGNMENT, 2);
             break;
-        case 3:
-        case 4:
+          case 3:
+          case 4:
             glPixelStorei(GL_PACK_ALIGNMENT, 4);
             break;
+        }
     }
 
     GL_CHECK(glTexParameteri, texture->ogl.target,
@@ -521,11 +536,37 @@ texture_gl_create(texture_t* texture)
     GL_CHECK(glTexParameteri, texture->ogl.target,
              GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    GL_CHECK(glTexImage2D, texture->ogl.target, 0,
-             texture->ogl.iformat,
-             texture->width, texture->height, 0,
-             texture->ogl.format, texture->ogl.type,
-             texture->pixels);
+    if (texture->compression) {
+        unsigned int i      = 0,
+                     width  = texture->width,
+                     height = texture->height,
+                     bsize  = texture->compression_bsize,
+                     size   = 0,
+                     offset = 0;
+
+        if (!texture->nmipmap) {
+            LOGE("texture: %d has missing mipmaps", texture->ogl.tid);
+        } else {
+            for (i = 0; i < texture->nmipmap; i++) {
+                size = ((width + 3) >> 2) * ((height + 3) >> 2) * bsize;
+
+                GL_CHECK(glCompressedTexImage2D, texture->ogl.target, i,
+                         texture->ogl.iformat, width, height, 0, size,
+                         &texture->pixels[offset]);
+
+                if ((width  >>= 1) == 0) width  = 1;
+                if ((height >>= 1) == 0) height = 1;
+
+                offset += size;
+            }
+        }
+    } else {
+        GL_CHECK(glTexImage2D, texture->ogl.target, 0,
+                 texture->ogl.iformat,
+                 texture->width, texture->height, 0,
+                 texture->ogl.format, texture->ogl.type,
+                 texture->pixels);
+    }
 
     GL_CHECK(glBindTexture, texture->ogl.target, 0);
 

@@ -153,18 +153,19 @@ typedef struct texture_t
     unsigned char* pixels;
 
     /**
-     * The number of mipmaps (PVRTC only).
-     *
-     * <em>Not sure if it will be used at all.</em>
+     * The number of mipmaps (if any).
      */
     unsigned int nmipmap;
 
     /**
      * The compression type.
-     *
-     * <em>Not sure if it will be used at all.</em>
      */
     unsigned int compression;
+
+    /**
+     * The compression block size if compression is used.
+     */
+    unsigned int compression_bsize;
 
     /**
      * OpenGL specifics.

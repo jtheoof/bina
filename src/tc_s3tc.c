@@ -40,10 +40,17 @@
 #define DDSCAPS2_CUBEMAP_NEGATIVEZ 0x8000
 #define DDSCAPS2_VOLUME            0x200000
 
+#define DDPF_ALPHAPIXELS 0x1
+#define DDPF_ALPHA       0x2
+#define DDPF_FOURCC      0x4
+#define DDPF_RGB         0x40
+#define DDPF_YUV         0x200
+#define DDPF_LUMINANCE   0x20000
+
 typedef struct dds_pixel_format_t {
     unsigned int size;
     unsigned int flags;
-    unsigned int four_cc;
+    char         four_cc[4];
     unsigned int rgb_bit_count;
     unsigned int r_bit_mask;
     unsigned int g_bit_mask;
@@ -68,14 +75,40 @@ typedef struct dds_header_t {
     unsigned int       reserved2;
 } dds_header_t;
 
+/**
+ * Checks the presence of the s3tc extension in current hardware.
+ *
+ * @return 0 if hardware does not support EXT_texture_compression_s3tc.
+ */
+short
+s3tc_check_extension()
+{
+    const char* exts = (const char*) glGetString(GL_EXTENSIONS);
+    const char* s3tc = "EXT_texture_compression_s3tc"; 
+    const char* curs = strstr(exts, s3tc);
+
+    return (curs != NULL);
+}
+
+/**
+ * Loads a DDS file into a texture object previously allocated.
+ *
+ * @param buffer The binary buffer that contains the DDS file data.
+ * @param size The size of the buffer.
+ * @param texture The texture object returned properly set up.
+ */
 void
 s3tc_dds_load(const unsigned char* buffer, unsigned int size,
               texture_t* texture)
 {
     LOGD("Loading buffer with size: %d", size);
 
-    unsigned long level_size, width, height, pitch;
-    dds_header_t* header;
+    unsigned short alpha = 0;
+    unsigned int   caps, nmipmap, bufsize, bsize, i;
+    unsigned long  width, height;
+
+    dds_header_t*      header;
+    dds_pixel_format_t ddspf;
 
     if (size < 4) {
         LOGE("invalid dds file - size is too small");
@@ -90,6 +123,7 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
     buffer += 4;
 
     header = (dds_header_t *) buffer;
+    ddspf  = header->ddspf;
 
     if (header->size != sizeof(dds_header_t)) {
         LOGE("invalid dds file - invalid header size");
@@ -101,50 +135,113 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
     size -= sizeof(dds_header_t);
     buffer += sizeof(dds_header_t);
 
-    height = header->height;
-    width  = header->width;
+    if (ddspf.flags & DDPF_RGB) {
+        switch (ddspf.rgb_bit_count) {
+          default:
+            LOGE("invalid dds file - unsupported compressed format");
+        }
+    }
 
-    pitch = 0;
-    level_size = 0;
+    /* Check to see if texture has alpha. */
+    alpha = (ddspf.flags & DDPF_ALPHAPIXELS || ddspf.flags & DDPF_ALPHA);
+    caps  = header->caps;
 
-    /* if (header->ddspf.flags & 0x00000040) { */
-    /*     switch(header->ddspf.rgb_bit_count) { */
-    /*         case 32: */
-    /*             pitch = 4 * header->width; */
-    /*             /1* dds->format = URGBA32; *1/ */
-    /*             break; */
-    /*         default: */
-    /*             LOGE("invalid dds file - unsupported uncompressed format"); */
-    /*     } */
-    /* } else if (header->ddspf.flags & 0x00000004) { */
-    /*     switch (header->ddspf.four_cc[3]) { */
-    /*         case '1': */
-    /*             /1* dds->format = DXT1; *1/ */
-    /*             break; */
-    /*         case '2': */
-    /*             /1* dds->format = DXT2; *1/ */
-    /*             break; */
-    /*         case '3': */
-    /*             /1* dds->format = DXT3; *1/ */
-    /*             break; */
-    /*         case '4': */
-    /*             /1* dds->format = DXT4; *1/ */
-    /*             break; */
-    /*         case '5': */
-    /*             /1* dds->format = DXT5; *1/ */
-    /*             break; */
-    /*         default: */
-    /*             LOGE("invalid dds file - unsupported dds format"); */
-    /*             break; */
-    /*     } */
-    /* } else { */
-    /*     LOGE("unsupported dds flags: 0x%08X", header->ddspf.flags); */
-    /* } */
+    /* Check to see if texture has 'magic' DXTn. */
+    if (ddspf.flags & DDPF_FOURCC) {
+        switch (ddspf.four_cc[3]) {
+          case '1':
+            if (alpha) {
+                texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+            } else {
+                texture->ogl.iformat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+            }
+            bsize = 8;
+            break;
+          case '3':
+            texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+            if (!alpha) {
+                LOGE("watch out!! alpha should be 1!!!");
+            }
+            bsize = 16;
+            break;
+          case '5':
+            texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+            if (!alpha) {
+                LOGE("watch out!! alpha should be 1!!!");
+            }
+            bsize = 16;
+            break;
+          default:
+            LOGE("invalid dds file - %s is not supported", ddspf.four_cc);
+            break;
+        }
+    } else {
+        LOGE("unsupported dds flags: 0x%08X", ddspf.flags);
+    }
+
+    if (caps & DDSCAPS_COMPLEX) {
+        LOGE("unsupported dds caps: DDSCAPS_COMPLEX");
+    }
+    if (caps & DDSCAPS_MIPMAP) {
+        LOGE("unsupported dds caps: DDSCAPS_MIPMAP");
+    }
+    if (!caps & DDSCAPS_TEXTURE) {
+        LOGE("invalid dds file - dds caps should have DDSCAPS_TEXTURE");
+    }
+
+    height  = header->height;
+    width   = header->width;
+    nmipmap = header->mipmap_count;
+    bufsize = 0;
+
+    /* Force at least one mipmap for proper texture upload to GPU. */
+    if (nmipmap == 0) {
+        nmipmap = 1;
+    }
+
+    for (i = 0; (i < nmipmap) && ((width != 0) || (height != 0)); i++) {
+        bufsize += ((width + 3) / 4) * ((height + 3) / 4) * bsize;
+
+        if ((i == 0) && (bufsize != header->pitch_or_linear_size)) {
+            LOGE("buffer size in invalid for first mipmap");
+        }
+
+        if ((width /= 2) == 0) width = 1;
+        if ((height /= 2) == 0) height = 1;
+    }
+
+    /* Header has been parsed, allocating memory for rest of buffer. */
+    texture->pixels = (unsigned char*) malloc(bufsize * sizeof(unsigned char));
+
+    if (!texture->pixels) {
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        goto error;
+    }
+
+    memcpy(texture->pixels, buffer, bufsize);
+
+    /* Default OpenGL properties for DDS texture. */
+    texture->ogl.tid    = 0;
+    texture->ogl.target = GL_TEXTURE_2D; /* same as most file format */
+    texture->ogl.type   = 0;             /* do not care about texel type */
+    texture->ogl.unit   = 0;
+
+    texture->width             = width;
+    texture->height            = height;
+    texture->size              = size;
+    texture->alpha             = alpha;
+    texture->compression       = 1;       /* DDS is a compressed format */
+    texture->compression_bsize = bsize;   /* compression block size */
+    texture->nmipmap           = nmipmap;
 
     return;
 
 error:
-    return;
+
+    if (texture->pixels) {
+        free(texture->pixels);
+        texture->pixels = NULL;
+    }
 }
 
 #endif
