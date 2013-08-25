@@ -528,9 +528,9 @@ texture_gl_create(texture_t* texture)
     }
 
     GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+             GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+             GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     GL_CHECK(glTexParameteri, texture->ogl.target,
              GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     GL_CHECK(glTexParameteri, texture->ogl.target,
