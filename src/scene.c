@@ -97,7 +97,7 @@ load_dds(scene_t* scene)
     dim.x = scene->width;
     dim.y = scene->height;
 
-    dds_tex = texture_create("scenes/testDDS/dxt1.rgb.dds", 0);
+    dds_tex = texture_create("scenes/testDDS/dxt1.background.rgb.dds", 0);
     /* dds_tex = texture_create("scenes/testDDS/earth.dds", 0); */
     dds_prg = shader_create_program(PROGRAM_BACKGROUND);
     dds_spr = sprite_create(dds_tex, dds_prg, pos, off, dim, 1.0f);
