@@ -90,6 +90,91 @@ s3tc_check_extension()
     return (curs != NULL);
 }
 
+
+static short
+s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
+                     dds_header_t** dds_header, unsigned int* offset)
+{
+    unsigned int   caps;
+    unsigned int   remains = size;
+
+    dds_header_t* header;
+    dds_pixel_format_t ddspf;
+
+    if (size < 4) {
+        LOGE("invalid dds file - size is too small");
+        return GL_INVALID_VALUE;
+    }
+
+    if (strncmp((char *) buffer, DDS_MAGIC, 4)) {
+        LOGE("invalid dds file - missing magic");
+        return GL_INVALID_VALUE;
+    }
+
+    remains -= 4;
+    buffer  += 4;
+
+    header = (dds_header_t *) buffer;
+    ddspf  = header->ddspf;
+
+    if (header->size != sizeof(dds_header_t)) {
+        LOGE("invalid dds file - invalid header size");
+        return GL_INVALID_VALUE;
+    }
+    if (header->ddspf.size != sizeof(dds_pixel_format_t)) {
+        LOGE("invalid dds file - invalid pixel format size");
+        return GL_INVALID_VALUE;
+    }
+
+    remains -= sizeof(dds_header_t);
+    buffer  += sizeof(dds_header_t);
+
+    if (ddspf.flags & DDPF_RGB) {
+        switch (ddspf.rgb_bit_count) {
+          default:
+            LOGE("invalid dds file - unsupported compressed format");
+            return GL_INVALID_VALUE;
+        }
+    }
+
+    /* Get DDS file capabilities. */
+    caps  = header->caps;
+
+    /* Check to see if texture has 'magic' DXTn. */
+    if (ddspf.flags & DDPF_FOURCC) {
+        switch (ddspf.four_cc[3]) {
+          case '1':
+          case '3':
+          case '5':
+            break;
+          default:
+            LOGE("invalid dds file - %s is not supported", ddspf.four_cc);
+            return GL_INVALID_VALUE;
+        }
+    } else {
+        LOGE("unsupported dds flags: 0x%08X", ddspf.flags);
+        return GL_INVALID_VALUE;
+    }
+
+    if (caps & DDSCAPS_COMPLEX) {
+        LOGE("unsupported dds caps: DDSCAPS_COMPLEX");
+        return GL_INVALID_VALUE;
+    }
+    if (caps & DDSCAPS_MIPMAP) {
+        LOGE("unsupported dds caps: DDSCAPS_MIPMAP");
+        return GL_INVALID_VALUE;
+    }
+    if (!caps & DDSCAPS_TEXTURE) {
+        LOGE("invalid dds file - dds caps should have DDSCAPS_TEXTURE");
+        return GL_INVALID_VALUE;
+    }
+
+    *dds_header = header;
+    *offset     = size - remains;
+
+    return 0;
+}
+
 /**
  * Loads a DDS file into a texture object previously allocated.
  *
@@ -101,50 +186,22 @@ void
 s3tc_dds_load(const unsigned char* buffer, unsigned int size,
               texture_t* texture)
 {
-    LOGD("Loading buffer with size: %d", size);
+    LOGD("loading dds buffer with size: %d", size);
 
     unsigned short alpha = 0;
-    unsigned int   caps, nmipmap, bufsize, bsize, i;
+    unsigned int   nmipmap, bufsize, bsize, i;
     unsigned long  width, height;
 
+    unsigned int       offset;
     dds_header_t*      header;
     dds_pixel_format_t ddspf;
 
-    if (size < 4) {
-        LOGE("invalid dds file - size is too small");
-        goto error;
-    }
-    if (strncmp((char *) buffer, DDS_MAGIC, 4)) {
-        LOGE("invalid dds file - missing magic");
-        goto error;
-    }
+    if (s3tc_dds_read_header(buffer, size, &header, &offset)) return;
 
-    size -= 4;
-    buffer += 4;
-
-    header = (dds_header_t *) buffer;
-    ddspf  = header->ddspf;
-
-    if (header->size != sizeof(dds_header_t)) {
-        LOGE("invalid dds file - invalid header size");
-    }
-    if (header->ddspf.size != sizeof(dds_pixel_format_t)) {
-        LOGE("invalid dds file - invalid pixel format size");
-    }
-
-    size -= sizeof(dds_header_t);
-    buffer += sizeof(dds_header_t);
-
-    if (ddspf.flags & DDPF_RGB) {
-        switch (ddspf.rgb_bit_count) {
-          default:
-            LOGE("invalid dds file - unsupported compressed format");
-        }
-    }
+    ddspf = header->ddspf;
 
     /* Check to see if texture has alpha. */
     alpha = (ddspf.flags & DDPF_ALPHAPIXELS || ddspf.flags & DDPF_ALPHA);
-    caps  = header->caps;
 
     /* Check to see if texture has 'magic' DXTn. */
     if (ddspf.flags & DDPF_FOURCC) {
@@ -172,25 +229,12 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
             bsize = 16;
             break;
           default:
-            LOGE("invalid dds file - %s is not supported", ddspf.four_cc);
             break;
         }
-    } else {
-        LOGE("unsupported dds flags: 0x%08X", ddspf.flags);
     }
 
-    if (caps & DDSCAPS_COMPLEX) {
-        LOGE("unsupported dds caps: DDSCAPS_COMPLEX");
-    }
-    if (caps & DDSCAPS_MIPMAP) {
-        LOGE("unsupported dds caps: DDSCAPS_MIPMAP");
-    }
-    if (!caps & DDSCAPS_TEXTURE) {
-        LOGE("invalid dds file - dds caps should have DDSCAPS_TEXTURE");
-    }
-
-    height  = header->height;
     width   = header->width;
+    height  = header->height;
     nmipmap = header->mipmap_count;
     bufsize = 0;
 
@@ -218,7 +262,7 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
         goto error;
     }
 
-    memcpy(texture->pixels, buffer, bufsize);
+    memcpy(texture->pixels, &buffer[offset], bufsize);
 
     /* Default OpenGL properties for DDS texture. */
     texture->ogl.tid    = 0;
