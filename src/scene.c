@@ -80,6 +80,35 @@ load_sprites(const char* name, scene_t* scene)
     scene->character  = ch_spr;
 }
 
+static void
+load_dds(scene_t* scene)
+{
+    vec2_t pos, off, dim;
+    texture_t* dds_tex;
+    sprite_t*  dds_spr;
+    int        dds_prg;
+
+    pos.x = pos.y = 0.0f;
+    off.x = off.y = 0.0f;
+
+    scene->width  = 2.0f;
+    scene->height = 2.0f;
+
+    dim.x = scene->width;
+    dim.y = scene->height;
+
+    dds_tex = texture_create("scenes/testDDS/dxt1.rgb.dds", 0);
+    /* dds_tex = texture_create("scenes/testDDS/earth.dds", 0); */
+    dds_prg = shader_create_program(PROGRAM_BACKGROUND);
+    dds_spr = sprite_create(dds_tex, dds_prg, pos, off, dim, 1.0f);
+
+    scene->background = dds_spr;
+    scene->bg_prog    = dds_prg;
+    scene->ch_prog    = 0;
+    scene->character  = NULL;
+    scene->smap       = NULL;
+}
+
 scene_t*
 scene_load(const char* name, const float minsize, const float maxsize)
 {
@@ -99,8 +128,12 @@ scene_load(const char* name, const float minsize, const float maxsize)
 
     scene->is_ready = 0;
 
-    load_scale_map(name, minsize, maxsize, scene);
-    load_sprites(name, scene);
+    if (0) {
+        load_scale_map(name, minsize, maxsize, scene);
+        load_sprites(name, scene);
+    }
+
+    load_dds(scene);
 
     if (scene->character) {
         scene->character->scale = maxsize;
