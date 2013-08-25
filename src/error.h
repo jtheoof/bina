@@ -69,4 +69,5 @@ static const token_string_t gl_errors[] = {
    { GLU_INVALID_OPERATION, "invalid operation" },
 #endif
    { ~0, NULL } /* end of list indicator */
+
 };
