@@ -13,7 +13,7 @@ memory_create(const char* filepath)
     memory_t* memory = NULL;
     FILE* fd = NULL;
 
-    LOGD("Loading: %s into memory", filepath);
+    LOGD("loading: %s into memory", filepath);
 
     memory = (memory_t*) calloc(1, sizeof(memory_t));
     if (!memory) {
@@ -32,14 +32,14 @@ memory_create(const char* filepath)
     strncpy(memory->filepath, filepath, MAX_PATH);
 
     if (!asset_manager_g) {
-        LOGE("Cannot load: %s, AssetManager is not loaded", filepath);
+        LOGE("cannot load: %s - AssetManager is not loaded", filepath);
         goto android_error;
     }
 
     asset = AAssetManager_open(asset_manager_g, filepath,
                                AASSET_MODE_BUFFER);
     if (!asset) {
-        LOGE("Cannot load: %s, Could not found asset", filepath); 
+        LOGE("cannot load: %s - could not found asset", filepath);
         goto android_error;
     }
 
@@ -47,7 +47,7 @@ memory_create(const char* filepath)
     buffer = AAsset_getBuffer(asset);
 
     /* Getting buffer size */
-    memory->size = AAsset_getLength(asset); 
+    memory->size = AAsset_getLength(asset);
 
     /* Allocating enough memory for buffer */
     memory->buffer = (unsigned char *) calloc(1, memory->size + 1);
@@ -75,7 +75,7 @@ android_error:
     snprintf(memory->filepath, MAX_PATH, "assets/%s", filepath);
 
     if ((fd = fopen(memory->filepath, "rb")) == NULL) {
-        LOGE("Unable to open: %s for reading", filepath);
+        LOGE("unable to open: %s for reading", filepath);
         goto else_error;
     }
 
