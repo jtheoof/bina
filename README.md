@@ -1,6 +1,6 @@
 # Introduction
 
-Bina is **THE BEST** project ever made. 
+Bina is **THE BEST** project ever made.
 
 # Authors
 
