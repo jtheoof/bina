@@ -200,32 +200,22 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
 
     ddspf = header->ddspf;
 
-    /* Check to see if texture has alpha. */
-    alpha = (ddspf.flags & DDPF_ALPHAPIXELS || ddspf.flags & DDPF_ALPHA);
-
     /* Check to see if texture has 'magic' DXTn. */
     if (ddspf.flags & DDPF_FOURCC) {
         switch (ddspf.four_cc[3]) {
           case '1':
-            if (alpha) {
-                texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-            } else {
-                texture->ogl.iformat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
-            }
+            texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+            alpha   = 1; /* no way to know for sure? */
             blksize = 8;
             break;
           case '3':
             texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-            if (!alpha) {
-                LOGE("watch out!! alpha should be 1!!!");
-            }
+            alpha   = 1;
             blksize = 16;
             break;
           case '5':
             texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-            if (!alpha) {
-                LOGE("watch out!! alpha should be 1!!!");
-            }
+            alpha   = 1;
             blksize = 16;
             break;
           default:
