@@ -17,7 +17,7 @@ load_scale_map(const char* name, const float minsize, const float maxsize,
     texture_t* sm_tex = NULL;
 
     snprintf(sm_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
-    sm_tex = texture_create(sm_buf, 1);
+    sm_tex = texture_create(sm_buf, TEXTURE_KEEP_IN_MEMORY);
 
     scene->smap       = sm_tex;
     scene->scale_min  = minsize;

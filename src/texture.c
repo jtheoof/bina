@@ -330,7 +330,7 @@ texture_load_tga(const char *filename,
 }
 
 texture_t*
-texture_create(const char* name, const short keep)
+texture_create(const char* name, unsigned long flags)
 {
     texture_t* texture;
 
@@ -343,16 +343,17 @@ texture_create(const char* name, const short keep)
 
     strncpy(texture->name, name, MAX_CHAR);
 
-    texture->pixels  = NULL;
+    texture->pixels = NULL;
+    texture->flags  = flags; /* init flags but can be auto updated later */
 
-    if (texture_load(name, keep, texture)) {
+    if (texture_load(name, texture)) {
         LOGE("an error occured while loading the texture");
         goto error;
     }
 
     texture_gl_create(texture);
 
-    if (!keep && texture->pixels) {
+    if ((flags & TEXTURE_KEEP_IN_MEMORY) && texture->pixels) {
         free(texture->pixels);
         texture->pixels = NULL;
     }
@@ -447,7 +448,7 @@ texture_delete_list(texture_list_t** list)
 }
 
 int
-texture_load(const char* name, const short keep, texture_t* texture)
+texture_load(const char* name, texture_t* texture)
 {
     memory_t* memory = NULL;
 
@@ -481,10 +482,11 @@ texture_load(const char* name, const short keep, texture_t* texture)
     }
 
     /* The object has been loaded in memory and put into texture->pixels so
-     * there is no need for previous original data. We do not store the
-     * texture->image, simply point to NULL. Perhaps it will be useful later.
+     * there is no need for previous original data loaded in memory object.
+     * Unless, of course, the caller specifically asked to keep it (scale map
+     * for example).
      */
-    if (!keep) {
+    if (!(texture->flags & TEXTURE_KEEP_IN_MEMORY)) {
         memory_delete(&memory);
         texture->image = NULL;
     } else {
