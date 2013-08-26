@@ -540,7 +540,7 @@ texture_gl_create(texture_t* texture)
         unsigned int i      = 0,
                      width  = texture->width,
                      height = texture->height,
-                     bsize  = texture->compression_bsize,
+                     bsize  = texture->blksize,
                      size   = 0,
                      offset = 0;
 

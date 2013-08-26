@@ -18,7 +18,10 @@
 
 #include "memory.h"
 
+#define TEXTURE_FLIP_VERTICAL 1 << 0 /* texture should be flipped vertically */
+
 typedef struct texture_ogl_t {
+
     /**
      * The OpenGL (ES) texture id.
      */
@@ -165,7 +168,16 @@ typedef struct texture_t
     /**
      * The compression block size if compression is used.
      */
-    unsigned int compression_bsize;
+    unsigned int blksize;
+
+    /**
+     * Some additional flags interesting to know about the texture.
+     *
+     * For example a DDS texture file has Y coordinates flipped compared to
+     * OpenGL. So it's usefuly to know that the image should be flipped before
+     * being sent to OpenGL before drawing.
+     */
+    unsigned long flags;
 
     /**
      * OpenGL specifics.
