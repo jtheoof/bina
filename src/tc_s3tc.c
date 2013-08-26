@@ -270,14 +270,14 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
     texture->ogl.type   = 0;             /* do not care about texel type */
     texture->ogl.unit   = 0;
 
-    texture->width       = header->width;
-    texture->height      = header->height;
-    texture->size        = bufsize;
-    texture->alpha       = alpha;
-    texture->compression = 1;                     /* compressed format */
-    texture->blksize     = blksize;               /* compression block size */
-    texture->nmipmap     = nmipmap;
-    texture->flags       = TEXTURE_FLIP_VERTICAL; /* flip before render */
+    texture->width        = header->width;
+    texture->height       = header->height;
+    texture->size         = bufsize;
+    texture->alpha        = alpha;
+    texture->compression  = 1;                     /* compressed format */
+    texture->blksize      = blksize;               /* compression block size */
+    texture->nmipmap      = nmipmap;
+    texture->flags       |= TEXTURE_FLIP_VERTICAL; /* flip before render */
 
     return;
 
