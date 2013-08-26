@@ -58,15 +58,33 @@ static struct sprite_module_info m = {
 };
 
 /**
- * Constant holding default values for texices.
+ * Constant holding default values for texices with origin at bottom left.
  *
- * This will probably always be the same, so keeping it should make sense.
+ * These texture coordinates (texices) should be used for regular OpenGL
+ * textures. That means textures where 0,0 is the bottom left part of the
+ * image. Note that on most file format, 0,0 corresponds to the top left part
+ * of the image.
  */
-static const float sprite_texices_g[] = {
-     0.0f,  1.0f,
+static const float sprite_texices_bottom_left_g[] = {
      0.0f,  0.0f,
-     1.0f,  1.0f,
-     1.0f,  0.0f
+     0.0f,  1.0f,
+     1.0f,  0.0f,
+     1.0f,  1.0f
+};
+
+/**
+ * Constant holding default values for texices with origin at top left.
+ *
+ * These texture coordinates (texices) should be used for regular OpenGL
+ * textures. That means textures where 0,0 is the bottom left part of the
+ * image. Note that on most file format, 0,0 corresponds to the top left part
+ * of the image.
+ */
+static const float sprite_texices_top_left_g[] = {
+     0.0f,  0.0f,
+     0.0f,  1.0f,
+     1.0f,  0.0f,
+     1.0f,  1.0f
 };
 
 static sprite_tex_anim_t*
@@ -531,8 +549,9 @@ sprite_animate(sprite_t* sprite, float elapsed)
 void
 sprite_render(sprite_t* sprite)
 {
-    texture_t* texture;  /* texture of the sprite (optional) */
-    int        mvpu;     /* model view projection uniform */
+    texture_t*   texture;  /* texture of the sprite (optional) */
+    int          mvpu;     /* model view projection uniform */
+    const float* texices;  /* texture coordinates to use */
 
     if (!sprite) {
         return;
@@ -549,8 +568,12 @@ sprite_render(sprite_t* sprite)
                           sprite->vertices);
 
     glEnableVertexAttribArray(sprite->texture_attrib);
+
+    texices = (texture->flags & TEXTURE_FLIP_VERTICAL) ?
+              sprite_texices_top_left_g : sprite_texices_bottom_left_g;
+
     glVertexAttribPointer(sprite->texture_attrib, 2, GL_FLOAT, GL_FALSE, 0,
-                          sprite_texices_g);
+                          texices);
 
     if (mvpu >= 0) {
         GL_CHECK(glUniformMatrix4fv, mvpu, 1, 0, (float*) &sprite->mvp);
