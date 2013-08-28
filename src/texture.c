@@ -7,6 +7,7 @@
 #include "bina.h"
 #include "texture.h"
 #include "utils.h"
+#include "renderer.h"
 
 #ifdef HAVE_PNG_H
 
@@ -227,7 +228,7 @@ texture_dds_load(memory_t* memory, texture_t* texture)
     static short s3tc_check = -1;
 
     if (s3tc_check == -1) {
-        s3tc_check = s3tc_check_extension();
+        s3tc_check = renderer_has_gl_ext("EXT_texture_compression_s3tc");
 
         if (!s3tc_check) {
             LOGE("s3tc is not supported on this hardware");

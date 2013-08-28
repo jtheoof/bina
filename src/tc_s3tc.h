@@ -17,7 +17,6 @@
 
 #ifdef ENABLE_S3TC
 
-short s3tc_check_extension();
 void s3tc_dds_load(const unsigned char*, unsigned int, texture_t* texture);
 
 #endif

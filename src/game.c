@@ -28,13 +28,14 @@ game_init(game_t* game, int width, int height)
     viewport.width = width;
     viewport.height = height;
 
-    /* Set up the viewport */
+    /* Set up the viewport. */
     camera_set_viewport(&viewport);
 
-    /* Loads the scene */
-    game->scene = scene_load("bedroomArtist", 0.25f, 0.75f);
-
+    /* Initialize renderer to get OpenGL extensions. */
     renderer_init();
+
+    /* Loads the scene */
+    game->scene = scene_load("testDDS", 0.25f, 0.75f);
 }
 
 void

@@ -37,3 +37,13 @@ void renderer_pre_render(float r, float g, float b, float a);
  * @param game The game to render.
  */
 void renderer_render(scene_t* scene);
+
+/**
+ * Checks an extension in the list of GL_EXTENSIONS.
+ *
+ * The checking is done directly on the hardware.
+ *
+ * @param ext The extension to check.
+ * @return A number different from 0 if extension is found, 0 if not.
+ */
+short renderer_has_gl_ext(const char* ext);

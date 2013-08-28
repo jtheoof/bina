@@ -75,22 +75,6 @@ typedef struct dds_header_t {
     unsigned int       reserved2;
 } dds_header_t;
 
-/**
- * Checks the presence of the s3tc extension in current hardware.
- *
- * @return 0 if hardware does not support EXT_texture_compression_s3tc.
- */
-short
-s3tc_check_extension()
-{
-    const char* exts = (const char*) glGetString(GL_EXTENSIONS);
-    const char* s3tc = "EXT_texture_compression_s3tc"; 
-    const char* curs = strstr(exts, s3tc);
-
-    return (curs != NULL);
-}
-
-
 static short
 s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
                      dds_header_t** dds_header, unsigned int* offset)
