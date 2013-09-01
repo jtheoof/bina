@@ -9,6 +9,38 @@
 #include "shader.h"
 #include "camera.h"
 
+/* TODO Remove circular reference scene <-> renderer */
+#include "renderer.h"
+
+static void
+load_background(const char* name, scene_t* scene)
+{
+    vec2_t pos, off, dim;
+
+    char       bg_buf[MAX_PATH];
+    texture_t* bg_tex = NULL;
+    sprite_t*  bg_spr = NULL;
+    int        bg_prg = -1;
+    char*      tc_ext = renderer_get_tc_ext();
+
+    snprintf(bg_buf, MAX_PATH, "scenes/%s/backgroundColor.%s", name, tc_ext);
+
+    bg_tex = texture_create(bg_buf, 0);
+
+    pos.x = pos.y = 0.0f;
+    off.x = off.y = 0.0f;
+
+    dim.x = scene->width;
+    dim.y = scene->height;
+
+    /* TODO Store these programes in a manager or in the scene. */
+    bg_prg = shader_create_program(PROGRAM_BACKGROUND);
+    bg_spr = sprite_create(bg_tex, bg_prg, pos, off, dim, 1.0f);
+
+    scene->background = bg_spr;
+    scene->bg_prog    = bg_prg;
+}
+
 static void
 load_scale_map(const char* name, const float minsize, const float maxsize,
                scene_t* scene)
@@ -120,7 +152,7 @@ scene_load(const char* name, const float minsize, const float maxsize)
 
     LOGI("loading scene: %s", name);
 
-    scene = (scene_t*) malloc(sizeof(scene_t));
+    scene = (scene_t*) calloc(1, sizeof(scene_t));
     if (!scene) {
         LOGE(BINA_NOT_ENOUGH_MEMORY);
         return NULL;

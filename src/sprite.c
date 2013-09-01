@@ -570,22 +570,22 @@ sprite_render(sprite_t* sprite)
 
     glEnableVertexAttribArray(sprite->texture_attrib);
 
-    texices = (texture->flags & TEXTURE_FLIP_VERTICAL) ?
-              sprite_texices_top_left_g : sprite_texices_bottom_left_g;
-
-    glVertexAttribPointer(sprite->texture_attrib, 2, GL_FLOAT, GL_FALSE, 0,
-                          texices);
-
     if (mvpu >= 0) {
         GL_CHECK(glUniformMatrix4fv, mvpu, 1, 0, (float*) &sprite->mvp);
     }
 
     if (texture) {
+        texices = (texture->flags & TEXTURE_FLIP_VERTICAL) ?
+                  sprite_texices_top_left_g : sprite_texices_bottom_left_g;
         glActiveTexture(GL_TEXTURE0 + texture->ogl.unit);
         glBindTexture(texture->ogl.target, texture->ogl.tid);
         glUniform1i(sprite->texture_uniform, texture->ogl.unit);
+    } else {
+        texices = sprite_texices_bottom_left_g; /* TODO this is ugly */
     }
 
+    glVertexAttribPointer(sprite->texture_attrib, 2, GL_FLOAT, GL_FALSE, 0,
+                          texices);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     glDisableVertexAttribArray(sprite->texture_attrib);
