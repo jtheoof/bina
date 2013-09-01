@@ -12,9 +12,10 @@
  */
 
 #include "bina.h"
-#include "texture.h"
 
 #ifdef ENABLE_S3TC
+
+#include "texture.h"
 
 #define DDS_MAGIC "DDS "
 

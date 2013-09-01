@@ -66,10 +66,10 @@ static struct sprite_module_info m = {
  * of the image.
  */
 static const float sprite_texices_bottom_left_g[] = {
-     0.0f,  0.0f,
      0.0f,  1.0f,
-     1.0f,  0.0f,
-     1.0f,  1.0f
+     0.0f,  0.0f,
+     1.0f,  1.0f,
+     1.0f,  0.0f
 };
 
 /**

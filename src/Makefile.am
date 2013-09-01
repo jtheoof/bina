@@ -13,6 +13,9 @@ bina_SOURCES = \
     texture.c   \
     utils.c
 
+if ENABLE_PNG
+    bina_SOURCES += tc_png.c
+endif
 if ENABLE_S3TC
     bina_SOURCES += tc_s3tc.c
 endif

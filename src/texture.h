@@ -12,10 +12,6 @@
 
 #pragma once
 
-#ifdef HAVE_PNG_H
-#include <png.h>
-#endif
-
 #include "memory.h"
 
 #define TEXTURE_KEEP_IN_MEMORY 1 << 0 /* do not free texture after create */
@@ -278,13 +274,15 @@ int texture_load(const char* name, texture_t* texture);
 /**
  * Loads a PNG file (based on libpng).
  *
+ * PNG must be enabled.
+ *
  * @param memory The original object loaded from assets in its original
  * format.
  * @param texture The texture object that will contain the RAW data used by
  * OpenGL.
  * @return 0 if call is successful, an error code otherwise.
  */
-int texture_png_load(memory_t* memory, texture_t* texture);
+void texture_png_load(memory_t* memory, texture_t* texture);
 
 /**
  * Loads a DDS file (S3TC must be enabled).
@@ -295,19 +293,6 @@ int texture_png_load(memory_t* memory, texture_t* texture);
  * OpenGL.
  */
 void texture_dds_load(memory_t* memory, texture_t* texture);
-
-/**
- * Reads a PNG file from memory.
- *
- * This is the callback from png_set_read_fn and used to read the PNG image.
- *
- * @param pngp The read structure.
- * @param bytep The row pointers that will be the destination of the data
- * read.
- * @param size The number of bytes to read.
- */
-void texture_png_read_memory(png_structp pngp, png_bytep bytep,
-                             png_size_t size);
 
 /**
  * Loads a TGA raw file (no need for any library).
