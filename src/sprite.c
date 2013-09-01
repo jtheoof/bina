@@ -37,6 +37,7 @@ struct sprite_module_info {
     unsigned long sprite_animator_id;
     sprite_cam_info_t cam_names[SPRITE_CAM_TYPE_COUNT];
     token_string_size_t anim_names[SPRITE_ANIM_COUNT];
+    const char tc_ext[3]; /* texture compression extension */
 };
 
 /**

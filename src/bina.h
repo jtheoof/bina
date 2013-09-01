@@ -222,15 +222,3 @@ typedef struct token_string_size_t
  * @return The time elapsed since last call to the same function in seconds.
  */
 float main_get_time_elapsed();
-
-/* TODO Move this to approriate file */
-
-/**
- * Prints useful info about about OpenGL.
- *
- * This function converts #s into a proper string.
- *
- * @param name A custom string to put before showing the value of #s.
- * @param s An OpenGL enum we want to print. For example GL_EXTENSIONS.
- */
-void print_gl_string(const char* name, GLenum s);

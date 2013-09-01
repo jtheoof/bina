@@ -47,3 +47,11 @@ void renderer_render(scene_t* scene);
  * @return A number different from 0 if extension is found, 0 if not.
  */
 short renderer_has_gl_ext(const char* ext);
+
+/**
+ * Retrieves texture compression extension specific to hardware running.
+ *
+ * @return The extension based on hardware capabilites. For example it could
+ * be 'dds', 'ktx', ...
+ */
+char* renderer_get_tc_ext();
