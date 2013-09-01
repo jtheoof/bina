@@ -49,39 +49,39 @@
 #define DDPF_LUMINANCE   0x20000
 
 typedef struct dds_pixel_format_t {
-    unsigned int size;
-    unsigned int flags;
-    char         four_cc[4];
-    unsigned int rgb_bit_count;
-    unsigned int r_bit_mask;
-    unsigned int g_bit_mask;
-    unsigned int b_bit_mask;
-    unsigned int a_bit_mask;
+    uint32_t size;
+    uint32_t flags;
+    char     four_cc[4];
+    uint32_t rgb_bit_count;
+    uint32_t r_bit_mask;
+    uint32_t g_bit_mask;
+    uint32_t b_bit_mask;
+    uint32_t a_bit_mask;
 } dds_pixel_format_t;
 
 typedef struct dds_header_t {
-    unsigned int       size;
-    unsigned int       flags;
-    unsigned int       height;
-    unsigned int       width;
-    unsigned int       pitch_or_linear_size;
-    unsigned int       depth;
-    unsigned int       mipmap_count;
-    unsigned int       reserved1[11];
+    uint32_t           size;
+    uint32_t           flags;
+    uint32_t           height;
+    uint32_t           width;
+    uint32_t           pitch_or_linear_size;
+    uint32_t           depth;
+    uint32_t           mipmap_count;
+    uint32_t           reserved1[11];
     dds_pixel_format_t ddspf;
-    unsigned int       caps;
-    unsigned int       caps2;
-    unsigned int       caps3;
-    unsigned int       caps4;
-    unsigned int       reserved2;
+    uint32_t           caps;
+    uint32_t           caps2;
+    uint32_t           caps3;
+    uint32_t           caps4;
+    uint32_t           reserved2;
 } dds_header_t;
 
 static short
 s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
                      dds_header_t** dds_header, unsigned int* offset)
 {
-    unsigned int   caps;
-    unsigned int   remains = size;
+    uint32_t  caps;
+    uint32_t  remains = size;
 
     dds_header_t* header;
     dds_pixel_format_t ddspf;
@@ -220,10 +220,6 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
 
     for (i = 0; (i < nmipmap) && ((width != 0) || (height != 0)); i++) {
         bufsize += ((width + 3) / 4) * ((height + 3) / 4) * blksize;
-
-        if ((i == 0) && (bufsize != header->pitch_or_linear_size)) {
-            LOGE("buffer size in invalid for first mipmap");
-        }
 
         if ((width /= 2) == 0) width = 1;
         if ((height /= 2) == 0) height = 1;
