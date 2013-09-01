@@ -101,7 +101,7 @@ create_character_anim(const char* character)
     ret = (sprite_tex_anim_t*) malloc(sizeof(sprite_tex_anim_t));
 
     if (!ret) {
-        LOGE("BINA_NOT_ENOUGH_MEMORY");
+        LOGE(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 
