@@ -17,6 +17,15 @@
  */
 
 #include "bina.h"
+
+#ifdef HAVE_GL_GLUT_H
+#include "GL/glut.h"
+#endif
+
+#ifdef HAVE_GLUT_GLUT_H
+#include "GLUT/glut.h"
+#endif
+
 #include "game.h"
 #include "renderer.h"
 #include "camera.h"
