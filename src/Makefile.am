@@ -1,7 +1,6 @@
 bin_PROGRAMS = bina
 
 bina_SOURCES = \
-    main/glut.c \
     algebra.c   \
     camera.c    \
     game.c      \
@@ -13,6 +12,9 @@ bina_SOURCES = \
     texture.c   \
     utils.c
 
+if ENABLE_GLUT
+    bina_SOURCES += main/glut.c
+endif
 if ENABLE_PNG
     bina_SOURCES += tc_png.c
 endif

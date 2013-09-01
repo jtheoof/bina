@@ -44,8 +44,7 @@ BN_CHECK_GLEW
 BN_CHECK_FEATURES
 BN_CHECK_PACKAGES
 
-AS_IF([test "x$ax_cv_check_glut_libglut" = "xno"],
-      [AC_MSG_ERROR([missing GLUT library. install freeglut3-dev])])
+AM_CONDITIONAL([ENABLE_GLUT], [test "x$ax_cv_check_glut_libglut" != "xno"])
 
 AC_SUBST(CFLAGS)
 AC_SUBST(LDFLAGS)

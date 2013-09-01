@@ -12,4 +12,6 @@
  * @date September 1, 2013
  */
 
+#pragma once
+
 void tc_png_load(memory_t*, texture_t*);

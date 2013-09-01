@@ -12,4 +12,6 @@
  * @date August 24, 2013
  */
 
+#pragma once
+
 void s3tc_dds_load(const unsigned char*, unsigned int, texture_t* texture);
