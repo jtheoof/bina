@@ -24,6 +24,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE           := libbina
 LOCAL_STATIC_LIBRARIES := libpng
 LOCAL_CFLAGS           := \
+    -std=c1x        \
     -Werror         \
     -DHAVE_STDLIB_H \
     -DHAVE_STDIO_H  \
