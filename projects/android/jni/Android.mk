@@ -26,6 +26,8 @@ LOCAL_STATIC_LIBRARIES := libpng
 LOCAL_CFLAGS           := \
     -std=c1x        \
     -Werror         \
+    -DENABLE_PNG    \
+    -DENABLE_S3TC   \
     -DHAVE_STDLIB_H \
     -DHAVE_STDIO_H  \
     -DHAVE_STRING_H \
@@ -33,7 +35,8 @@ LOCAL_CFLAGS           := \
     -DHAVE_MATH_H   \
     -DHAVE_TIME_H   \
     -DHAVE_PNG_H    \
-    -DANDROID
+    -DANDROID       \
+    -DDEBUG
 
 LOCAL_LDLIBS     := -landroid -llog -lGLESv2 -lz
 LOCAL_C_INCLUDES := \
@@ -50,6 +53,8 @@ LOCAL_SRC_FILES  := \
     shader.c       \
     sprite.c       \
     texture.c      \
-    utils.c
+    utils.c        \
+    tc_png.c       \
+    tc_s3tc.c
 
 include $(BUILD_SHARED_LIBRARY)
