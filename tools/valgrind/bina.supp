@@ -998,3 +998,83 @@
    fun:__gmon_start__
    obj:/lib/x86_64-linux-gnu/librt-2.15.so
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:intel_miptree_set_level_info
+   fun:i945_miptree_layout_2d
+   fun:brw_miptree_layout
+   fun:intel_miptree_create_internal
+   fun:intel_miptree_create_for_region
+   fun:intel_miptree_create_for_dri2_buffer
+   fun:intel_update_renderbuffers
+   fun:intel_prepare_render
+   fun:brw_clear
+   fun:renderer_pre_render
+   fun:renderer_render
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:intel_region_alloc_internal
+   fun:intel_region_alloc_for_handle
+   fun:intel_update_renderbuffers
+   fun:intel_prepare_render
+   fun:brw_clear
+   fun:renderer_pre_render
+   fun:renderer_render
+   fun:game_render
+   fun:glut_display_cb
+   fun:fghcbDisplayWindow
+   fun:fgEnumWindows
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:drm_intel_bo_gem_create_from_name
+   fun:intel_region_alloc_for_handle
+   fun:intel_update_renderbuffers
+   fun:intel_prepare_render
+   fun:brw_clear
+   fun:renderer_pre_render
+   fun:renderer_render
+   fun:game_render
+   fun:glut_display_cb
+   fun:fghcbDisplayWindow
+   fun:fgEnumWindows
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:drm_intel_bo_gem_create_from_name
+   fun:intel_region_alloc_for_handle
+   fun:intel_update_renderbuffers
+   fun:intel_prepare_render
+   fun:brw_clear
+   fun:renderer_pre_render
+   fun:renderer_render
+   fun:game_render
+   fun:glut_display_cb
+   fun:fghcbDisplayWindow
+   fun:fgEnumWindows
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:calloc
+   fun:intel_miptree_create_internal
+   fun:intel_miptree_create_for_region
+   fun:intel_miptree_create_for_dri2_buffer
+   fun:intel_update_renderbuffers
+   fun:intel_prepare_render
+   fun:brw_clear
+   fun:renderer_pre_render
+   fun:renderer_render
+   fun:game_render
+   fun:glut_display_cb
+   fun:fghcbDisplayWindow
+}
