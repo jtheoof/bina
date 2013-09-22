@@ -21,8 +21,8 @@
  * Module structure.
  */
 struct renderer_module_info {
-    char* gl_extensions;
-    char  tc_ext[4];
+    char* gl_extensions; /* opengl extensions */
+    char  tc_ext[4];     /* texture compression extension */
 };
 
 /**

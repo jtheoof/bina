@@ -189,21 +189,38 @@ s3tc_dds_load(const unsigned char* buffer, unsigned int size,
     if (ddspf.flags & DDPF_FOURCC) {
         switch (ddspf.four_cc[3]) {
           case '1':
+#ifdef GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
             texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
             alpha   = 1; /* no way to know for sure? */
             blksize = 8;
+#else
+            LOGE("platform does not support DXT1");
+            goto error;
+#endif
             break;
           case '3':
+#ifdef GL_COMPRESSED_RGBA_S3TC_DXT3_EXT
             texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
             alpha   = 1;
             blksize = 16;
+#else
+            LOGE("platform does not support DXT3");
+            goto error;
+#endif
             break;
           case '5':
+#ifdef GL_COMPRESSED_RGBA_S3TC_DXT5_EXT
             texture->ogl.iformat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
             alpha   = 1;
             blksize = 16;
+#else
+            LOGE("platform does not support DXT5");
+            goto error;
+#endif
             break;
           default:
+            LOGE("invalid dds file fourcc flag");
+            goto error;
             break;
         }
     }

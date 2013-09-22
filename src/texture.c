@@ -279,12 +279,12 @@ texture_load(const char* name, texture_t* texture)
     if (!strcmp(ext, "png")) {
         texture_png_load(memory, texture);
     } else if (!strcmp(ext, "tga")) {
-        LOGE("Extension tga need some work with texture");
+        LOGE("extension tga need some work with texture");
         memory_delete(&memory);
     } else if (!strcmp(ext, "dds")) {
         texture_dds_load(memory, texture);
     } else {
-        LOGE("Extension: %s not implemented for texturing", ext);
+        LOGE("extension: %s not implemented for texturing", ext);
         memory_delete(&memory);
     }
 
