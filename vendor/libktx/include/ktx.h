@@ -104,7 +104,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @mainpage The KTX Library
  *
  * @section intro_sec Introduction
- * 
+ *
  * libktx is a small library of functions for creating KTX (Khronos
  * TeXture) files and instantiating OpenGL&reg; and OpenGL&reg; ES
  * textures from them.
@@ -129,48 +129,43 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * $Date:: 2013-05-23 05:45:33 #$
  */
 
-#include <stdio.h>
-
-#include "KHR/khrplatform.h"
-
-#if KTX_OPENGL
-
-	#ifdef _WIN32
-	  #include <windows.h>
-	  #include <GL/glew.h>
-    #else
-      #define GLCOREARB_PROTOTYPES
-      #include <GL/glcorearb.h>
-	#endif
-
-	#define GL_APIENTRY APIENTRY
-    #define KTX_GLFUNCPTRS "gl_funcptrs.h"
-
-#elif KTX_OPENGL_ES1
-
-	#include <GLES/gl.h>
-	#include <GLES/glext.h>
-
-    #define KTX_GLFUNCPTRS "gles1_funcptrs.h"
-
-#elif KTX_OPENGL_ES2
-
-	#include <GLES2/gl2.h>
-	#include <GLES2/gl2ext.h>
-
-    #define KTX_GLFUNCPTRS "gles2_funcptrs.h"
-
-#elif KTX_OPENGL_ES3
-
-	#include <GLES3/gl3.h>
-	#include <GLES3/gl3ext.h>
-
-    #define KTX_GLFUNCPTRS "gles3_funcptrs.h"
-
-#else
-#error Please #define one of KTX_OPENGL, KTX_OPENGL_ES1, KTX_OPENGL_ES2 or KTX_OPENGL_ES3 as 1
+#ifdef HAVE_CONFIG_H
+	#include "config.h"
 #endif
 
+#ifdef HAVE_STDIO_H
+	#include <stdio.h>
+#endif
+
+#ifdef HAVE_WINDOW_H
+	#include <window.h>
+#endif
+
+#ifdef HAVE_GL_GLEW_H
+	#include <GL/glew.h>
+	#define GL_APIENTRY APIENTRY
+	#define KTX_GLFUNCPTRS "gl_funcptrs.h"
+#endif
+
+#ifdef HAVE_GLES_GL_H
+	#include <GLES/gl.h>
+	#include <GLES/glext.h>
+	#define KTX_GLFUNCPTRS "gles1_funcptrs.h"
+#endif
+
+#ifdef HAVE_GLES2_GL2_H
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+	#define KTX_GLFUNCPTRS "gles2_funcptrs.h"
+#endif
+
+#ifdef HAVE_GLES3_GL3_H
+	#include <GLES3/gl3.h>
+	#include <GLES3/gl3ext.h>
+	#define KTX_GLFUNCPTRS "gles3_funcptrs.h"
+#endif
+
+#include "KHR/khrplatform.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -250,7 +245,7 @@ typedef struct KTX_texture_info_t
 	 * For non-compressed textures, should be the same as glFormat.
 	 * For compressed textures specifies the base internal, e.g.
 	 * GL_RGB, GL_RGBA.
-     */                        
+     */
 	khronos_uint32_t glBaseInternalFormat;
 	/** @brief Width of the image for texture level 0, in pixels. */
 	khronos_uint32_t pixelWidth;
@@ -340,7 +335,7 @@ ktxLoadTextureM(const void* bytes, GLsizei size, GLuint* pTexture, GLenum* pTarg
 				unsigned int* pKvdLen, unsigned char** ppKvd);
 
 /* ktxWriteKTXF
- * 
+ *
  * Writes a KTX file using supplied data.
  */
 KTX_error_code
@@ -349,7 +344,7 @@ ktxWriteKTXF(FILE*, const KTX_texture_info* imageInfo,
 			 GLuint numImages, KTX_image_info images[]);
 
 /* ktxWriteKTXN
- * 
+ *
  * Writes a KTX file using supplied data.
  */
 KTX_error_code
