@@ -1,6 +1,3 @@
-# Code
-node_modules/
-
 # Build
 build/
 
@@ -12,21 +9,24 @@ assets/
 
 # GNU Autoconf
 # GNU Automake
-Makefile
-Makefile.in
+.deps/
 aclocal.m4
 autom4te.cache/
 autotools/
 config.status
 configure
-src/.deps/
+include/config.h
+include/config.h.in
+Makefile
+Makefile.in
 src/bina
-src/config.h
-src/config.h.in
 stamp-h1
 
 # Linux
+*.a
 *.o
+*.Po
+*.Tpo
 tags
 
 # Mac

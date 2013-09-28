@@ -1,0 +1,2 @@
+trunk: https://cvs.khronos.org/svn/repos/ogles/trunk/src/public/KTX/
+revision: 23183

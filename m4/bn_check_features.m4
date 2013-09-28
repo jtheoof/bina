@@ -34,6 +34,20 @@ AC_DEFUN([BN_CHECK_FEATURES], [
     CFLAGS="$CFLAGS $DEBUG_CFLAGS"
 
     dnl }}}
+    dnl etc {{{
+
+    AC_MSG_CHECKING(--enable-etc)
+    AC_ARG_ENABLE(etc,
+        [AS_HELP_STRING([--disable-etc],
+                        [disable ericsson texture compression.])],
+        [],
+        [enable_etc="yes"])
+    AC_MSG_RESULT($enable_etc)
+    AM_CONDITIONAL([ENABLE_ETC], [test "x$enable_etc" = "xyes"])
+    AS_IF([test "x$enable_etc" = "xyes"],
+          [AC_DEFINE([ENABLE_ETC], [1], [enable ericsson exture compression.])])
+
+    dnl }}}
     dnl s3tc {{{
 
     AC_MSG_CHECKING(--enable-s3tc)
