@@ -111,9 +111,7 @@ AAssetManager* asset_manager_g;
 #include "GL/glew.h"
 #endif
 
-#ifdef HAVE_GL_GL_H
-#include "GL/gl.h"
-#endif
+#include "KHR/khrplatform.h"
 
 /*
  * Datatypes (taken from GL/gl.h).

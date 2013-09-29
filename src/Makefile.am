@@ -12,6 +12,9 @@ bina_SOURCES = \
     texture.c   \
     utils.c
 
+bina_CFLAGS = \
+    -I$(top_srcdir)/include
+
 bina_LDADD = \
     $(GL_LIBS)   \
     $(GLU_LIBS)  \
