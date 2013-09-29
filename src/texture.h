@@ -282,7 +282,7 @@ int texture_load(const char* name, texture_t* texture);
  * OpenGL.
  * @return 0 if call is successful, an error code otherwise.
  */
-void texture_png_load(memory_t* memory, texture_t* texture);
+void texture_load_png(memory_t* memory, texture_t* texture);
 
 /**
  * Loads a DDS file (S3TC must be enabled).
@@ -292,7 +292,7 @@ void texture_png_load(memory_t* memory, texture_t* texture);
  * @param texture The texture object that will contain the RAW data used by
  * OpenGL.
  */
-void texture_dds_load(memory_t* memory, texture_t* texture);
+void texture_load_dds(memory_t* memory, texture_t* texture);
 
 /**
  * Loads a TGA raw file (no need for any library).

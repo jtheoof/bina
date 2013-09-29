@@ -168,7 +168,7 @@ s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
  * @param texture The texture object returned properly set up.
  */
 void
-s3tc_dds_load(const unsigned char* buffer, unsigned int size,
+s3tc_load_dds(const unsigned char* buffer, unsigned int size,
               texture_t* texture)
 {
     LOGD("loading dds buffer with size: %d", size);

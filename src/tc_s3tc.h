@@ -14,4 +14,4 @@
 
 #pragma once
 
-void s3tc_dds_load(const unsigned char*, unsigned int, texture_t* texture);
+void s3tc_load_dds(const unsigned char*, unsigned int, texture_t* texture);

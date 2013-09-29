@@ -16,7 +16,7 @@ le_short(unsigned char *bytes)
 }
 
 void
-texture_png_load(memory_t* memory, texture_t* texture)
+texture_load_png(memory_t* memory, texture_t* texture)
 {
 #ifdef ENABLE_PNG
 #include "tc_png.h"
@@ -27,7 +27,7 @@ texture_png_load(memory_t* memory, texture_t* texture)
 }
 
 void
-texture_dds_load(memory_t* memory, texture_t* texture)
+texture_load_dds(memory_t* memory, texture_t* texture)
 {
 #ifdef ENABLE_S3TC
 #include "tc_s3tc.h"
@@ -277,12 +277,12 @@ texture_load(const char* name, texture_t* texture)
     }
 
     if (!strcmp(ext, "png")) {
-        texture_png_load(memory, texture);
+        texture_load_png(memory, texture);
     } else if (!strcmp(ext, "tga")) {
         LOGE("extension tga need some work with texture");
         memory_delete(&memory);
     } else if (!strcmp(ext, "dds")) {
-        texture_dds_load(memory, texture);
+        texture_load_dds(memory, texture);
     } else {
         LOGE("extension: %s not implemented for texturing", ext);
         memory_delete(&memory);
