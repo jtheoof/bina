@@ -181,11 +181,11 @@ texture_create(const char* name, unsigned long flags)
         goto error;
     }
 
-    if (!(flags | TEXTURE_UPLOADED)) {
+    if (!(texture->flags & TEXTURE_UPLOADED)) {
         texture_gl_create(texture);
     }
 
-    if (!(flags | TEXTURE_KEEP_PIXELS) && texture->pixels) {
+    if (!(texture->flags & TEXTURE_KEEP_PIXELS) && texture->pixels) {
         free(texture->pixels);
         texture->pixels = NULL;
     }
