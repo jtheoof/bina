@@ -181,7 +181,9 @@ texture_create(const char* name, unsigned long flags)
         goto error;
     }
 
-    texture_gl_create(texture);
+    if (!(flags | TEXTURE_UPLOADED)) {
+        texture_gl_create(texture);
+    }
 
     if ((flags & TEXTURE_KEEP_IN_MEMORY) && texture->pixels) {
         free(texture->pixels);
@@ -328,7 +330,11 @@ texture_load(const char* name, texture_t* texture)
     return err;
 }
 
-/* TODO Add custom flags and filters like it's done in gfx */
+/* TODO:
+ *  - Add custom flags and filters like it's done in gfx
+ *  - Every texture loading function should be responsible for creating
+ *  calling the specific OpenGL callbacks as it is done in loader.c (libktx).
+ */
 int
 texture_gl_create(texture_t* texture)
 {

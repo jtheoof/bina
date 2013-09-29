@@ -16,6 +16,7 @@
 
 #define TEXTURE_KEEP_IN_MEMORY 1 << 0 /* do not free texture after create */
 #define TEXTURE_FLIP_VERTICAL  1 << 1 /* should be flipped vertically */
+#define TEXTURE_UPLOADED       1 << 2 /* already uploaded to server */
 
 typedef struct texture_ogl_t {
 
@@ -154,8 +155,17 @@ typedef struct texture_t
 
     /**
      * The number of mipmaps (if any).
+     *
+     * TODO Get rid of this. Texture should be loaded to hardware for each
+     * texture compression type. No need to know how many mipmaps there is
+     * according to libktx.
      */
     unsigned int nmipmap;
+
+    /**
+     * Boolean to know if texture has mipmaps.
+     */
+    unsigned char mipmapped;
 
     /**
      * The compression type.

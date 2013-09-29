@@ -185,6 +185,7 @@ tc_png_load(memory_t* memory, texture_t* texture)
     texture->ogl.unit   = 0;
 
     texture->nmipmap     = 0; /* PNG does not have mipmaps */
+    texture->mipmapped   = 0; /* PNG does not have mipmaps */
     texture->compression = 0; /* PNG is loaded as RAW pixels */
 
     texture->size        = row_bytes * height;

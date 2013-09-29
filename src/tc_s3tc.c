@@ -264,6 +264,7 @@ s3tc_load_dds(const unsigned char* buffer, unsigned int size,
     texture->compression  = 1;                     /* compressed format */
     texture->blksize      = blksize;               /* compression block size */
     texture->nmipmap      = nmipmap;
+    texture->mipmapped    = nmipmap > 1;
     texture->flags       |= TEXTURE_FLIP_VERTICAL; /* flip before render */
 
     return;

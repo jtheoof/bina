@@ -47,21 +47,30 @@ etc_load_ktx(const unsigned char* buffer, unsigned int size,
     ktx_error_code_t res;
     const char*      strres;
 
+    texture_ogl_t    ogl;
+
     res = ktx_load_texture_m(bytes, size, &tex, &target, &dimensions,
-                               &mipmapped, &glerror, &kvdlen, &kvdpix);
+                             &mipmapped, &glerror, &kvdlen, &kvdpix);
 
     if (res != KTX_SUCCESS) {
         strres = ktx_error_string(res);
         LOGE("error while loading ktx file: %s", strres);
+        goto error;
+    } else {
+        ogl.tid    = tex;
+        ogl.target = target;
+        ogl.unit   = 0;      /* TODO make sure there is always one unit */
+
+        texture->width        = dimensions.width;
+        texture->height       = dimensions.height;
+        texture->compression  = GL_TRUE;
+        texture->flags       |= TEXTURE_UPLOADED;
+        texture->ogl          = ogl;
     }
 
-    goto error;
+    return;
 
 error:
-
-    if (kvdpix) {
-        free(kvdpix);
-    }
 
     if (texture->pixels) {
         free(texture->pixels);
