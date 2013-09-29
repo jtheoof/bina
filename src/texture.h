@@ -14,7 +14,7 @@
 
 #include "memory.h"
 
-#define TEXTURE_KEEP_IN_MEMORY 1 << 0 /* do not free texture after create */
+#define TEXTURE_KEEP_PIXELS    1 << 0 /* do not free pixels after load */
 #define TEXTURE_FLIP_VERTICAL  1 << 1 /* should be flipped vertically */
 #define TEXTURE_UPLOADED       1 << 2 /* already uploaded to server */
 
@@ -105,15 +105,6 @@ typedef struct texture_t
      * Internal name to use for the texture.
      */
     char name[MAX_CHAR];
-
-    /**
-     * Image (PNG, ...) stored in memory.
-     *
-     * Not sure if it is really useful to keep it into the structure. Right
-     * now we are freeing the memory when the texture is successfully loaded
-     * but perhaps later this object can be useful.
-     */
-    memory_t* image;
 
     /**
      * The texture width.

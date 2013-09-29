@@ -185,7 +185,7 @@ texture_create(const char* name, unsigned long flags)
         texture_gl_create(texture);
     }
 
-    if ((flags & TEXTURE_KEEP_IN_MEMORY) && texture->pixels) {
+    if (!(flags | TEXTURE_KEEP_PIXELS) && texture->pixels) {
         free(texture->pixels);
         texture->pixels = NULL;
     }
@@ -208,10 +208,6 @@ texture_delete(texture_t** texture)
         if (tex->pixels) {
             free(tex->pixels);
             tex->pixels = NULL;
-        }
-
-        if (tex->image) {
-            memory_delete(&tex->image);
         }
 
         free(tex);
@@ -297,7 +293,6 @@ texture_load(const char* name, texture_t* texture)
     memory = memory_create(name);
     if (!memory) {
         LOGE("object: %s was not loaded into memory", name);
-        texture->image = NULL;
         return -1;
     }
 
@@ -316,16 +311,10 @@ texture_load(const char* name, texture_t* texture)
     }
 
     /* The object has been loaded in memory and put into texture->pixels so
-     * there is no need for previous original data loaded in memory object.
-     * Unless, of course, the caller specifically asked to keep it (scale map
-     * for example).
+     * there is no need for previous original data loaded in memory object,
+     * even for scale maps. Scale maps only use texture->pixels directly.
      */
-    if (!(texture->flags & TEXTURE_KEEP_IN_MEMORY)) {
-        memory_delete(&memory);
-        texture->image = NULL;
-    } else {
-        texture->image = memory;
-    }
+    memory_delete(&memory);
 
     return err;
 }
