@@ -115,6 +115,25 @@ AAssetManager* asset_manager_g;
 #include "GL/gl.h"
 #endif
 
+/*
+ * Datatypes (taken from GL/gl.h).
+ */
+typedef unsigned int   bina_enum;
+typedef unsigned char  bina_boolean;
+typedef unsigned int   bina_bitfield;
+typedef void           bina_void;
+typedef signed char    bina_byte;     /* 1-byte signed */
+typedef short          bina_short;    /* 2-byte signed */
+typedef int            bina_int;      /* 4-byte signed */
+typedef unsigned char  bina_ubyte;    /* 1-byte unsigned */
+typedef unsigned short bina_ushort;   /* 2-byte unsigned */
+typedef unsigned int   bina_uint;     /* 4-byte unsigned */
+typedef int            bina_sizei;    /* 4-byte signed */
+typedef float          bina_float;    /* single precision float */
+typedef float          bina_clampf;   /* single precision float in [0,1] */
+typedef double         bina_double;   /* double precision float */
+typedef double         bina_clampd;   /* double precision float in [0,1] */
+
 /**
  * Mapping between and id (or token, enum, ...) and a string.
  */

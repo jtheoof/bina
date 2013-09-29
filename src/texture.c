@@ -31,21 +31,44 @@ texture_load_dds(memory_t* memory, texture_t* texture)
 {
 #ifdef ENABLE_S3TC
 #include "tc_s3tc.h"
-    static short s3tc_check = -1;
+    static short ext_check = -1;
 
-    if (s3tc_check == -1) {
-        s3tc_check = renderer_has_gl_ext("EXT_texture_compression_s3tc");
+    if (ext_check == -1) {
+        ext_check = renderer_has_gl_ext("EXT_texture_compression_s3tc");
 
-        if (!s3tc_check) {
+        if (!ext_check) {
             LOGE("s3tc is not supported on this hardware");
         }
     }
 
-    if (s3tc_check) {
-        s3tc_dds_load(memory->buffer, memory->size, texture);
+    if (ext_check) {
+        s3tc_load_dds(memory->buffer, memory->size, texture);
     }
 #else
     LOGE("s3tc support must be enabled to load dds files");
+#endif
+}
+
+void
+texture_load_ktx(memory_t* memory, texture_t* texture)
+{
+#ifdef ENABLE_ETC
+#include "tc_etc.h"
+    static short ext_check = -1;
+
+    if (ext_check == -1) {
+        ext_check = renderer_has_gl_ext("OES_compressed_ETC1_RGB8_texture");
+
+        if (!ext_check) {
+            LOGE("etc is not supported on this hardware");
+        }
+    }
+
+    if (ext_check) {
+        etc_load_ktx(memory->buffer, memory->size, texture);
+    }
+#else
+    LOGE("etc support must be enabled to load ktx files");
 #endif
 }
 
@@ -283,6 +306,8 @@ texture_load(const char* name, texture_t* texture)
         memory_delete(&memory);
     } else if (!strcmp(ext, "dds")) {
         texture_load_dds(memory, texture);
+    } else if (!strcmp(ext, "ktx")) {
+        texture_load_ktx(memory, texture);
     } else {
         LOGE("extension: %s not implemented for texturing", ext);
         memory_delete(&memory);

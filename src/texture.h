@@ -261,7 +261,7 @@ void texture_delete_list(texture_list_t** list);
 
 /**
  * Loads a texture object from a name.
- * 
+ *
  * The object is first loaded into memory and then passed to the approriate
  * extension handler.
  *
@@ -293,6 +293,20 @@ void texture_load_png(memory_t* memory, texture_t* texture);
  * OpenGL.
  */
 void texture_load_dds(memory_t* memory, texture_t* texture);
+
+/**
+ * Loads a KTX file (ETC must be enabled).
+ *
+ * KTX is a format for storing textures for OpenGL and OpenGL ES applications.
+ * It is distinguished by the simplicity of the loader required to instantiate
+ * a GL texture object from the file contents.
+ *
+ * @param memory The original object loaded from assets in its original
+ * format.
+ * @param texture The texture object that will contain the RAW data used by
+ * OpenGL.
+ */
+void texture_load_ktx(memory_t* memory, texture_t* texture);
 
 /**
  * Loads a TGA raw file (no need for any library).

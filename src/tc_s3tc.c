@@ -2,13 +2,12 @@
  * Implements S3 (DX) Texture Compression.
  *
  * This file is compiled only if --enable-s3tc is activated when running
- * configure script.
+ * configure script (default).
  */
 
 /**
  * @file tc_s3tc.c
- * @author Jeremy Attali, Johan Attali
- * @date August 24, 2013
+ * @author Jeremy Attali
  */
 
 #include "bina.h"
@@ -242,7 +241,7 @@ s3tc_load_dds(const unsigned char* buffer, unsigned int size,
         if ((height /= 2) == 0) height = 1;
     }
 
-    /* Header has been parsed, allocating memory for rest of buffer. */
+    /* Header has been parsed, allocating memory for rest of the buffer. */
     texture->pixels = (unsigned char*) malloc(bufsize * sizeof(unsigned char));
 
     if (!texture->pixels) {

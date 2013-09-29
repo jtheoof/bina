@@ -27,6 +27,9 @@ if ENABLE_ETC
     bina_LDADD += ../vendor/libktx/libktx.a
     bina_CFLAGS += -I$(top_srcdir)/vendor/libktx/include
 endif
+if ENABLE_ETC
+    bina_SOURCES += tc_etc.c
+endif
 if ENABLE_S3TC
     bina_SOURCES += tc_s3tc.c
 endif
