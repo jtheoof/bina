@@ -27,7 +27,7 @@ if ENABLE_PNG
     bina_SOURCES += tc_png.c
 endif
 if ENABLE_ETC
-    bina_LDADD += ../vendor/libktx/libktx.a
+    bina_LDADD += ../vendor/libktx/libktx.a -lstdc++
     bina_CFLAGS += -I$(top_srcdir)/vendor/libktx/include
 endif
 if ENABLE_ETC
