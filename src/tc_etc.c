@@ -61,6 +61,13 @@ etc_load_ktx(const unsigned char* buffer, unsigned int size,
         ogl.target = target;
         ogl.unit   = 0;      /* TODO make sure there is always one unit */
 
+        glBindTexture(target, tex);
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glBindTexture(target, 0);
+
         texture->width        = dimensions.width;
         texture->height       = dimensions.height;
         texture->compression  = GL_TRUE;
