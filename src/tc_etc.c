@@ -71,7 +71,7 @@ etc_load_ktx(const unsigned char* buffer, unsigned int size,
         texture->width        = dimensions.width;
         texture->height       = dimensions.height;
         texture->compression  = GL_TRUE;
-        texture->flags       |= TEXTURE_UPLOADED;
+        texture->flags       |= TEXTURE_UPLOADED | TEXTURE_FLIP_VERTICAL;
         texture->ogl          = ogl;
     }
 
