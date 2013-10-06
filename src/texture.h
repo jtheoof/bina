@@ -310,12 +310,6 @@ void texture_load_dds(memory_t* memory, texture_t* texture);
 void texture_load_ktx(memory_t* memory, texture_t* texture);
 
 /**
- * Loads a TGA raw file (no need for any library).
- */
-int texture_load_tga(const char *filename,
-                     int* width, int* height, void** pixels);
-
-/**
  * Debugging function to print info about a texture.
  */
 void texture_print_info(texture_t* texture);

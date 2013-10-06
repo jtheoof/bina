@@ -9,12 +9,6 @@
 #include "utils.h"
 #include "renderer.h"
 
-static short
-le_short(unsigned char *bytes)
-{
-    return bytes[0] | ((char)bytes[1] << 8);
-}
-
 /**
  * OpenGL helper function to free the memory used by the texture in the GPU.
  */
@@ -167,93 +161,6 @@ texture_load_ktx(memory_t* memory, texture_t* texture)
 #endif
 }
 
-/* TODO OpenGL external format must be: GL_BGR
- *      OpenGL internal format must be: GL_RGB8
- */
-int
-texture_load_tga(const char *filename,
-                 int *width, int *height, void** pixels)
-{
-    struct tga_header {
-       char  id_length;
-       char  color_map_type;
-       char  data_type_code;
-       unsigned char  color_map_origin[2];
-       unsigned char  color_map_length[2];
-       char  color_map_depth;
-       unsigned char  x_origin[2];
-       unsigned char  y_origin[2];
-       unsigned char  width[2];
-       unsigned char  height[2];
-       char  bits_per_pixel;
-       char  image_descriptor;
-    } header;
-
-    int i, color_map_size, pixels_size;
-    FILE *f;
-    size_t read;
-
-    f = fopen(filename, "rb");
-
-    if (!f) {
-        LOGE("Unable to open: %s for reading", filename);
-        return 1;
-    }
-
-    read = fread(&header, 1, sizeof(header), f);
-
-    if (read != sizeof(header)) {
-        LOGE("%s has incomplete tga header", filename);
-        fclose(f);
-        return 1;
-    }
-    if (header.data_type_code != 2) {
-        LOGE("%s is not an uncompressed RGB tga file",
-             filename);
-        fclose(f);
-        return 1;
-    }
-    if (header.bits_per_pixel != 24) {
-        LOGE("%s is not a 24-bit uncompressed RGB tga file",
-             filename);
-        fclose(f);
-        return 1;
-    }
-
-    for (i = 0; i < header.id_length; ++i)
-        if (getc(f) == EOF) {
-            LOGE("%s has incomplete id string", filename);
-            fclose(f);
-            return 1;
-        }
-
-    color_map_size = le_short(header.color_map_length) *
-                     (header.color_map_depth / 8);
-    for (i = 0; i < color_map_size; ++i)
-        if (getc(f) == EOF) {
-            LOGE("%s has incomplete color map", filename);
-            fclose(f);
-            return 1;
-        }
-
-    *width = le_short(header.width); *height = le_short(header.height);
-    pixels_size = *width * *height * (header.bits_per_pixel / 8);
-    *pixels = malloc(pixels_size);
-
-    read = fread(*pixels, 1, pixels_size, f);
-    fclose(f);
-
-    if (read != pixels_size) {
-        LOGE("%s has incomplete image", filename);
-        free(*pixels);
-        return 1;
-    }
-
-    LOGD("tga: %s loaded - width: %d height: %d", filename, *width, *height);
-
-    return 0;
-}
-
 texture_t*
 texture_create(const char* name, unsigned long flags)
 {
@@ -393,9 +300,6 @@ texture_load(const char* name, texture_t* texture)
 
     if (!strcmp(ext, "png")) {
         texture_load_png(memory, texture);
-    } else if (!strcmp(ext, "tga")) {
-        LOGE("extension tga need some work with texture");
-        memory_delete(&memory);
     } else if (!strcmp(ext, "dds")) {
         texture_load_dds(memory, texture);
     } else if (!strcmp(ext, "ktx")) {
