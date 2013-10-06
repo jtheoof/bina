@@ -15,6 +15,101 @@ le_short(unsigned char *bytes)
     return bytes[0] | ((char)bytes[1] << 8);
 }
 
+/**
+ * OpenGL helper function to free the memory used by the texture in the GPU.
+ */
+static void
+texture_gl_delete(texture_t* texture)
+{
+    if (texture->ogl.tid) {
+        GL_CHECK(glDeleteTextures, 1, &texture->ogl.tid);
+    }
+}
+
+/**
+ * OpenGL helper function to create a new texture buffer and apply it to the
+ * pixels raw data.
+ *
+ * TODO:
+ *  - Add custom flags and filters like it's done in gfx
+ *  - Every texture loading function should be responsible for creating
+ *  calling the specific OpenGL callbacks as it is done in loader.c (libktx).
+ *
+ * @param texture The texture to upload to the GPU.
+ */
+static int
+texture_gl_create(texture_t* texture)
+{
+    if (texture->ogl.tid) {
+        texture_gl_delete(texture);
+    }
+
+    GL_CHECK(glGenTextures, 1, &texture->ogl.tid);
+    LOGD("Texture has id: %d", texture->ogl.tid);
+
+    GL_CHECK(glBindTexture, texture->ogl.target, texture->ogl.tid);
+
+    if (!texture->compression) {
+        switch (texture->byte) {
+          case 1:
+            glPixelStorei(GL_PACK_ALIGNMENT, 1);
+            break;
+          case 2:
+            glPixelStorei(GL_PACK_ALIGNMENT, 2);
+            break;
+          case 3:
+          case 4:
+            glPixelStorei(GL_PACK_ALIGNMENT, 4);
+            break;
+        }
+    }
+
+    GL_CHECK(glTexParameteri, texture->ogl.target,
+             GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    GL_CHECK(glTexParameteri, texture->ogl.target,
+             GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GL_CHECK(glTexParameteri, texture->ogl.target,
+             GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    GL_CHECK(glTexParameteri, texture->ogl.target,
+             GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    if (texture->compression) {
+        unsigned int i      = 0,
+                     width  = texture->width,
+                     height = texture->height,
+                     bsize  = texture->blksize,
+                     size   = 0,
+                     offset = 0;
+
+        if (!texture->nmipmap) {
+            LOGE("texture: %d has missing mipmaps", texture->ogl.tid);
+        } else {
+            for (i = 0; i < texture->nmipmap; i++) {
+                size = ((width + 3) >> 2) * ((height + 3) >> 2) * bsize;
+
+                GL_CHECK(glCompressedTexImage2D, texture->ogl.target, i,
+                         texture->ogl.iformat, width, height, 0, size,
+                         &texture->pixels[offset]);
+
+                if ((width  >>= 1) == 0) width  = 1;
+                if ((height >>= 1) == 0) height = 1;
+
+                offset += size;
+            }
+        }
+    } else {
+        GL_CHECK(glTexImage2D, texture->ogl.target, 0,
+                 texture->ogl.iformat,
+                 texture->width, texture->height, 0,
+                 texture->ogl.format, texture->ogl.type,
+                 texture->pixels);
+    }
+
+    GL_CHECK(glBindTexture, texture->ogl.target, 0);
+
+    return 0;
+}
+
 void
 texture_load_png(memory_t* memory, texture_t* texture)
 {
@@ -317,99 +412,6 @@ texture_load(const char* name, texture_t* texture)
     memory_delete(&memory);
 
     return err;
-}
-
-/* TODO:
- *  - Add custom flags and filters like it's done in gfx
- *  - Every texture loading function should be responsible for creating
- *  calling the specific OpenGL callbacks as it is done in loader.c (libktx).
- */
-int
-texture_gl_create(texture_t* texture)
-{
-    int err;
-
-    if (texture->ogl.tid) {
-        err = texture_gl_delete(texture);
-        if (err) {
-            return err;
-        }
-    }
-
-    GL_CHECK(glGenTextures, 1, &texture->ogl.tid);
-    LOGD("Texture has id: %d", texture->ogl.tid);
-
-    GL_CHECK(glBindTexture, texture->ogl.target, texture->ogl.tid);
-
-    if (!texture->compression) {
-        switch (texture->byte) {
-          case 1:
-            glPixelStorei(GL_PACK_ALIGNMENT, 1);
-            break;
-          case 2:
-            glPixelStorei(GL_PACK_ALIGNMENT, 2);
-            break;
-          case 3:
-          case 4:
-            glPixelStorei(GL_PACK_ALIGNMENT, 4);
-            break;
-        }
-    }
-
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    if (texture->compression) {
-        unsigned int i      = 0,
-                     width  = texture->width,
-                     height = texture->height,
-                     bsize  = texture->blksize,
-                     size   = 0,
-                     offset = 0;
-
-        if (!texture->nmipmap) {
-            LOGE("texture: %d has missing mipmaps", texture->ogl.tid);
-        } else {
-            for (i = 0; i < texture->nmipmap; i++) {
-                size = ((width + 3) >> 2) * ((height + 3) >> 2) * bsize;
-
-                GL_CHECK(glCompressedTexImage2D, texture->ogl.target, i,
-                         texture->ogl.iformat, width, height, 0, size,
-                         &texture->pixels[offset]);
-
-                if ((width  >>= 1) == 0) width  = 1;
-                if ((height >>= 1) == 0) height = 1;
-
-                offset += size;
-            }
-        }
-    } else {
-        GL_CHECK(glTexImage2D, texture->ogl.target, 0,
-                 texture->ogl.iformat,
-                 texture->width, texture->height, 0,
-                 texture->ogl.format, texture->ogl.type,
-                 texture->pixels);
-    }
-
-    GL_CHECK(glBindTexture, texture->ogl.target, 0);
-
-    return 0;
-}
-
-int
-texture_gl_delete(texture_t* texture)
-{
-    if (texture->ogl.tid) {
-        GL_CHECK(glDeleteTextures, 1, &texture->ogl.tid);
-    }
-
-    return 0;
 }
 
 void

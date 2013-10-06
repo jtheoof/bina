@@ -316,17 +316,6 @@ int texture_load_tga(const char *filename,
                      int* width, int* height, void** pixels);
 
 /**
- * OpenGL helper function to create a new texture buffer and apply it to the
- * pixels raw data.
- */
-int texture_gl_create(texture_t* texture);
-
-/**
- * OpenGL helper function to free the memory used by the texture.
- */
-int texture_gl_delete(texture_t* texture);
-
-/**
  * Debugging function to print info about a texture.
  */
 void texture_print_info(texture_t* texture);
