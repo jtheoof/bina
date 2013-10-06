@@ -14,9 +14,61 @@
 
 #include "memory.h"
 
-#define TEXTURE_KEEP_PIXELS    1 << 0 /* do not free pixels after load */
-#define TEXTURE_FLIP_VERTICAL  1 << 1 /* should be flipped vertically */
-#define TEXTURE_UPLOADED       1 << 2 /* already uploaded to server */
+/**
+ * Enumeration of flags used for textures.
+ */
+typedef enum texture_flag_enum_t
+{
+    /**
+     * Do not free pixels after load.
+     */
+    TEXTURE_KEEP_PIXELS    = 1 << 0,
+
+    /**
+     * Should be flipped vertically.
+     */
+    TEXTURE_FLIP_VERTICAL  = 1 << 1,
+
+    /**
+     * Already uploaded to server.
+     */
+    TEXTURE_UPLOADED       = 1 << 2,
+
+    /**
+     * Repeat texture wrapping.
+     */
+    TEXTURE_WRAP_REPEAT    = 1 << 3,
+
+    /**
+     * Use mipmap.
+     */
+    TEXTURE_MIPMAP         = 1 << 4
+
+} texture_flag_enum_t;
+
+typedef enum texture_filter_enum_t
+{
+    /**
+     * Image filtering nearest.
+     */
+    TEXTURE_FILTER_0X = 0,
+
+    /**
+     * Image filtering linear.
+     */
+    TEXTURE_FILTER_1X = 1,
+
+    /**
+     * Bilinear image filtering.
+     */
+    TEXTURE_FILTER_2X = 2,
+
+    /**
+     * Trilinear image filtering.
+     */
+    TEXTURE_FILTER_3X = 3
+
+} texture_filter_enum_t;
 
 typedef struct texture_ogl_t {
 
@@ -218,10 +270,12 @@ typedef struct texture_list_t
  * @param flags Flags relative to the texture. For example it can be useful to
  * indicate wether or not we want to retain the texture loaded into memory or
  * just send it to the GPU and release the memory. In the case of scale maps,
- * we want to keep the object in memory.
+ * we want to keep the object in memory. See #texture_flag_enum_t
+ * @param filter The filtering to apply to the texture.
+ * See #texture_filter_enum_t
  * @return The fresh new allocated texture.
  */
-texture_t* texture_create(const char* name, unsigned long flags);
+texture_t* texture_create(const char* name, bina_enum flags, bina_enum filter);
 
 /**
  * Removes the texture from memory.

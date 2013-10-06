@@ -17,6 +17,7 @@
 #include "texture.h"
 #include "ktx.h"
 
+/* A few renames to make function calls consistent with our coding rules. */
 #define ktx_load_texture_m ktxLoadTextureM
 #define ktx_error_string   ktxErrorString
 
@@ -60,13 +61,6 @@ etc_load_ktx(const unsigned char* buffer, unsigned int size,
         ogl.tid    = tex;
         ogl.target = target;
         ogl.unit   = 0;      /* TODO make sure there is always one unit */
-
-        glBindTexture(target, tex);
-        GL_CHECK(glTexParameteri, target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        GL_CHECK(glTexParameteri, target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glBindTexture(target, 0);
 
         texture->width        = dimensions.width;
         texture->height       = dimensions.height;

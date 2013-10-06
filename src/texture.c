@@ -58,15 +58,6 @@ texture_upload(texture_t* texture)
         }
     }
 
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    GL_CHECK(glTexParameteri, texture->ogl.target,
-             GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
     if (texture->compression) {
         unsigned int i      = 0,
                      width  = texture->width,
@@ -102,6 +93,76 @@ texture_upload(texture_t* texture)
     GL_CHECK(glBindTexture, texture->ogl.target, 0);
 
     return 0;
+}
+
+
+/**
+ * Update texture parameters such as filtering, wrapping, etc.
+ *
+ * The function is based on the texture flags value and also the filter valued
+ * passed to the function.
+ *
+ * @param texture The texture to update.
+ * @param filter The filter to apply, see: #texture_filter_enum_t.
+ *
+ * For example:
+ *     texture_set_filter(mytex, TEXTURE_FILTER_1X);
+ */
+static void
+texture_update_params(texture_t* texture, bina_enum filter)
+{
+    bina_uint target = texture->ogl.target;
+    bina_uint tid    = texture->ogl.tid;
+    bina_uint flags  = texture->flags;
+
+    GL_CHECK(glBindTexture, target, tid);
+
+    if (flags & TEXTURE_WRAP_REPEAT) {
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    } else {
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        GL_CHECK(glTexParameteri, target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
+
+
+    if (flags & TEXTURE_MIPMAP) {
+        switch (filter) {
+          case TEXTURE_FILTER_1X:
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            break;
+
+          case TEXTURE_FILTER_2X:
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            break;
+
+          case TEXTURE_FILTER_3X:
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            break;
+
+          case TEXTURE_FILTER_0X:
+          default:
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            break;
+        }
+    } else {
+        switch (filter) {
+          case TEXTURE_FILTER_0X:
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            break;
+          default:
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            break;
+        }
+    }
+
+    GL_CHECK(glBindTexture, target, 0);
 }
 
 void
@@ -162,7 +223,7 @@ texture_load_ktx(memory_t* memory, texture_t* texture)
 }
 
 texture_t*
-texture_create(const char* name, unsigned long flags)
+texture_create(const char* name, bina_enum flags, bina_enum filter)
 {
     texture_t* texture;
 
@@ -186,6 +247,12 @@ texture_create(const char* name, unsigned long flags)
     if (!(texture->flags & TEXTURE_UPLOADED)) {
         texture_upload(texture);
     }
+
+    /*
+     * The texture has been uploaded to there is a valid texture id.
+     * Let's update its parameters.
+     */
+    texture_update_params(texture, filter);
 
     if (!(texture->flags & TEXTURE_KEEP_PIXELS) && texture->pixels) {
         free(texture->pixels);
@@ -247,7 +314,7 @@ texture_create_list(const char* folder,
     for (i = 0; i < size; i++) {
         snprintf(tmp, MAX_PATH, "%s/%s/%s_%03d.%s",
                  "animations", folder, animation, i, ext);
-        ret->textures[i] = texture_create(tmp, 0);
+        ret->textures[i] = texture_create(tmp, 0, TEXTURE_FILTER_1X);
     }
 
     return ret;

@@ -25,7 +25,7 @@ load_background(const char* name, scene_t* scene)
 
     snprintf(bg_buf, MAX_PATH, "scenes/%s/backgroundColor.%s", name, tc_ext);
 
-    bg_tex = texture_create(bg_buf, 0);
+    bg_tex = texture_create(bg_buf, 0, TEXTURE_FILTER_1X);
 
     pos.x = pos.y = 0.0f;
     off.x = off.y = 0.0f;
@@ -49,7 +49,7 @@ load_scale_map(const char* name, const float minsize, const float maxsize,
     texture_t* sm_tex = NULL;
 
     snprintf(sm_buf, MAX_PATH, "scenes/%s/scaleMap.png", name);
-    sm_tex = texture_create(sm_buf, TEXTURE_KEEP_PIXELS);
+    sm_tex = texture_create(sm_buf, TEXTURE_KEEP_PIXELS, TEXTURE_FILTER_1X);
 
     scene->smap       = sm_tex;
     scene->scale_min  = minsize;
@@ -86,7 +86,7 @@ load_sprites(const char* name, scene_t* scene)
     snprintf(bg_buf, MAX_PATH, "scenes/%s/backgroundColor.png", name);
     snprintf(ch_buf, MAX_PATH, "animations/perso1_neutraPose_frontCam.png");
 
-    bg_tex = texture_create(bg_buf, 0);
+    bg_tex = texture_create(bg_buf, 0, TEXTURE_FILTER_1X);
 
     pos.x = pos.y = 0.0f;
     off.x = off.y = 0.0f;
