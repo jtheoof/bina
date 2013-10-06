@@ -38,7 +38,7 @@ texture_gl_delete(texture_t* texture)
  * @param texture The texture to upload to the GPU.
  */
 static int
-texture_gl_create(texture_t* texture)
+texture_upload(texture_t* texture)
 {
     if (texture->ogl.tid) {
         texture_gl_delete(texture);
@@ -277,7 +277,7 @@ texture_create(const char* name, unsigned long flags)
     }
 
     if (!(texture->flags & TEXTURE_UPLOADED)) {
-        texture_gl_create(texture);
+        texture_upload(texture);
     }
 
     if (!(texture->flags & TEXTURE_KEEP_PIXELS) && texture->pixels) {
