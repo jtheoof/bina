@@ -11,11 +11,6 @@ dnl keep things clean
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_MACRO_DIR([m4])
 
-dnl TODO Remove this because we will cross compile at some point and this will
-dnl become a wrong statement.
-dnl being able to run configure means the system is Unix (compatible).
-AC_DEFINE(UNIX, 1, Unix system)
-
 dnl init default CFLAGS before AC_PROG_CC which sets it to -g -O2 otherwise
 CFLAGS="$CFLAGS -Wall -Werror"
 
