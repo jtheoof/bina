@@ -1,6 +1,6 @@
-bin_PROGRAMS = bina
+lib_LTLIBRARIES = libbina.la
 
-bina_SOURCES = \
+libbina_la_SOURCES = \
     bina.h      \
     bina.c      \
     algebra.c   \
@@ -24,32 +24,28 @@ bina_SOURCES = \
     utils.c     \
     utils.h
 
-bina_CFLAGS = \
+libbina_la_CFLAGS = \
     $(SDL_CFLAGS)           \
     -I$(top_srcdir)/include
 
-bina_LDFLAGS = \
+libbina_la_LDFLAGS = \
     -lm
 
-bina_LDADD = \
+libbina_la_LIBADD = \
     $(SDL_LIBS)  \
     $(GL_LIBS)   \
-    $(GLU_LIBS)  \
-    $(GLUT_LIBS)
+    $(GLU_LIBS)
 
-if ENABLE_GLUT
-    bina_SOURCES += main/glut.c
-endif
 if ENABLE_PNG
-    bina_SOURCES += tc_png.c tc_png.h
+    libbina_la_SOURCES += tc_png.c tc_png.h
 endif
 if ENABLE_ETC
-    bina_LDADD += ../vendor/libktx/libktx.a -lstdc++
-    bina_CFLAGS += -I$(top_srcdir)/vendor/libktx/include
+    libbina_la_LIBADD += ../vendor/libktx/libktx.a -lstdc++
+    libbina_la_CFLAGS += -I$(top_srcdir)/vendor/libktx/include
 endif
 if ENABLE_ETC
-    bina_SOURCES += tc_etc.c tc_etc.h
+    libbina_la_SOURCES += tc_etc.c tc_etc.h
 endif
 if ENABLE_S3TC
-    bina_SOURCES += tc_s3tc.c tc_s3tc.h
+    libbina_la_SOURCES += tc_s3tc.c tc_s3tc.h
 endif

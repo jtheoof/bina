@@ -11,9 +11,31 @@ dnl keep things clean
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_MACRO_DIR([m4])
 
+dnl Save the CFLAGS to see whether they were passed in or generated
+orig_CFLAGS="$CFLAGS"
+
+dnl Set various version strings (taken gratefully from SDL).
+BINA_MAJOR_VERSION=0
+BINA_MINOR_VERSION=1
+BINA_MICRO_VERSION=1
+BINA_VERSION=$BINA_MAJOR_VERSION.$BINA_MINOR_VERSION.$BINA_MICRO_VERSION
+
+AC_SUBST(BINA_MAJOR_VERSION)
+AC_SUBST(BINA_MINOR_VERSION)
+AC_SUBST(BINA_MICRO_VERSION)
+AC_SUBST(BINA_VERSION)
+
+# libtool versioning
+LT_INIT
+
+LT_RELEASE=$BINA_MAJOR_VERSION.$BINA_MINOR_VERSION
+LT_CURRENT=`expr $BINA_MICRO_VERSION - $BINA_INTERFACE_AGE`
+
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+
+dnl Detect the canonical build and host environments
 AC_CANONICAL_HOST
-AC_PROG_CC_STDC([clang gcc cl cc])
-AC_PROG_RANLIB
 
 dnl checking main c headers
 AC_CHECK_HEADERS( \
@@ -26,19 +48,21 @@ AC_CHECK_HEADERS( \
     AC_MSG_NOTICE([main c headers found]),         \
     AC_MSG_ERROR([missing main c headers files]))
 
+dnl Check for tools
+AC_PROG_LIBTOOL
+AC_PROG_INSTALL
+AC_PROG_CC_STDC([clang gcc cl cc])
+AC_PROG_CXX
+
 AM_PATH_SDL2(2.0.1,,AC_MSG_ERROR('SDL2 is required.'))
+
 AX_CHECK_GL
-AX_CHECK_GLUT
-
 BN_CHECK_GLEW
-
 BN_CHECK_FEATURES
 BN_CHECK_PACKAGES
 BN_CHECK_HOST
 
-AM_INIT_AUTOMAKE([foreign])
-AM_PROG_AR
-AM_CONDITIONAL([ENABLE_GLUT], [test "x$ax_cv_check_glut_libglut" != "xno"])
+AM_INIT_AUTOMAKE([foreign subdir-objects])
 
 AC_SUBST(CFLAGS)
 AC_SUBST(LDFLAGS)
