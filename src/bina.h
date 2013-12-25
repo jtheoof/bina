@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "sdl2bina.h"
+
 #ifdef WIN32
 #include "targetver.h"
 #pragma warning(disable : 4996)
