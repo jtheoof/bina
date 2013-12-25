@@ -21,8 +21,6 @@
 #pragma warning(disable : 4996)
 #endif
 
-#define APP_TITLE "This is Binaaaaaaaaaaaaaaa"
-
 #ifndef MAX_CHAR
 #define MAX_CHAR 64
 #endif

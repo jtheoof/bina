@@ -2,6 +2,7 @@ bin_PROGRAMS = bina
 
 bina_SOURCES = \
     bina.h      \
+    bina.c      \
     algebra.c   \
     algebra.h   \
     camera.c    \
@@ -24,12 +25,14 @@ bina_SOURCES = \
     utils.h
 
 bina_CFLAGS = \
+    $(SDL_CFLAGS)           \
     -I$(top_srcdir)/include
 
 bina_LDFLAGS = \
     -lm
 
 bina_LDADD = \
+    $(SDL_LIBS)  \
     $(GL_LIBS)   \
     $(GLU_LIBS)  \
     $(GLUT_LIBS)

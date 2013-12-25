@@ -37,6 +37,7 @@ static int elap_time_g = 0;
 
 game_t game_g;
 
+/* TODO Get rid of this and use sdl_get_ticks instead */
 float
 main_get_time_elapsed()
 {

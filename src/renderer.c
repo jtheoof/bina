@@ -58,6 +58,12 @@ renderer_init()
     print_gl_string(GL_RENDERER);
     print_gl_string(GL_EXTENSIONS);
 
+
+    if (sdl_init(SDL_INIT_VIDEO) < 0) {
+        LOGE("could not initialize SDL");
+        exit(-1);
+    }
+
     /* Getting OpenGL extensions. */
     m.gl_extensions = (char*) glGetString(GL_EXTENSIONS);
 
@@ -82,19 +88,7 @@ renderer_pre_render(float r, float g, float b, float a)
 void
 renderer_render(scene_t* scene)
 {
-    static float time = 0;
-    static int   frames = 0;
-
-    float elapsed = main_get_time_elapsed(); /* time since last frame */
-
-    time += main_get_time_elapsed();
-    frames++;
-
-    if (time >= 1.0f) {
-        /* LOGI("FPS: %d", frames); */
-        time = 0.0f;
-        frames = 0;
-    }
+    float elapsed = sdl_get_ticks(); /* time since last frame */
 
     scene_animate(scene, elapsed);
 

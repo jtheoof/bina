@@ -302,7 +302,7 @@ scene_render(scene_t* scene)
 void
 scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
 {
-    float elapsed = main_get_time_elapsed(), alpha;
+    float elapsed = sdl_get_ticks(), alpha;
     vec2_t proj, norm;
 
     if (!scene || !scene->character) {
