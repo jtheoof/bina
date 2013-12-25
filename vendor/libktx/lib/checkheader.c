@@ -69,7 +69,7 @@ DECLARE_GL_EXTGLOBALS
  * @param header	pointer to the KTX header to check
  * @param texinfo	pointer to a KTX_texinfo structure in which to return
  *                  information about the texture.
- * 
+ *
  * @author Georg Kolling, Imagination Technology
  * @author Mark Callow, HI Corporation
  */
@@ -122,7 +122,7 @@ KTX_error_code _ktxCheckHeader(KTX_header* header, KTX_texinfo* texinfo)
 	{
 		/* texture must have width */
 		/* texture must have height if it has depth */
-		return KTX_INVALID_VALUE; 
+		return KTX_INVALID_VALUE;
 	}
 
 	texinfo->textureDimensions = 1;
@@ -159,8 +159,7 @@ KTX_error_code _ktxCheckHeader(KTX_header* header, KTX_texinfo* texinfo)
 
 	/* load as 2D texture if 1D textures are not supported */
 	if (texinfo->textureDimensions == 1 &&
-		((texinfo->compressed && (glCompressedTexImage1D == NULL)) ||
-		 (!texinfo->compressed && (glTexImage1D == NULL))))
+		((texinfo->compressed && (glCompressedTexImage1D == NULL))))
 	{
 		texinfo->textureDimensions = 2;
 		texinfo->glTarget = GL_TEXTURE_2D;
