@@ -26,6 +26,9 @@ bina_SOURCES = \
 bina_CFLAGS = \
     -I$(top_srcdir)/include
 
+bina_LDFLAGS = \
+    -lm
+
 bina_LDADD = \
     $(GL_LIBS)   \
     $(GLU_LIBS)  \
