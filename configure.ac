@@ -11,11 +11,8 @@ dnl keep things clean
 AC_CONFIG_AUX_DIR(autotools)
 AC_CONFIG_MACRO_DIR([m4])
 
-dnl init default CFLAGS before AC_PROG_CC which sets it to -g -O2 otherwise
-CFLAGS="$CFLAGS -Wall -Werror"
-
 AC_CANONICAL_HOST
-AC_PROG_CC([clang gcc cl cc])
+AC_PROG_CC_STDC([clang gcc cl cc])
 AC_PROG_RANLIB
 
 dnl checking main c headers
