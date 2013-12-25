@@ -27,11 +27,7 @@ AC_DEFUN([BN_CHECK_FEATURES], [
     AC_MSG_RESULT($enable_debugging)
     AM_CONDITIONAL([ENABLE_DEBUGGING], [test "x$enable_debugging" = "xyes"])
     AS_IF([test "x$enable_debugging" = "xyes"],
-          [AC_DEFINE([DEBUG], [1], [enable debugging and tracing.])
-           DEBUG_CFLAGS="-g"],
-          [DEBUG_CFLAGS="-O2"])
-
-    CFLAGS="$CFLAGS $DEBUG_CFLAGS"
+          [AC_DEFINE([DEBUG], [1], [enable debugging and tracing.])])
 
     dnl }}}
     dnl etc {{{
