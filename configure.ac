@@ -26,6 +26,7 @@ AC_CHECK_HEADERS( \
     AC_MSG_NOTICE([main c headers found]),         \
     AC_MSG_ERROR([missing main c headers files]))
 
+AM_PATH_SDL2(2.0.1,,AC_MSG_ERROR('SDL2 is required.'))
 AX_CHECK_GL
 AX_CHECK_GLUT
 
