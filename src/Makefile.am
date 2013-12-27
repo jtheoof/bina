@@ -1,5 +1,13 @@
 lib_LTLIBRARIES = libbina.la
 
+LT_AGE      = @LT_AGE@
+LT_CURRENT  = @LT_CURRENT@
+LT_RELEASE  = @LT_RELEASE@
+LT_REVISION = @LT_REVISION@
+LT_LDFLAGS  = \
+    -no-undefined                                        \
+    -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+
 libbina_la_SOURCES = \
     bina.h      \
     bina.c      \
@@ -29,6 +37,7 @@ libbina_la_CFLAGS = \
     -I$(top_srcdir)/include
 
 libbina_la_LDFLAGS = \
+    $(LT_LDFLAGS) \
     -lm
 
 libbina_la_LIBADD = \
