@@ -66,7 +66,7 @@ typedef enum program_type_e
  * @return The id of the shader generated and stored in GPU. 0 if something
  * went wrong.
  */
-unsigned int shader_create_shader(GLenum type, const char* source);
+unsigned int shader_create_shader(bina_enum type, const char* source);
 
 /**
  * Deletes a shader.

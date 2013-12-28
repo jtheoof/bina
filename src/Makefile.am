@@ -1,4 +1,5 @@
 lib_LTLIBRARIES = libbina.la
+bin_PROGRAMS = bina
 
 LT_AGE      = @LT_AGE@
 LT_CURRENT  = @LT_CURRENT@
@@ -8,8 +9,13 @@ LT_LDFLAGS  = \
     -no-undefined                                        \
     -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
+libbinaincludedir = $(includedir)/bina
+
+libbinainclude_HEADERS = \
+    bina.h  \
+    error.h
+
 libbina_la_SOURCES = \
-    bina.h      \
     bina.c      \
     algebra.c   \
     algebra.h   \
@@ -58,3 +64,16 @@ endif
 if ENABLE_S3TC
     libbina_la_SOURCES += tc_s3tc.c tc_s3tc.h
 endif
+
+bina_SOURCES = \
+    bin/x86_64.c
+
+bina_CFLAGS = \
+    $(SDL_CFLAGS)           \
+    -I$(top_srcdir)/include
+
+bina_LDADD = \
+    $(SDL_LIBS)  \
+    $(GL_LIBS)   \
+    $(GLU_LIBS)  \
+    libbina.la

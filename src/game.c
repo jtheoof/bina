@@ -26,9 +26,6 @@ game_init(game_t* game, int width, int height)
 
     camera_set_viewport(&viewport);
 
-    /* Initialize renderer to get OpenGL extensions. */
-    renderer_init();
-
     /* Load the scene. */
     game->scene = scene_load("bedroomArtist", 0.25f, 0.75f);
 }

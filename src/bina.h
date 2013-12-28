@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include "sdl2bina.h"
-
 #ifdef WIN32
 #include "targetver.h"
 #pragma warning(disable : 4996)
@@ -107,11 +105,12 @@ AAssetManager* asset_manager_g;
 
 #endif /* ANDROID */
 
-#ifdef HAVE_GL_GLEW_H
-#include "GL/glew.h"
+#ifdef ENABLE_ETC
+#include "KHR/khrplatform.h"
 #endif
 
-#include "KHR/khrplatform.h"
+#include "wrapper/gl.h"
+#include "wrapper/sdl.h"
 
 /*
  * Datatypes (taken from GL/gl.h).
@@ -131,6 +130,29 @@ typedef float          bina_float;    /* single precision float */
 typedef float          bina_clampf;   /* single precision float in [0,1] */
 typedef double         bina_double;   /* double precision float */
 typedef double         bina_clampd;   /* double precision float in [0,1] */
+
+/**
+ * Window structure based on SDL_CreateWindow.
+ */
+typedef struct bina_window_t
+{
+    /**
+     * Name of the window.
+     */
+    char* title;
+
+    /**
+     * Width of the window.
+     */
+    int width;
+
+    /**
+     * Height of the window.
+     */
+    int height;
+
+} bina_window_t;
+
 
 /**
  * Mapping between and id (or token, enum, ...) and a string.
@@ -239,3 +261,22 @@ typedef struct token_string_size_t
  * @return The time elapsed since last call to the same function in seconds.
  */
 float main_get_time_elapsed();
+
+/**
+ * Initializes the engine.
+ *
+ * Mainly initialization of SDL.
+ *
+ * @param window An optional pointer to a window to create using SDL.
+ *
+ * @return BINA_SUCCESS if success,
+ */
+int bina_init(bina_window_t* window);
+
+/* TODO Remove me */
+int bina_render();
+
+/**
+ * Exits the engine and cleanup everything.
+ */
+void bina_exit();

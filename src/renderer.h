@@ -17,8 +17,12 @@
 
 /**
  * Initializes the render with viewport dimensions specified.
+ *
+ * @param window SDL window that will support the context.
+ *
+ * @return BINA_SUCCESS if successful, an error code otherwise.
  */
-void renderer_init();
+int renderer_init(sdl_window_t* window);
 
 /**
  * Pre-rendering function.

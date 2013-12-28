@@ -14,7 +14,14 @@
 
 #pragma once
 
+typedef enum bina_error_e {
+    BINA_SUCCESS = 0,
+    BINA_LIB_ERROR,
+    BINA_NOT_SURE
+} bina_error_e;
+
 /* TODO Make error codes more flexible to print with custom values. */
+#define BINA_SUCCESS           0
 #define BINA_NOT_ENOUGH_MEMORY "Not enough memory"
 #define BINA_NOT_IMPLEMENTED   "Not implemented"
 #define BINA_INVALID_PARAM     "Invalid parameter" /* Which one?! See todo */

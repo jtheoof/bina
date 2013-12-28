@@ -41,7 +41,6 @@
 #define sdl_assert_state_e SDL_assert_state
 #define SDL_bool sdl_bool_e
 /* }}} */
-
 /* Structures {{{ */
 
 #define sdl_audio_cvt_t SDL_AudioCVT
@@ -87,6 +86,10 @@
 #define sdl_assert_data_t SDL_assert_data
 #define sdl_atomic_t SDL_atomic_t
 #define sdl_version_t SDL_version
+#define sdl_window_t SDL_Window
+#define sdl_renderer_t SDL_Renderer
+#define sdl_texture_t SDL_Texture
+#define sdl_gl_context_t SDL_GLContext
 
 /* }}} */
 /* Functions {{{ */
