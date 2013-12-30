@@ -10,18 +10,13 @@ main(int argc, char** argv)
     };
     int err;
 
-    printf("this is just a test\n");
-
     err = bina_init(&window);
 
     if (err) {
         exit(-1);
     }
 
-
     bina_render();
-
-    sdl_delay(2000);
 
     bina_exit();
 

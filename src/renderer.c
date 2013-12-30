@@ -39,6 +39,7 @@ struct renderer_module_info {
 static struct renderer_module_info m = {
     NULL,
     NULL,
+    NULL,
     "",
     ""
 };

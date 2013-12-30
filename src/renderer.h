@@ -25,6 +25,11 @@
 int renderer_init(sdl_window_t* window);
 
 /**
+ * Cleanup memory allocated for rendering purposes.
+ */
+void renderer_destroy();
+
+/**
  * Pre-rendering function.
  *
  * Only clears the buffer for now.

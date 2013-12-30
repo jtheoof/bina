@@ -58,13 +58,14 @@ AC_CANONICAL_HOST
 
 dnl checking main c headers
 AC_CHECK_HEADERS( \
-    stdio.h                                        \
-    string.h                                       \
-    ctype.h                                        \
-    math.h                                         \
-    time.h                                         \
-    stdlib.h,                                      \
-    AC_MSG_NOTICE([main c headers found]),         \
+    libgen.h                                      \
+    ctype.h                                       \
+    math.h                                        \
+    stdio.h                                       \
+    stdlib.h                                      \
+    string.h                                      \
+    time.h,                                       \
+    AC_MSG_NOTICE([main c headers found]),        \
     AC_MSG_ERROR([missing main c headers files]))
 
 dnl Check for tools

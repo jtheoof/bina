@@ -4,6 +4,7 @@
  */
 
 #include "bina.h"
+#include "log.h"
 #include "renderer.h"
 
 /**
@@ -33,6 +34,11 @@ bina_init(bina_window_t* window)
 
     /* Be verbose in logs. */
     sdl_log_set_all_priority(SDL_LOG_PRIORITY_VERBOSE);
+
+#ifdef HAVE_STDIO_H
+    /* Set up our own custom log function without userdata. */
+    sdl_log_set_output_function(log_custom, NULL);
+#endif
 
     if (window) {
         m.window = sdl_create_window(window->title, SDL_WINDOWPOS_CENTERED,

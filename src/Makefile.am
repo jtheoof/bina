@@ -23,6 +23,7 @@ libbina_la_SOURCES = \
     camera.h    \
     game.c      \
     game.h      \
+    log.c       \
     memory.c    \
     memory.h    \
     renderer.c  \
