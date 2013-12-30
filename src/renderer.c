@@ -79,7 +79,7 @@ renderer_init(sdl_window_t* window)
 
     m.context = sdl_gl_create_context(window);
 
-    if (1) {
+    if (!m.context) {
         log_c("unable to create gl context: %s", sdl_get_error());
         return BINA_LIB_ERROR;
     }
