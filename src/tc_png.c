@@ -15,13 +15,11 @@
 
 #ifdef ENABLE_PNG
 
-#ifdef HAVE_PNG_H
-#include <png.h>
-#endif
-
 #include "log.h"
 #include "memory.h"
 #include "texture.h"
+
+#include <png.h>
 
 /**
  * Reads a PNG file from memory.
