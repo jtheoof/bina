@@ -132,7 +132,7 @@ glut_mouse_cb(int button, int state, int x, int y)
         ndc = camera_win_coord_to_ndc(&screen);
         eye = camera_win_coord_to_eye(&screen);
 
-        LOGD("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
+        log_d("[point]: screen: %d, %d - ndc: %f, %f - eye: %f, %f",
              x, y, ndc.x, ndc.y, eye.x, eye.y)
 
         game_animate_porc_to(game_g.scene, screen, elapsed);
@@ -177,10 +177,10 @@ main(int argc, char** argv)
     err = glewInit();
     if (GLEW_OK != err) {
         /* Problem: glewInit failed, something is seriously wrong. */
-        LOGE("Could not initialize glew");
+        log_e("Could not initialize glew");
         exit(-1);
     }
-    LOGI("Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+    log_i("Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 #endif
 
     /* Setting up callbacks */

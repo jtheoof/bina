@@ -6,6 +6,7 @@
 
 #include "bina.h"
 #include "scene.h"
+#include "log.h"
 #include "shader.h"
 #include "camera.h"
 
@@ -152,11 +153,11 @@ scene_load(const char* name, const float minsize, const float maxsize)
     /* Updating projection matrix */
     float left, right, bottom, top;
 
-    LOGI("loading scene: %s", name);
+    log_i("loading scene: %s", name);
 
     scene = (scene_t*) calloc(1, sizeof(scene_t));
     if (!scene) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         return NULL;
     }
 
@@ -315,7 +316,7 @@ scene_move_character_to(scene_t* scene, vec2_t screen, float speed)
     /* Normalized Screen Coordinates point */
     norm = camera_win_coord_to_ndc(&screen);
 
-    LOGD("[character] previous position: %f, %f - new position: %f, %f",
+    log_d("[character] previous position: %f, %f - new position: %f, %f",
          scene->character->position.x, scene->character->position.y,
          proj.x, proj.y);
 
@@ -381,7 +382,7 @@ scene_compute_character_size(scene_t* scene, const vec2_t norm)
     index = row * byte * width + col * byte;
 
     if (byte < 3 || byte > 4) {
-        LOGE("invalid byte size for scale map, should be RGB or RGBA");
+        log_e("invalid byte size for scale map, should be RGB or RGBA");
         return 0.0f;
     }
 
@@ -403,7 +404,7 @@ scene_compute_character_size(scene_t* scene, const vec2_t norm)
 
     ret = (r + g + b) / (3.0f * 255);
 
-    /* LOGD("scale map pixel at: %d, %d (%d, %d, %d, %d)", */
+    /* log_d("scale map pixel at: %d, %d (%d, %d, %d, %d)", */
     /*      (unsigned int) (norm.y * height), col, r, g, b, a); */
 
     return scene->scale_min + (scene->scale_dif * ret);

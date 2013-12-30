@@ -19,6 +19,7 @@
 #include <png.h>
 #endif
 
+#include "log.h"
 #include "memory.h"
 #include "texture.h"
 
@@ -76,14 +77,14 @@ tc_png_load(memory_t* memory, texture_t* texture)
                                      NULL, NULL, NULL);
 
     if (png_ptr == NULL) {
-        LOGE("Cannot create PNG pointer for: %s", filename);
+        log_e("Cannot create PNG pointer for: %s", filename);
         goto error;
     }
 
     /* Allocate/initialize the memory for image information. REQUIRED. */
     info_ptr = png_create_info_struct(png_ptr);
     if (info_ptr == NULL) {
-        LOGE("Cannot create PNG information pointer for: %s", filename);
+        log_e("Cannot create PNG information pointer for: %s", filename);
         goto error;
     }
 
@@ -92,12 +93,12 @@ tc_png_load(memory_t* memory, texture_t* texture)
      * set up your own error handlers in the png_create_read_struct() earlier.
      */
     if (setjmp(png_jmpbuf(png_ptr))) {
-        LOGE("Cannot set PNG error handling for: %s", filename);
+        log_e("Cannot set PNG error handling for: %s", filename);
         goto error;
     }
 
     if (!memory) {
-        LOGE("No memory raw data loaded from asset");
+        log_e("No memory raw data loaded from asset");
         goto error;
     }
 
@@ -192,13 +193,13 @@ tc_png_load(memory_t* memory, texture_t* texture)
     texture->pixels      = (unsigned char*) malloc(texture->size *
                                                    sizeof(unsigned char));
     if (!texture->pixels) {
-        LOGE("Not enough memory to create pixels for texture");
+        log_e("Not enough memory to create pixels for texture");
         goto error;
     }
 
     row_pointers = (png_bytepp) malloc(sizeof(png_bytepp) * height);
     if (!row_pointers) {
-        LOGE("Not enough memory to create row_pointers");
+        log_e("Not enough memory to create row_pointers");
         goto error;
     }
 

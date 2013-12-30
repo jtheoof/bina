@@ -6,6 +6,7 @@
 
 #include "bina.h"
 #include "memory.h"
+#include "log.h"
 
 memory_t*
 memory_create(const char* filepath)
@@ -13,11 +14,11 @@ memory_create(const char* filepath)
     memory_t* memory = NULL;
     FILE* fd = NULL;
 
-    LOGD("loading: %s into memory", filepath);
+    log_d("loading: %s into memory", filepath);
 
     memory = (memory_t*) calloc(1, sizeof(memory_t));
     if (!memory) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 
@@ -32,14 +33,14 @@ memory_create(const char* filepath)
     strncpy(memory->filepath, filepath, MAX_PATH);
 
     if (!asset_manager_g) {
-        LOGE("cannot load: %s - AssetManager is not loaded", filepath);
+        log_e("cannot load: %s - AssetManager is not loaded", filepath);
         goto android_error;
     }
 
     asset = AAssetManager_open(asset_manager_g, filepath,
                                AASSET_MODE_BUFFER);
     if (!asset) {
-        LOGE("cannot load: %s - could not found asset", filepath);
+        log_e("cannot load: %s - could not found asset", filepath);
         goto android_error;
     }
 
@@ -52,7 +53,7 @@ memory_create(const char* filepath)
     /* Allocating enough memory for buffer */
     memory->buffer = (unsigned char *) calloc(1, memory->size + 1);
     if (!memory->buffer) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto android_error;
     }
 
@@ -75,7 +76,7 @@ android_error:
     snprintf(memory->filepath, MAX_PATH, "assets/%s", filepath);
 
     if ((fd = fopen(memory->filepath, "rb")) == NULL) {
-        LOGE("unable to open: %s for reading", filepath);
+        log_e("unable to open: %s for reading", filepath);
         goto else_error;
     }
 
@@ -87,7 +88,7 @@ android_error:
     /* Allocating enough memory for buffer */
     memory->buffer = (unsigned char *) calloc(1, memory->size + 1);
     if (!memory->buffer) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto else_error;
     }
 

@@ -6,6 +6,7 @@
 
 #include "bina.h"
 #include "sprite.h"
+#include "log.h"
 #include "texture.h"
 
 /**
@@ -102,17 +103,17 @@ create_character_anim(const char* character)
     ret = (sprite_tex_anim_t*) malloc(sizeof(sprite_tex_anim_t));
 
     if (!ret) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 
-    LOGD("number of camera types: %d", SPRITE_CAM_TYPE_COUNT);
-    LOGD("number of sprite animations: %d", SPRITE_ANIM_COUNT);
+    log_d("number of camera types: %d", SPRITE_CAM_TYPE_COUNT);
+    log_d("number of sprite animations: %d", SPRITE_ANIM_COUNT);
 
     list = (texture_list_t**) calloc(cams * anims, sizeof(texture_list_t*));
 
     if (!list) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 
@@ -146,7 +147,7 @@ error:
         ret = NULL;
     }
 
-    LOGE("unable to create animations for: %s", character);
+    log_e("unable to create animations for: %s", character);
     return NULL;
 }
 
@@ -181,7 +182,7 @@ sprite_create(texture_t* texture,
     sprite = (sprite_t*) malloc(sizeof(sprite_t));
 
     if (!sprite) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         return NULL;
     }
 
@@ -193,7 +194,7 @@ sprite_create(texture_t* texture,
         sprite->texture_attrib   = glGetAttribLocation(program, "texture_a");
         sprite->texture_uniform  = glGetUniformLocation(program, "texture_u");
 
-        LOGD("In program: %d, "
+        log_d("In program: %d, "
              "[mvp]: uniform: %d, "
              "[position]: attribute: %d "
              "[texture]: uniform: %d, attribute: %d",
@@ -388,7 +389,7 @@ sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed, float elapsed)
     linanim = (lin_vec2_anim_t*) malloc(sizeof(lin_vec2_anim_t));
 
     if (!linanim) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
     }
 
     pos = sprite->position;
@@ -402,11 +403,11 @@ sprite_animate_char_to(sprite_t* sprite, vec2_t to, float speed, float elapsed)
     norm = vec2_sub(to, pos);
     norm = vec2_normalize(norm);
 
-    LOGD("normalized vector: %f, %f", norm.x, norm.y);
+    log_d("normalized vector: %f, %f", norm.x, norm.y);
     /* Approximating normalized direction vector to its nearest integer */
     norm.x = round(norm.x);
     norm.y = round(norm.y);
-    LOGD("camera vector: %f, %f", norm.x, norm.y);
+    log_d("camera vector: %f, %f", norm.x, norm.y);
 
     /* XXX Since we only have 4 cameras, we are missing the possibilities
      * where: |norm.x| = 1 && |norm.x| = 1
@@ -605,7 +606,7 @@ sprite_animator_create(sprite_t* sprite, lin_vec2_anim_t* animation,
      animator = (sprite_animator_t*) malloc(sizeof(sprite_animator_t));
 
      if (!animator) {
-         LOGE(BINA_NOT_ENOUGH_MEMORY);
+         log_e(BINA_NOT_ENOUGH_MEMORY);
          goto error;
      }
 
@@ -613,7 +614,7 @@ sprite_animator_create(sprite_t* sprite, lin_vec2_anim_t* animation,
      animator->animation = animation;
      animator->textures  = textures;
 
-     /* LOGD("Sprite animator was created from: (%f,%f) to: (%f, %f) " */
+     /* log_d("Sprite animator was created from: (%f,%f) to: (%f, %f) " */
      /*      "in %d steps at speed: %f with elapsed time: %f", */
      /*      from.x, from.y, to.x, to.y, steps, speed, elapsed); */
 

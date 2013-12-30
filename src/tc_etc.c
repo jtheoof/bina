@@ -14,6 +14,7 @@
 
 #ifdef ENABLE_ETC
 
+#include "log.h"
 #include "texture.h"
 #include "ktx.h"
 
@@ -35,7 +36,7 @@ void
 etc_load_ktx(const unsigned char* buffer, unsigned int size,
               texture_t* texture)
 {
-    LOGD("loading ktx buffer with size: %d", size);
+    log_d("loading ktx buffer with size: %d", size);
 
     const void*      bytes       = (const void*) buffer;
     bina_uint        tex         = 0;
@@ -55,7 +56,7 @@ etc_load_ktx(const unsigned char* buffer, unsigned int size,
 
     if (res != KTX_SUCCESS) {
         strres = ktx_error_string(res);
-        LOGE("error while loading ktx file: %s", strres);
+        log_e("error while loading ktx file: %s", strres);
         goto error;
     } else {
         ogl.tid    = tex;

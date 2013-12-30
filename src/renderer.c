@@ -11,6 +11,8 @@
 #endif
 
 #include "renderer.h"
+#include "log.h"
+
 /* TODO Perhaps remove dependency of scene.h */
 #include "scene.h"
 
@@ -59,7 +61,7 @@ device_get_tc_ext()
     } else if (renderer_has_gl_ext("OES_compressed_ETC1_RGB8_texture")) {
         snprintf(m.tc_ext, 4, "ktx");
     } else {
-        LOGE("no texture compression extension supported on this device");
+        log_e("no texture compression extension supported on this device");
     }
 }
 
@@ -67,7 +69,7 @@ int
 renderer_init(sdl_window_t* window)
 {
     if (!window) {
-        LOGE("no window to initialize renderer, not sure what to do");
+        log_e("no window to initialize renderer, not sure what to do");
         return BINA_NOT_SURE;
     }
 

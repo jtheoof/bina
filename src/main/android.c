@@ -44,7 +44,7 @@ Java_com_android_bina_BinaLib_touch(JNIEnv * env, jobject obj,
     ndc = camera_win_coord_to_ndc(&screen);
     eye = camera_win_coord_to_eye(&screen);
 
-    LOGD("[point]: screen: %f, %f - ndc: %f, %f - eye: %f, %f",
+    log_d("[point]: screen: %f, %f - ndc: %f, %f - eye: %f, %f",
          x, y, ndc.x, ndc.y, eye.x, eye.y);
 
     game_animate_porc_to(game_g.scene, screen, elapsed);
@@ -60,7 +60,7 @@ Java_com_android_bina_BinaLib_step(JNIEnv * env, jobject obj)
 
     t.tv_sec = t.tv_nsec = 0;
     if (clock_gettime(CLOCK_MONOTONIC, &t)) {
-        LOGE("clock_gettime returned an error");
+        log_e("clock_gettime returned an error");
     } else {
         prev_time = curr_time;
         curr_time = (int64_t) (t.tv_sec) * 1000000000LL + t.tv_nsec;
@@ -78,11 +78,11 @@ Java_com_android_bina_BinaLib_init(JNIEnv * env, jobject obj,
                                    jobject asset_manager,
                                    jint width, jint height)
 {
-    LOGI("Initializing bina with viewport: %dx%d", width, height);
+    log_i("Initializing bina with viewport: %dx%d", width, height);
 
     asset_manager_g = AAssetManager_fromJava(env, asset_manager);
     if (!asset_manager_g) {
-        LOGE("Could not load Android Asset Manager");
+        log_e("Could not load Android Asset Manager");
     }
 
     game_init(&game_g, width, height);

@@ -14,6 +14,7 @@
 
 #ifdef ENABLE_S3TC
 
+#include "log.h"
 #include "texture.h"
 
 #define DDS_MAGIC "DDS "
@@ -86,12 +87,12 @@ s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
     dds_pixel_format_t ddspf;
 
     if (size < 4) {
-        LOGE("invalid dds file - size is too small");
+        log_e("invalid dds file - size is too small");
         return GL_INVALID_VALUE;
     }
 
     if (strncmp((char *) buffer, DDS_MAGIC, 4)) {
-        LOGE("invalid dds file - missing magic");
+        log_e("invalid dds file - missing magic");
         return GL_INVALID_VALUE;
     }
 
@@ -102,11 +103,11 @@ s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
     ddspf  = header->ddspf;
 
     if (header->size != sizeof(dds_header_t)) {
-        LOGE("invalid dds file - invalid header size");
+        log_e("invalid dds file - invalid header size");
         return GL_INVALID_VALUE;
     }
     if (header->ddspf.size != sizeof(dds_pixel_format_t)) {
-        LOGE("invalid dds file - invalid pixel format size");
+        log_e("invalid dds file - invalid pixel format size");
         return GL_INVALID_VALUE;
     }
 
@@ -116,7 +117,7 @@ s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
     if (ddspf.flags & DDPF_RGB) {
         switch (ddspf.rgb_bit_count) {
           default:
-            LOGE("invalid dds file - unsupported compressed format");
+            log_e("invalid dds file - unsupported compressed format");
             return GL_INVALID_VALUE;
         }
     }
@@ -132,24 +133,24 @@ s3tc_dds_read_header(const unsigned char* buffer, unsigned int size,
           case '5':
             break;
           default:
-            LOGE("invalid dds file - %s is not supported", ddspf.four_cc);
+            log_e("invalid dds file - %s is not supported", ddspf.four_cc);
             return GL_INVALID_VALUE;
         }
     } else {
-        LOGE("unsupported dds flags: 0x%08X", ddspf.flags);
+        log_e("unsupported dds flags: 0x%08X", ddspf.flags);
         return GL_INVALID_VALUE;
     }
 
     if (caps & DDSCAPS_COMPLEX) {
-        LOGE("unsupported dds caps: DDSCAPS_COMPLEX");
+        log_e("unsupported dds caps: DDSCAPS_COMPLEX");
         return GL_INVALID_VALUE;
     }
     if (caps & DDSCAPS_MIPMAP) {
-        LOGE("unsupported dds caps: DDSCAPS_MIPMAP");
+        log_e("unsupported dds caps: DDSCAPS_MIPMAP");
         return GL_INVALID_VALUE;
     }
     if (!caps & DDSCAPS_TEXTURE) {
-        LOGE("invalid dds file - dds caps should have DDSCAPS_TEXTURE");
+        log_e("invalid dds file - dds caps should have DDSCAPS_TEXTURE");
         return GL_INVALID_VALUE;
     }
 
@@ -170,7 +171,7 @@ void
 s3tc_load_dds(const unsigned char* buffer, unsigned int size,
               texture_t* texture)
 {
-    LOGD("loading dds buffer with size: %d", size);
+    log_d("loading dds buffer with size: %d", size);
 
     unsigned short alpha = 0;
     unsigned int   nmipmap, bufsize, blksize, i;
@@ -193,7 +194,7 @@ s3tc_load_dds(const unsigned char* buffer, unsigned int size,
             alpha   = 1; /* no way to know for sure? */
             blksize = 8;
 #else
-            LOGE("platform does not support DXT1");
+            log_e("platform does not support DXT1");
             goto error;
 #endif
             break;
@@ -203,7 +204,7 @@ s3tc_load_dds(const unsigned char* buffer, unsigned int size,
             alpha   = 1;
             blksize = 16;
 #else
-            LOGE("platform does not support DXT3");
+            log_e("platform does not support DXT3");
             goto error;
 #endif
             break;
@@ -213,12 +214,12 @@ s3tc_load_dds(const unsigned char* buffer, unsigned int size,
             alpha   = 1;
             blksize = 16;
 #else
-            LOGE("platform does not support DXT5");
+            log_e("platform does not support DXT5");
             goto error;
 #endif
             break;
           default:
-            LOGE("invalid dds file fourcc flag");
+            log_e("invalid dds file fourcc flag");
             goto error;
             break;
         }
@@ -245,7 +246,7 @@ s3tc_load_dds(const unsigned char* buffer, unsigned int size,
     texture->pixels = (unsigned char*) malloc(bufsize * sizeof(unsigned char));
 
     if (!texture->pixels) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 

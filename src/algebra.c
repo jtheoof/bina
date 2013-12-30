@@ -166,10 +166,6 @@ lin_vec2_anim_create(vec2_t from, vec2_t to, float speed, float elapsed)
     unsigned int steps = 1; /* Number of steps */
     float norm = 0.0f;      /* || to - from || */
 
-    if (elapsed <= 0) {
-        LOGE("parameter: elapsed is invalid");
-    }
-
     norm  = sqrtf(powf(to.x - from.x, 2.0f) + powf(to.y - from.y, 2.0f));
     steps = (int) (norm * speed * 1.0f / elapsed);
 

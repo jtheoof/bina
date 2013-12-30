@@ -6,6 +6,7 @@
 
 #include "bina.h"
 #include "texture.h"
+#include "log.h"
 #include "utils.h"
 #include "renderer.h"
 
@@ -39,7 +40,7 @@ texture_upload(texture_t* texture)
     }
 
     GL_CHECK(glGenTextures, 1, &texture->ogl.tid);
-    LOGD("Texture has id: %d", texture->ogl.tid);
+    log_d("Texture has id: %d", texture->ogl.tid);
 
     GL_CHECK(glBindTexture, texture->ogl.target, texture->ogl.tid);
 
@@ -67,7 +68,7 @@ texture_upload(texture_t* texture)
                      offset = 0;
 
         if (!texture->nmipmap) {
-            LOGE("texture: %d has missing mipmaps", texture->ogl.tid);
+            log_e("texture: %d has missing mipmaps", texture->ogl.tid);
         } else {
             for (i = 0; i < texture->nmipmap; i++) {
                 size = ((width + 3) >> 2) * ((height + 3) >> 2) * bsize;
@@ -172,7 +173,7 @@ texture_load_png(memory_t* memory, texture_t* texture)
 #include "tc_png.h"
     tc_png_load(memory, texture);
 #else
-    LOGE("png support must be enabled to load png files");
+    log_e("png support must be enabled to load png files");
 #endif
 }
 
@@ -187,7 +188,7 @@ texture_load_dds(memory_t* memory, texture_t* texture)
         ext_check = renderer_has_gl_ext("EXT_texture_compression_s3tc");
 
         if (!ext_check) {
-            LOGE("s3tc is not supported on this hardware");
+            log_e("s3tc is not supported on this hardware");
         }
     }
 
@@ -195,7 +196,7 @@ texture_load_dds(memory_t* memory, texture_t* texture)
         s3tc_load_dds(memory->buffer, memory->size, texture);
     }
 #else
-    LOGE("s3tc support must be enabled to load dds files");
+    log_e("s3tc support must be enabled to load dds files");
 #endif
 }
 
@@ -210,7 +211,7 @@ texture_load_ktx(memory_t* memory, texture_t* texture)
         ext_check = renderer_has_gl_ext("OES_compressed_ETC1_RGB8_texture");
 
         if (!ext_check) {
-            LOGE("etc is not supported on this hardware");
+            log_e("etc is not supported on this hardware");
         }
     }
 
@@ -218,7 +219,7 @@ texture_load_ktx(memory_t* memory, texture_t* texture)
         etc_load_ktx(memory->buffer, memory->size, texture);
     }
 #else
-    LOGE("etc support must be enabled to load ktx files");
+    log_e("etc support must be enabled to load ktx files");
 #endif
 }
 
@@ -230,7 +231,7 @@ texture_create(const char* name, bina_enum flags, bina_enum filter)
     texture = (texture_t*) calloc(1, sizeof(texture_t));
 
     if (!texture) {
-        LOGE("not enough memory to create texture: %s", name);
+        log_e("not enough memory to create texture: %s", name);
         goto error;
     }
 
@@ -240,7 +241,7 @@ texture_create(const char* name, bina_enum flags, bina_enum filter)
     texture->flags  = flags; /* init flags but can be auto updated later */
 
     if (texture_load(name, texture)) {
-        LOGE("an error occured while loading the texture");
+        log_e("an error occured while loading the texture");
         goto error;
     }
 
@@ -298,7 +299,7 @@ texture_create_list(const char* folder,
 
     ret = (texture_list_t*) calloc(1, sizeof(texture_list_t));
     if (!ret) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 
@@ -307,7 +308,7 @@ texture_create_list(const char* folder,
     ret->textures = (texture_t**) calloc(size, sizeof(texture_t*));
 
     if (!ret->textures) {
-        LOGE(BINA_NOT_ENOUGH_MEMORY);
+        log_e(BINA_NOT_ENOUGH_MEMORY);
         goto error;
     }
 
@@ -361,7 +362,7 @@ texture_load(const char* name, texture_t* texture)
     /* Load asset in memory */
     memory = memory_create(name);
     if (!memory) {
-        LOGE("object: %s was not loaded into memory", name);
+        log_e("object: %s was not loaded into memory", name);
         return -1;
     }
 
@@ -372,7 +373,7 @@ texture_load(const char* name, texture_t* texture)
     } else if (!strcmp(ext, "ktx")) {
         texture_load_ktx(memory, texture);
     } else {
-        LOGE("extension: %s not implemented for texturing", ext);
+        log_e("extension: %s not implemented for texturing", ext);
         memory_delete(&memory);
     }
 
@@ -388,6 +389,6 @@ texture_load(const char* name, texture_t* texture)
 void
 texture_print_info(texture_t* texture)
 {
-    LOGI("Loaded: %s width: %d height: %d alpha: %d",
+    log_i("Loaded: %s width: %d height: %d alpha: %d",
          texture->name, texture->width, texture->height, texture->alpha);
 }

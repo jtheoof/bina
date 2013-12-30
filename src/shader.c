@@ -6,6 +6,7 @@
 
 #include "bina.h"
 #include "shader.h"
+#include "log.h"
 
 /* TODO Maybe move these shaders to their file once file access is made easy on
  * devices. But the problem will be that those files can be accessed by
@@ -137,7 +138,7 @@ shader_create_shader(GLenum type, const char* source)
                 buf = (char*) malloc(infoLen);
                 if (buf) {
                     glGetShaderInfoLog(shader, infoLen, NULL, buf);
-                    LOGE("Could not compile shader type %d (%s)\n%s\n",
+                    log_e("Could not compile shader type %d (%s)\n%s\n",
                             type, buf, source);
                     free(buf);
                 }
@@ -174,7 +175,7 @@ shader_create_program(program_type_e type)
         fs = shader_create_shader(GL_FRAGMENT_SHADER, simpletex_fshader_g);
         break;
       default:
-        LOGE("program type: %d is not implemented", type);
+        log_e("program type: %d is not implemented", type);
         goto error;
     }
 
@@ -195,7 +196,7 @@ shader_create_program(program_type_e type)
                 char* buf = (char*) malloc(length);
                 if (buf) {
                     glGetProgramInfoLog(program, length, NULL, buf);
-                    LOGE("Could not link program: %s\n", buf);
+                    log_e("Could not link program: %s\n", buf);
                     free(buf);
                 }
             }
@@ -208,12 +209,12 @@ shader_create_program(program_type_e type)
     GL_CHECK(glDeleteShader, vs);
     GL_CHECK(glDeleteShader, fs);
 
-    LOGI("Created program: %d", program);
+    log_i("Created program: %d", program);
 
     return program;
 
 error:
-    LOGE("Could not create program: %d", type);
+    log_e("Could not create program: %d", type);
 
     glDeleteShader(vs);
     glDeleteShader(fs);

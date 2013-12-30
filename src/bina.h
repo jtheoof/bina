@@ -73,39 +73,7 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-#define LOG_TAG   "bina"
-
-/* TODO make it more pretty from config.h */
-# ifdef DEBUG
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-# else
-#define LOGD(...) { }
-#define LOGI(...) { }
-# endif
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-
 AAssetManager* asset_manager_g;
-
-#else
-
-# ifdef DEBUG
-#define LOGD(...)                                                             \
-    fprintf(stdout, "D/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
-    fprintf(stdout, __VA_ARGS__);                                             \
-    fprintf(stdout, "\n");
-#define LOGI(...)                                                             \
-    fprintf(stdout, "I/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
-    fprintf(stdout, __VA_ARGS__);                                             \
-    fprintf(stdout, "\n");
-# else
-#define LOGD(...) { }
-#define LOGI(...) { }
-# endif
-#define LOGE(...)                                                             \
-    fprintf(stderr, "E/bina/%s/%s (%d): ", __FUNCTION__, __FILE__, __LINE__); \
-    fprintf(stderr, __VA_ARGS__);                                             \
-    fprintf(stderr, "\n");
 
 #endif /* ANDROID */
 
@@ -240,7 +208,7 @@ typedef struct token_string_size_t
             if (error) {                                     \
                 break;                                       \
             }                                                \
-            LOGE("Error in %s: %s (0x%x)\n", #gl, error, e); \
+            log_e("Error in %s: %s (0x%x)\n", #gl, error, e); \
         }                                                    \
     }
 #else
