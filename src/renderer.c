@@ -22,7 +22,7 @@
  * This mactro converts #s into a proper string.
  */
 #define print_gl_string(s) \
-    sdl_log_info(SDL_LOG_CATEGORY_APPLICATION, "#s: %s", glGetString(s));
+    log_i(#s "%s", glGetString(s));
 
 /**
  * Module structure.
@@ -79,9 +79,9 @@ renderer_init(sdl_window_t* window)
 
     m.context = sdl_gl_create_context(window);
 
-    if (!m.context) {
-        sdl_log_error(SDL_LOG_CATEGORY_APPLICATION,
-                      "unable to create gl context: %s", sdl_get_error());
+    if (1) {
+        log_c("unable to create gl context: %s", sdl_get_error());
+        return BINA_LIB_ERROR;
     }
 
     /* vertical sync */
@@ -95,8 +95,7 @@ renderer_init(sdl_window_t* window)
     bina_enum err = glew_init();
 
     if (err) {
-        sdl_log_error(SDL_LOG_CATEGORY_APPLICATION,
-                      "unable to initialize GLEW: %s", glew_get_error_string(err));
+        log_c("unable to initialize GLEW: %s", glew_get_error_string(err));
         return BINA_LIB_ERROR;
     }
 
