@@ -14,6 +14,7 @@ AC_CONFIG_MACRO_DIR([m4])
 dnl Save the CFLAGS to see whether they were passed in or generated
 orig_CFLAGS="$CFLAGS"
 
+CFLAGS=''
 
 dnl Set various version strings (taken gratefully from SDL).
 #
@@ -83,6 +84,8 @@ BN_CHECK_PACKAGES
 BN_CHECK_HOST
 
 AM_INIT_AUTOMAKE([foreign subdir-objects])
+
+CFLAGS="$CFLAGS $orig_CFLAGS"
 
 AC_SUBST(CFLAGS)
 AC_SUBST(LDFLAGS)
