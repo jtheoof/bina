@@ -113,13 +113,13 @@ log_custom(void *userdata, int category, sdl_log_priority_e priority,
 
     if (file) {
         snprintf(file_line, MAX_CHAR, "%s:%d", file, line);
-        snprintf(file_line_pad, MAX_CHAR, "%10s", file_line);
+        snprintf(file_line_pad, MAX_CHAR, "%15s", file_line);
     } else {
         file_line_pad[0] = 0;
         message_shown = strdup(message);
     }
 
-    fprintf(stderr, "%s%-8s | %10s | %s%s\n", token.color, token.prefix,
+    fprintf(stderr, "%s%-8s | %15s | %s%s\n", token.color, token.prefix,
             file_line_pad, message_shown, COLOR_RESET);
 
     if (file) {
