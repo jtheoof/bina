@@ -22,7 +22,7 @@
  * This mactro converts #s into a proper string.
  */
 #define print_gl_string(s) \
-    log_i(#s "%s", glGetString(s));
+    log_i(#s ": %s", glGetString(s));
 
 /**
  * Module structure.
@@ -68,6 +68,8 @@ device_get_tc_ext()
 int
 renderer_init(sdl_window_t* window)
 {
+    log_d("initializing renderer");
+
     if (!window) {
         log_e("no window to initialize renderer, not sure what to do");
         return BINA_NOT_SURE;
@@ -145,6 +147,7 @@ renderer_render(scene_t* scene)
 
     /* renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f); */
     /* scene_render(scene); */
+    log_d("swaping window");
     sdl_gl_swap_window(m.window);
 }
 
