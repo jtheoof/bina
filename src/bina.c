@@ -73,6 +73,6 @@ bina_exit()
         sdl_destroy_window(m.window);
     }
 
-    sdl_log_info(SDL_LOG_CATEGORY_APPLICATION, "exiting library");
+    log_d("exiting library");
     sdl_quit();
 }
