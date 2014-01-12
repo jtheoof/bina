@@ -105,6 +105,7 @@ log_custom(void *userdata, int category, sdl_log_priority_e priority,
     char* message_shown;
     char file_line[MAX_CHAR];
     char file_line_pad[MAX_CHAR];
+
     prefix_color_token_t token = prefix_colors[priority];
 
     /* Looking for __FILE__ and __LINE__ */

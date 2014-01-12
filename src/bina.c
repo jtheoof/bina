@@ -24,8 +24,6 @@ static struct bina_module_info m = {
 int
 bina_init(bina_window_t* window)
 {
-    int err;
-
     /* Init SDL. */
     if (sdl_init(SDL_INIT_VIDEO) != 0) {
         fprintf(stderr, "sdl: unable to initialize: %s\n", sdl_get_error());
