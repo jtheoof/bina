@@ -3,7 +3,7 @@
  * @author Jeremy Attali
  */
 
-#include "bina.h"
+#include "main.h"
 #include "log.h"
 #include "renderer.h"
 
@@ -57,7 +57,7 @@ bina_init(bina_window_t* window)
 int
 bina_render()
 {
-    renderer_render(NULL);
+    renderer_render();
 
     return BINA_SUCCESS;
 }

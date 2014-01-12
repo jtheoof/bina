@@ -3,7 +3,7 @@
  * @author Jeremy Attali
  */
 
-#include "bina.h"
+#include "main.h"
 #include "log.h"
 
 #define COLOR_RESET   "\033[0m"

@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "scene.h"
+/*#include "scene.h"*/
 
 /**
  * Initializes the render with viewport dimensions specified.
@@ -42,10 +42,8 @@ void renderer_pre_render(float r, float g, float b, float a);
  * custom loop game places.
  *
  * This where the common rendering parts comes into place.
- *
- * @param game The game to render.
  */
-void renderer_render(scene_t* scene);
+void renderer_render(void);
 
 /**
  * Checks an extension in the list of GL_EXTENSIONS.

@@ -4,7 +4,7 @@
  * @date July 23, 2013
  */
 
-#include "bina.h"
+#include "main.h"
 
 /**
  * Replace the \ for / in a an absolute or relative file path.

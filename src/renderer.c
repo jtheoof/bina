@@ -4,7 +4,7 @@
  * @date July 23, 2013
  */
 
-#include "bina.h"
+#include "main.h"
 
 #ifdef HAVE_GL_GLEW_H
 #include <GL/glew.h>
@@ -12,9 +12,6 @@
 
 #include "renderer.h"
 #include "log.h"
-
-/* TODO Perhaps remove dependency of scene.h */
-#include "scene.h"
 
 /**
  * Prints useful info about about OpenGL.
@@ -137,13 +134,11 @@ renderer_destroy()
 }
 
 void
-renderer_render(scene_t* scene)
+renderer_render(void)
 {
     float elapsed = sdl_get_ticks(); /* time since last frame */
 
     gl_clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    /* scene_animate(scene, elapsed); */
 
     /* renderer_pre_render(0.0f, 0.4f, 1.0f, 1.0f); */
     /* scene_render(scene); */

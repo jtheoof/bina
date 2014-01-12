@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <wrapper/sdl.h>
+#include "wrapper/sdl.h"
 
 void log_custom(void *userdata, int category, sdl_log_priority_e priority,
                 const char *message);

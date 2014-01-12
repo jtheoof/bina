@@ -12,32 +12,17 @@ LT_LDFLAGS  = \
 libbinaincludedir = $(includedir)/bina
 
 libbinainclude_HEADERS = \
-    bina.h  \
-    error.h
+    bina.h     \
+    error.h    \
+    main.h     \
+    renderer.h
 
 libbina_la_SOURCES = \
-    bina.c      \
     algebra.c   \
     algebra.h   \
-    camera.c    \
-    camera.h    \
-    game.c      \
-    game.h      \
     log.c       \
-    memory.c    \
-    memory.h    \
-    renderer.c  \
-    renderer.h  \
-    scene.c     \
-    scene.h     \
-    shader.c    \
-    shader.h    \
-    sprite.c    \
-    sprite.h    \
-    texture.c   \
-    texture.h   \
-    utils.c     \
-    utils.h
+    main.c      \
+    renderer.c
 
 libbina_la_CFLAGS = \
     $(SDL_CFLAGS)           \
@@ -58,8 +43,6 @@ endif
 if ENABLE_ETC
     libbina_la_LIBADD += ../vendor/libktx/libktx.a -lstdc++
     libbina_la_CFLAGS += -I$(top_srcdir)/vendor/libktx/include
-endif
-if ENABLE_ETC
     libbina_la_SOURCES += tc_etc.c tc_etc.h
 endif
 if ENABLE_S3TC
