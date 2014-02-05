@@ -234,7 +234,9 @@ float main_get_time_elapsed();
  */
 int bina_init(bina_window_t* window);
 
-/* TODO Remove me */
+/**
+ * Renders a new frame.
+ */
 int bina_render();
 
 /**
