@@ -16,3 +16,4 @@
 #include "algebra.h"
 #include "main.h"
 #include "renderer.h"
+#include "log.h"

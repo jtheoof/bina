@@ -16,7 +16,8 @@ libbinainclude_HEADERS = \
     bina.h     \
     error.h    \
     main.h     \
-    renderer.h
+    renderer.h \
+    log.h
 
 libbina_la_SOURCES = \
     algebra.c   \
