@@ -90,14 +90,12 @@ renderer_init(sdl_window_t* window)
     gl_clear_color(0.152f, 0.156f, 0.133f, 1.0f);
 
 #ifdef HAVE_GL_GLEW_H
-
     bina_enum err = glew_init();
 
     if (err) {
         log_c("unable to initialize GLEW: %s", glew_get_error_string(err));
         return BINA_LIB_ERROR;
     }
-
 #endif
 
     print_gl_string(GL_VERSION);
