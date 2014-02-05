@@ -161,10 +161,6 @@ typedef struct token_string_size_t
  */
 #define TOKEN_TO_STRING(x) { x, #x }
 
-#include "error.h"
-
-#include "renderer.h"
-
 /* TODO
  *  - Reorganize headers to make the build faster.
  *  - Have generic macro to check for null pointers at the beginning of a func.

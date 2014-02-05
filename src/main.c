@@ -4,6 +4,7 @@
  */
 
 #include "main.h"
+#include "error.h"
 #include "log.h"
 #include "renderer.h"
 

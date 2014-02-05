@@ -12,6 +12,7 @@
 
 #include "renderer.h"
 #include "log.h"
+#include "error.h"
 
 /**
  * Prints useful info about about OpenGL.

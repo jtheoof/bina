@@ -15,6 +15,7 @@
 #ifdef ENABLE_S3TC
 
 #include "log.h"
+#include "error.h"
 #include "texture.h"
 
 #define DDS_MAGIC "DDS "
