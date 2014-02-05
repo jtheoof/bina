@@ -4,7 +4,7 @@
  * @date August 14, 2013
  */
 
-#include "bina.h"
+#include "main.h"
 #include "algebra.h"
 
 vec2_t

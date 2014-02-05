@@ -12,6 +12,7 @@ LT_LDFLAGS  = \
 libbinaincludedir = $(includedir)/bina
 
 libbinainclude_HEADERS = \
+    algebra.h  \
     bina.h     \
     error.h    \
     main.h     \
@@ -19,7 +20,6 @@ libbinainclude_HEADERS = \
 
 libbina_la_SOURCES = \
     algebra.c   \
-    algebra.h   \
     log.c       \
     main.c      \
     renderer.c

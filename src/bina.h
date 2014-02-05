@@ -13,5 +13,6 @@
 
 #pragma once
 
+#include "algebra.h"
 #include "main.h"
 #include "renderer.h"
