@@ -41,11 +41,13 @@ libbina_la_LIBADD = \
 if ENABLE_PNG
     libbina_la_SOURCES += tc_png.c tc_png.h
 endif
+
 if ENABLE_ETC
     libbina_la_LIBADD += ../vendor/libktx/libktx.a -lstdc++
     libbina_la_CFLAGS += -I$(top_srcdir)/vendor/libktx/include
     libbina_la_SOURCES += tc_etc.c tc_etc.h
 endif
+
 if ENABLE_S3TC
     libbina_la_SOURCES += tc_s3tc.c tc_s3tc.h
 endif
