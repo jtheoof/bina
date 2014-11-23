@@ -10,6 +10,9 @@ assets/
 # GNU Autoconf
 # GNU Automake
 .deps/
+.libs/
+Makefile
+Makefile.in
 aclocal.m4
 autom4te.cache/
 autotools/
@@ -17,8 +20,7 @@ config.status
 configure
 include/config.h
 include/config.h.in
-Makefile
-Makefile.in
+libtool
 src/bina
 stamp-h1
 
@@ -34,6 +36,9 @@ src/xxd/xxd.dSYM
 *.DS_Store
 *xcuserstate
 *xcuserdata
+*.la
+*.lo
+.dirstamp
 
 # Windows
 *.exe

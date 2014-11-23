@@ -20,9 +20,12 @@ libbinainclude_HEADERS = \
     log.h
 
 libbina_la_SOURCES = \
+    memory.c    \
     algebra.c   \
     log.c       \
     main.c      \
+    texture.c   \
+    utils.c     \
     renderer.c
 
 libbina_la_CFLAGS = \

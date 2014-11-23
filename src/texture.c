@@ -9,6 +9,8 @@
 #include "log.h"
 #include "utils.h"
 #include "renderer.h"
+#include "error.h"
+#include "utils.h"
 
 /**
  * OpenGL helper function to free the memory used by the texture in the GPU.

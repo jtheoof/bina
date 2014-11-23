@@ -6,6 +6,7 @@
 
 #include "bina.h"
 #include "memory.h"
+#include "error.h"
 #include "log.h"
 
 memory_t*
